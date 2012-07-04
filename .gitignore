@@ -1,0 +1,10 @@
+*.aux
+*.idx
+*.lof
+*.log
+*.out
+*.pdf
+*.ps
+*.dvi
+*.toc
+.texpadtmp
