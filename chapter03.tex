@@ -1,0 +1,502 @@
+\chapter{Global parameters}
+Parameters in the "global" section are process-wide and often OS-specific. They
+are generally set once for all and do not need being changed once correct. Some
+of them have command-line equivalents.
+
+The following keywords are supported in the "global" section:
+
+\begin{itemize}
+\item Process management and security
+  \begin{itemize}
+    \item[-] chroot
+    \item[-] daemon
+    \item[-] gid
+    \item[-] group
+    \item[-] log
+    \item[-] log-send-hostname
+    \item[-] nbproc
+    \item[-] pidfile
+    \item[-] uid
+    \item[-] ulimit-n
+    \item[-] user
+    \item[-] stats
+    \item[-] node
+    \item[-] description
+    \item[-] unix-bind
+  \end{itemize}
+\item Performance tuning
+  \begin{itemize}
+    \item[-] maxconn
+    \item[-] maxconnrate
+    \item[-] maxpipes
+    \item[-] noepoll
+    \item[-] nokqueue
+    \item[-] nopoll
+    \item[-] nosepoll
+    \item[-] nosplice
+    \item[-] spread-checks
+    \item[-] tune.bufsize
+    \item[-] tune.chksize
+    \item[-] tune.http.maxhdr
+    \item[-] tune.maxaccept
+    \item[-] tune.maxpollevents
+    \item[-] tune.maxrewrite
+    \item[-] tune.pipesize
+    \item[-] tune.rcvbuf.client
+    \item[-] tune.rcvbuf.server
+    \item[-] tune.sndbuf.client
+    \item[-] tune.sndbuf.server
+  \end{itemize}
+\item Debugging
+  \begin{itemize}
+    \item[-] debug
+    \item[-] quiet
+  \end{itemize}
+\end{itemize}
+
+\section{Process management and security}
+
+\subsubsection[chroot]{chroot <jail dir>}
+  Changes current directory to <jail dir> and performs a chroot() there before
+  dropping privileges. This increases the security level in case an unknown
+  vulnerability would be exploited, since it would make it very hard for the
+  attacker to exploit the system. This only works when the process is started
+  with superuser privileges. It is important to ensure that <jail\_dir> is both
+  empty and unwritable to anyone.
+  
+\subsubsection[daemon]{daemon}
+  Makes the process fork into background. This is the recommended mode of
+  operation. It is equivalent to the command line "-D" argument. It can be
+  disabled by the command line "-db" argument.
+  
+\subsubsection[gid]{gid <number>}
+  Changes the process' group ID to <number>. It is recommended that the group
+  ID is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
+  be started with a user belonging to this group, or with superuser privileges.
+  See also "group" and "uid".
+  
+\subsubsection[group]{group <group name>}
+  Similar to "gid" but uses the GID of group name <group name> from /etc/group.
+  See also "gid" and "user".
+
+\subsubsection[log]{log <address> <facility> [max level [min level]]}
+  Adds a global syslog server. Up to two global servers can be defined. They
+  will receive logs for startups and exits, as well as all logs from proxies
+  configured with "log global".
+
+  <address> can be one of:
+  
+  \begin{itemize}
+    \item[-] An IPv4 address optionally followed by a colon and a UDP port. If
+          no port is specified, 514 is used by default (the standard syslog
+          port).
+
+    \item[-] An IPv6 address followed by a colon and optionally a UDP port. If
+          no port is specified, 514 is used by default (the standard syslog
+          port).
+
+    \item[-] A filesystem path to a UNIX domain socket, keeping in mind
+          considerations for chroot (be sure the path is accessible inside
+          the chroot) and uid/gid (be sure the path is appropriately
+          writeable).
+  \end{itemize}
+  
+  <facility> must be one of the 24 standard syslog facilities:
+  
+  \vspace{5mm}
+  \textbf{
+  \begin{tabular}{llllllll}
+    kern   & user   & mail   & daemon & auth   & syslog & lpr    & news \\
+    uucp   & cron   & auth2  & ftp    & ntp    & audit  & alert  & cron2 \\
+    local0 & local1 & local2 & local3 & local4 & local5 & local6 & local7
+  \end{tabular}
+  }
+  \vspace{5mm}
+    
+  An optional level can be specified to filter outgoing messages. By default,
+  all messages are sent. If a maximum level is specified, only messages with a
+  severity at least as important as this level will be sent. An optional minimum
+  level can be specified. If it is set, logs emitted with a more severe level
+  than this one will be capped to this level. This is used to avoid sending
+  "emerg" messages on all terminals on some default syslog configurations.
+  
+  Eight levels are known:
+  
+  \vspace{3mm}
+  \textbf {
+  \begin{tabular}{llllllll}
+          emerg & alert & crit & err & warning & notice & info & debug
+  \end{tabular}
+  }
+  
+\subsubsection[log-send-hostname]{log-send-hostname [<string>]}
+  Sets the hostname field in the syslog header. If optional "string" parameter
+  is set the header is set to the string contents, otherwise uses the hostname
+  of the system. Generally used if one is not relaying logs through an
+  intermediate syslog server or for simply customizing the hostname printed in
+  the logs.
+
+\subsubsection[log-tag]{log-tag <string>}
+  Sets the tag field in the syslog header to this string. It defaults to the
+  program name as launched from the command line, which usually is "haproxy".
+  Sometimes it can be useful to differentiate between multiple processes
+  running on the same host.
+
+\subsubsection[nbproc]{nbproc <number>}
+  Creates <number> processes when going daemon. This requires the "daemon"
+  mode. By default, only one process is created, which is the recommended mode
+  of operation. For systems limited to small sets of file descriptors per
+  process, it may be needed to fork multiple daemons.\\
+  USING MULTIPLE PROCESSES
+  IS HARDER TO DEBUG AND IS REALLY DISCOURAGED.\\
+  See also "daemon".
+
+\subsubsection[pidfile]{pidfile <pidfile>}
+  Writes pids of all daemons into file <pidfile>. This option is equivalent to
+  the "-p" command line argument. The file must be accessible to the user
+  starting the process. See also "daemon".
+
+\subsubsection[stats socket]{stats socket <path> [{uid | user} <uid>] [{gid | group} <gid>] [mode <mode>] [level <level>]}
+
+  Creates a UNIX socket in stream mode at location <path>. Any previously
+  existing socket will be backed up then replaced. Connections to this socket
+  will return various statistics outputs and even allow some commands to be
+  issued. Please consult section 9.2 "Unix Socket commands" for more details.
+  
+  An optional "level" parameter can be specified to restrict the nature of
+  the commands that can be issued on the socket:
+  
+  \begin{itemize}
+    \item[-] "user" is the least privileged level; only non-sensitive stats can be
+      read, and no change is allowed. It would make sense on systems where it
+      is not easy to restrict access to the socket.
+
+    \item[-] "operator" is the default level and fits most common uses. All data can
+      be read, and only non-sensitive changes are permitted (eg: clear max
+      counters).
+
+    \item[-] "admin" should be used with care, as everything is permitted (eg: clear
+      all counters).
+  \end{itemize}
+  
+  On platforms which support it, it is possible to restrict access to this
+  socket by specifying numerical IDs after "uid" and "gid", or valid user and
+  group names after the "user" and "group" keywords. It is also possible to
+  restrict permissions on the socket by passing an octal value after the "mode"
+  keyword (same syntax as chmod). Depending on the platform, the permissions on
+  the socket will be inherited from the directory which hosts it, or from the
+  user the process is started with.
+
+\subsubsection[stats timeout]{stats timeout <timeout, in milliseconds>}
+  The default timeout on the stats socket is set to 10 seconds. It is possible
+  to change this value with "stats timeout". The value must be passed in
+  milliseconds, or be suffixed by a time unit among { us, ms, s, m, h, d }.
+
+\subsubsection[stats maxconn]{stats maxconn <connections>}
+  By default, the stats socket is limited to 10 concurrent connections. It is
+  possible to change this value with "stats maxconn".
+
+\subsubsection[uid]{uid <number>}
+  Changes the process' user ID to <number>. It is recommended that the user ID
+  is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
+  be started with superuser privileges in order to be able to switch to another
+  one. See also "gid" and "user".
+
+\subsubsection[ulimit-n]{ulimit-n <number>}
+  Sets the maximum number of per-process file-descriptors to <number>. By
+  default, it is automatically computed, so it is recommended not to use this
+  option.
+
+\subsubsection[unix-bind]{unix-bind [ prefix <prefix> ] [ mode <mode> ] [ user <user> ] [ uid <uid> ] [ group <group> ] [ gid <gid> ]}
+
+  Fixes common settings to UNIX listening sockets declared in "bind" statements.
+  This is mainly used to simplify declaration of those UNIX sockets and reduce
+  the risk of errors, since those settings are most commonly required but are
+  also process-specific. The <prefix> setting can be used to force all socket
+  path to be relative to that directory. This might be needed to access another
+  component's chroot. Note that those paths are resolved before haproxy chroots
+  itself, so they are absolute. The <mode>, <user>, <uid>, <group> and <gid>
+  all have the same meaning as their homonyms used by the "bind" statement. If
+  both are specified, the "bind" statement has priority, meaning that the
+  "unix-bind" settings may be seen as process-wide default settings.
+
+\subsubsection[user]{user <user name>}
+  Similar to "uid" but uses the UID of user name <user name> from /etc/passwd.
+  See also "uid" and "group".
+
+\subsubsection[node]{node <name>}
+  Only letters, digits, hyphen and underscore are allowed, like in DNS names.
+
+  This statement is useful in HA configurations where two or more processes or
+  servers share the same IP address. By setting a different node-name on all
+  nodes, it becomes easy to immediately spot what server is handling the
+  traffic.
+
+\subsubsection[description]{description <text>}
+  Add a text that describes the instance.
+
+  Please note that it is required to escape certain characters (# for example)
+  and this text is inserted into a html page so you should avoid using
+  "<" and ">" characters.
+
+\section{Performance tuning}
+
+\subsubsection[maxconn]{maxconn <number>}
+  Sets the maximum per-process number of concurrent connections to <number>. It
+  is equivalent to the command-line argument "-n". Proxies will stop accepting
+  connections when this limit is reached. The "ulimit-n" parameter is
+  automatically adjusted according to this value. See also "ulimit-n".
+
+\subsubsection[maxconnrate]{maxconnrate <number>}
+  Sets the maximum per-process number of connections per second to <number>.
+  Proxies will stop accepting connections when this limit is reached. It can be
+  used to limit the global capacity regardless of each frontend capacity. It is
+  important to note that this can only be used as a service protection measure,
+  as there will not necessarily be a fair share between frontends when the
+  limit is reached, so it's a good idea to also limit each frontend to some
+  value close to its expected share. Also, lowering tune.maxaccept can improve
+  fairness.
+
+\subsubsection[maxpipes]{maxpipes <number>}
+  Sets the maximum per-process number of pipes to <number>. Currently, pipes
+  are only used by kernel-based tcp splicing. Since a pipe contains two file
+  descriptors, the "ulimit-n" value will be increased accordingly. The default
+  value is maxconn/4, which seems to be more than enough for most heavy usages.
+  The splice code dynamically allocates and releases pipes, and can fall back
+  to standard copy, so setting this value too low may only impact performance.
+
+\subsubsection[noepoll]{noepoll}
+  Disables the use of the "epoll" event polling system on Linux. It is
+  equivalent to the command-line argument "-de". The next polling system
+  used will generally be "poll". See also "nosepoll", and "nopoll".
+
+\subsubsection[nokqueue]{nokqueue}
+  Disables the use of the "kqueue" event polling system on BSD. It is
+  equivalent to the command-line argument "-dk". The next polling system
+  used will generally be "poll". See also "nopoll".
+
+\subsubsection[nopoll]{nopoll}
+  Disables the use of the "poll" event polling system. It is equivalent to the
+  command-line argument "-dp". The next polling system used will be "select".
+  It should never be needed to disable "poll" since it's available on all
+  platforms supported by HAProxy. See also "nosepoll", and "nopoll" and
+  "nokqueue".
+
+\subsubsection[nosepoll]{nosepoll}
+  Disables the use of the "speculative epoll" event polling system on Linux. It
+  is equivalent to the command-line argument "-ds". The next polling system
+  used will generally be "epoll". See also "nosepoll", and "nopoll".
+
+\subsubsection[nosplice]{nosplice}
+  Disables the use of kernel tcp splicing between sockets on Linux. It is
+  equivalent to the command line argument "-dS".  Data will then be copied
+  using conventional and more portable recv/send calls. Kernel tcp splicing is
+  limited to some very recent instances of kernel 2.6. Most versions between
+  2.6.25 and 2.6.28 are buggy and will forward corrupted data, so they must not
+  be used. This option makes it easier to globally disable kernel splicing in
+  case of doubt. See also "option splice-auto", "option splice-request" and
+  "option splice-response".
+
+\subsubsection[spread-checks]{spread-checks <0..50, in percent>}
+  Sometimes it is desirable to avoid sending health checks to servers at exact
+  intervals, for instance when many logical servers are located on the same
+  physical server. With the help of this parameter, it becomes possible to add
+  some randomness in the check interval between 0 and +/- 50%. A value between
+  2 and 5 seems to show good results. The default value remains at 0.
+
+\subsubsection[tune.bufsize]{tune.bufsize <number>}
+  Sets the buffer size to this size (in bytes). Lower values allow more
+  sessions to coexist in the same amount of RAM, and higher values allow some
+  applications with very large cookies to work. The default value is 16384 and
+  can be changed at build time. It is strongly recommended not to change this
+  from the default value, as very low values will break some services such as
+  statistics, and values larger than default size will increase memory usage,
+  possibly causing the system to run out of memory. At least the global maxconn
+  parameter should be decreased by the same factor as this one is increased.
+
+\subsubsection[tune.chksize]{tune.chksize <number>}
+  Sets the check buffer size to this size (in bytes). Higher values may help
+  find string or regex patterns in very large pages, though doing so may imply
+  more memory and CPU usage. The default value is 16384 and can be changed at
+  build time. It is not recommended to change this value, but to use better
+  checks whenever possible.
+
+\subsubsection[tune.http.maxhdr]{tune.http.maxhdr <number>}
+  Sets the maximum number of headers in a request. When a request comes with a
+  number of headers greater than this value (including the first line), it is
+  rejected with a "400 Bad Request" status code. Similarly, too large responses
+  are blocked with "502 Bad Gateway". The default value is 101, which is enough
+  for all usages, considering that the widely deployed Apache server uses the
+  same limit. It can be useful to push this limit further to temporarily allow
+  a buggy application to work by the time it gets fixed. Keep in mind that each
+  new header consumes 32bits of memory for each session, so don't push this
+  limit too high.
+
+\subsubsection[tune.maxaccept]{tune.maxaccept <number>}
+  Sets the maximum number of consecutive accepts that a process may perform on
+  a single wake up. High values give higher priority to high connection rates,
+  while lower values give higher priority to already established connections.
+  This value is limited to 100 by default in single process mode. However, in
+  multi-process mode (nbproc > 1), it defaults to 8 so that when one process
+  wakes up, it does not take all incoming connections for itself and leaves a
+  part of them to other processes. Setting this value to -1 completely disables
+  the limitation. It should normally not be needed to tweak this value.
+
+\subsubsection[tune.maxpollevents]{tune.maxpollevents <number>}
+  Sets the maximum amount of events that can be processed at once in a call to
+  the polling system. The default value is adapted to the operating system. It
+  has been noticed that reducing it below 200 tends to slightly decrease
+  latency at the expense of network bandwidth, and increasing it above 200
+  tends to trade latency for slightly increased bandwidth.
+
+\subsubsection[tune.maxrewrite]{tune.maxrewrite <number>}
+  Sets the reserved buffer space to this size in bytes. The reserved space is
+  used for header rewriting or appending. The first reads on sockets will never
+  fill more than bufsize-maxrewrite. Historically it has defaulted to half of
+  bufsize, though that does not make much sense since there are rarely large
+  numbers of headers to add. Setting it too high prevents processing of large
+  requests or responses. Setting it too low prevents addition of new headers
+  to already large requests or to POST requests. It is generally wise to set it
+  to about 1024. It is automatically readjusted to half of bufsize if it is
+  larger than that. This means you don't have to worry about it when changing
+  bufsize.
+
+\subsubsection[tune.pipesize]{tune.pipesize <number>}
+  Sets the kernel pipe buffer size to this size (in bytes). By default, pipes
+  are the default size for the system. But sometimes when using TCP splicing,
+  it can improve performance to increase pipe sizes, especially if it is
+  suspected that pipes are not filled and that many calls to splice() are
+  performed. This has an impact on the kernel's memory footprint, so this must
+  not be changed if impacts are not understood.
+
+\subsubsection[tune.rcvbuf.client]{tune.rcvbuf.client <number>}
+\subsubsection[tune.rcvbuf.server]{tune.rcvbuf.server <number>}
+  Forces the kernel socket receive buffer size on the client or the server side
+  to the specified value in bytes. This value applies to all TCP/HTTP frontends
+  and backends. It should normally never be set, and the default size (0) lets
+  the kernel autotune this value depending on the amount of available memory.
+  However it can sometimes help to set it to very low values (eg: 4096) in
+  order to save kernel memory by preventing it from buffering too large amounts
+  of received data. Lower values will significantly increase CPU usage though.
+
+\subsubsection[tune.sndbuf.client]{tune.sndbuf.client <number>}
+\subsubsection[tune.sndbuf.server]{tune.sndbuf.client <number>}
+  Forces the kernel socket send buffer size on the client or the server side to
+  the specified value in bytes. This value applies to all TCP/HTTP frontends
+  and backends. It should normally never be set, and the default size (0) lets
+  the kernel autotune this value depending on the amount of available memory.
+  However it can sometimes help to set it to very low values (eg: 4096) in
+  order to save kernel memory by preventing it from buffering too large amounts
+  of received data. Lower values will significantly increase CPU usage though.
+  Another use case is to prevent write timeouts with extremely slow clients due
+  to the kernel waiting for a large part of the buffer to be read before
+  notifying haproxy again.
+
+\section{Debugging}
+
+\subsubsection[debug]{debug}
+  Enables debug mode which dumps to stdout all exchanges, and disables forking
+  into background. It is the equivalent of the command-line argument "-d". It
+  should never be used in a production configuration since it may prevent full
+  system startup.
+
+\subsubsection[quiet]{quiet}
+  Do not display any message during startup. It is equivalent to the command-
+  line argument "-q".
+
+
+\section{Userlists}
+It is possible to control access to frontend/backend/listen sections or to
+http stats by allowing only authenticated and authorized users. To do this,
+it is required to create at least one userlist and to define users.
+
+\subsubsection[userlist]{userlist <listname>}
+  Creates new userlist with name <listname>. Many independent userlists can be
+  used to store authentication \& authorization data for independent customers.
+
+\subsubsection[group]{group <groupname> [users <user>,<user>,(...)]}
+  Adds group <groupname> to the current userlist. It is also possible to
+  attach users to this group by using a comma separated list of names
+  proceeded by "users" keyword.
+
+\subsubsection[user]{user <username> [password | insecure-password <password>]
+  [groups <group>, (...)]}
+  Adds user <username> to the current userlist. Both secure (encrypted) and
+  insecure (unencrypted) passwords can be used. Encrypted passwords are
+  evaluated using the crypt(3) function so depending of the system's
+  capabilities, different algorithms are supported. For example modern Glibc
+  based Linux system supports MD5, SHA-256, SHA-512 and of course classic,
+  DES-based method of crypting passwords.
+
+  Example:
+\begin{verbatim}
+        userlist L1
+          group G1 users tiger,scott
+          group G2 users xdb,scott
+
+          user tiger password $6$k6y3o.eP$JlKBx9za9667qe4(...)xHSwRv6J.C0/D7cV91
+          user scott insecure-password elgato
+          user xdb insecure-password hello
+
+        userlist L2
+          group G1
+          group G2
+
+          user tiger password $6$k6y3o.eP$JlKBx(...)xHSwRv6J.C0/D7cV91 groups G1
+          user scott insecure-password elgato groups G1,G2
+          user xdb insecure-password hello groups G2
+\end{verbatim}
+
+  Please note that both lists are functionally identical.
+
+
+\section{Peers}
+
+It is possible to synchronize server entries in stick tables between several
+haproxy instances over TCP connections in a multi-master fashion. Each instance
+pushes its local updates and insertions to remote peers. Server IDs are used to
+identify servers remotely, so it is important that configurations look similar
+or at least that the same IDs are forced on each server on all participants.
+Interrupted exchanges are automatically detected and recovered from the last
+known point. In addition, during a soft restart, the old process connects to
+the new one using such a TCP connection to push all its entries before the new
+process tries to connect to other peers. That ensures very fast replication
+during a reload, it typically takes a fraction of a second even for large
+tables.
+
+\subsubsection[peers]{peers <peersect>}
+  Creates a new peer list with name <peersect>. It is an independant section,
+  which is referenced by one or more stick-tables.
+
+\subsubsection[peer]{peer <peername> <ip>:<port>}
+  Defines a peer inside a peers section.
+  If <peername> is set to the local peer name (by default hostname, or forced
+  using "-L" command line option), haproxy will listen for incoming remote peer
+  connection on <ip>:<port>. Otherwise, <ip>:<port> defines where to connect to
+  to join the remote peer, and <peername> is used at the protocol level to
+  identify and validate the remote peer on the server side.
+
+  During a soft restart, local peer <ip>:<port> is used by the old instance to
+  connect the new one and initiate a complete replication (teaching process).
+
+  It is strongly recommended to have the exact same peers declaration on all
+  peers and to only rely on the "-L" command line argument to change the local
+  peer name. This makes it easier to maintain coherent configuration files
+  across all peers.
+
+  Example:
+\begin{verbatim}
+    peers mypeers
+        peer haproxy1 192.168.0.1:1024
+        peer haproxy2 192.168.0.2:1024
+        peer haproxy3 10.2.0.1:1024
+
+    backend mybackend
+        mode tcp
+        balance roundrobin
+        stick-table type ip size 20k peers mypeers
+        stick on src
+
+        server srv1 192.168.0.30:80
+        server srv2 192.168.0.31:80
+\end{verbatim}
