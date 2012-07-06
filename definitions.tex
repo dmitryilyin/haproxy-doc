@@ -1,0 +1,32 @@
+\newcommand{\head}[1]{
+  \textnormal{\textbf{#1}}
+}
+
+\newcommand{\dflb}[4]{
+  \par
+  \vspace{3mm}
+  May be used in sections:
+  \par
+  \vspace{2mm}
+  \begin{tabular}{|c|c|c|c|}
+  \hline
+  \head{Defaults} & \head{Frontend} & \head{Listen} & \head{Backend} \\
+  \hline
+  #1 & #2 & #3 & #4 \\
+  \hline
+  \end{tabular}
+  \vspace{5mm}
+  \par
+}
+
+\newcommand{\example}[1] {
+\par
+\vspace{2mm}
+Example:
+\\
+\texttt{
+#1
+}
+\vspace{2mm}
+\par
+}

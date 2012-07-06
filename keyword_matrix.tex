@@ -1,0 +1,304 @@
+acl                                 &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+appsession                          &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+backlog                             &              & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+balance                             &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+bind                                &              & ---      & $\times$ & $\times$ & ---      \\
+\hline
+bind-process                        &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+block                               &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+capture cookie                      &              & ---      & $\times$ & $\times$ & ---      \\
+\hline
+capture request header              &              & ---      & $\times$ & $\times$ & ---      \\
+\hline
+capture response header             &              & ---      & $\times$ & $\times$ & ---      \\
+\hline
+clitimeout                          & (deprecated) & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+contimeout                          & (deprecated) & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+cookie                              &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+default-server                      &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+default\_backend                    &              & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+description                         &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+disabled                            &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+dispatch                            &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+enabled                             &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+errorfile                           &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+errorloc                            &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+errorloc302                         &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+errorloc303                         &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+force-persist                       &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+fullconn                            &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+grace                               &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+hash-type                           &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+http-check disable-on-404           &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+http-check expect                   &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+http-check send-state               &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+http-request                        &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+id                                  &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+ignore-persist                      &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+log                                 & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+maxconn                             &              & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+mode                                &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+monitor fail                        &              & ---      & $\times$ & $\times$ & ---      \\
+\hline
+monitor-net                         &              & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+monitor-uri                         &              & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+option abortonclose                 & (*)          & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option accept-invalid-http-request  & (*)          & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+option accept-invalid-http-response & (*)          & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option allbackups                   & (*)          & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option checkcache                   & (*)          & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option clitcpka                     & (*)          & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+option contstats                    & (*)          & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+option dontlog-normal               & (*)          & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+option dontlognull                  & (*)          & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+option forceclose                   & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option forwardfor                   &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option http-no-delay                & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option http-pretend-keepalive       & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option http-server-close            & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option http-use-proxy-header        & (*)          & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+option httpchk                      &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option httpclose                    & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option httplog                      &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option http\_proxy                  & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option independant-streams          & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option ldap-check                   &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option log-health-checks            & (*)          & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option log-separate-errors          & (*)          & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+option logasap                      & (*)          & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+option mysql-check                  &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option pgsql-check                  &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option nolinger                     & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option originalto                   &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option persist                      & (*)          & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option redispatch                   & (*)          & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option redis-check                  &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option smtpchk                      &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option socket-stats                 & (*)          & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+option splice-auto                  & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option splice-request               & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option splice-response              & (*)          & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option srvtcpka                     & (*)          & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option ssl-hello-chk                &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option tcp-smart-accept             & (*)          & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+option tcp-smart-connect            & (*)          & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+option tcpka                        &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option tcplog                       &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+option transparent                  & (*)          & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+persist rdp-cookie                  &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+rate-limit sessions                 &              & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+redirect                            &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+redisp                              & (deprecated) & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+redispatch                          & (deprecated) & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+reqadd                              &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqallow                            &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqdel                              &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqdeny                             &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqiallow                           &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqidel                             &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqideny                            &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqipass                            &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqirep                             &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqisetbe                           &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqitarpit                          &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqpass                             &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqrep                              &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqsetbe                            &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+reqtarpit                           &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+retries                             &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+rspadd                              &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+rspdel                              &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+rspdeny                             &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+rspidel                             &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+rspideny                            &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+rspirep                             &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+rsprep                              &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+server                              &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+source                              &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+srvtimeout                          & (deprecated) & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+stats admin                         &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+stats auth                          &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+stats enable                        &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+stats hide-version                  &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+stats http-request                  &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+stats realm                         &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+stats refresh                       &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+stats scope                         &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+stats show-desc                     &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+stats show-legends                  &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+stats show-node                     &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+stats uri                           &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+stick match                         &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+stick on                            &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+stick store-request                 &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+stick store-response                &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+stick-table                         &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+tcp-request connection              &              & ---      & $\times$ & $\times$ & ---      \\
+\hline
+tcp-request content                 &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+tcp-request inspect-delay           &              & ---      & $\times$ & $\times$ & $\times$ \\
+\hline
+tcp-response content                &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+tcp-response inspect-delay          &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
+timeout check                       &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+timeout client                      &              & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+timeout clitimeout                  & (deprecated) & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+timeout connect                     &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+timeout contimeout                  & (deprecated) & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+timeout http-keep-alive             &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+timeout http-request                &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+timeout queue                       &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+timeout server                      &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+timeout srvtimeout                  & (deprecated) & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+timeout tarpit                      &              & $\times$ & $\times$ & $\times$ & $\times$ \\
+\hline
+timeout tunnel                      &              & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+transparent                         & (deprecated) & $\times$ & ---      & $\times$ & $\times$ \\
+\hline
+unique-id-format                    &              & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+unique-id-header                    &              & $\times$ & $\times$ & $\times$ & ---      \\
+\hline
+use\_backend                        &              & ---      & $\times$ & $\times$ & ---      \\
+\hline
+use-server                          &              & ---      & ---      & $\times$ & $\times$ \\
+\hline
