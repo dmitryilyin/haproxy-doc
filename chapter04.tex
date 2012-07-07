@@ -586,7 +586,6 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   a frontend, as well as there is no limit to the number of "bind" statements
   in a frontend.
 
-\begin{samepage}
   Example:
   \begin{verbatim}
         listen http_proxy
@@ -594,7 +593,6 @@ balance url\_param <param> [check\_post [<max\_wait>]]
             bind 10.0.0.1:10080,10.0.0.1:10443
             bind /var/run/ssl-frontend.sock user root mode 600 accept-proxy
   \end{verbatim}
-\end{samepage}
 
   See also: "source", "option forwardfor", "unix-bind" and the PROXY protocol
              documentation.
@@ -637,7 +635,6 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   If some backends are referenced by frontends bound to other processes, the
   backend automatically inherits the frontend's processes.
 
-\begin{samepage}
   Example:
   \begin{verbatim}
         listen app_ip1
@@ -652,7 +649,6 @@ balance url\_param <param> [check\_post [<max\_wait>]]
             bind 10.0.0.3:80
             bind-process 1 2 3 4
   \end{verbatim}
-\end{samepage}
 
   See also: "nbproc" in global section.
 
@@ -668,7 +664,6 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   conditions are met or not met. There is no fixed limit to the number of
   "block" statements per instance.
 
-\begin{samepage}
   Example:
   \begin{verbatim}
         acl invalid_src  src          0.0.0.0/7 224.0.0.0/3
@@ -676,7 +671,6 @@ balance url\_param <param> [check\_post [<max\_wait>]]
         acl local_dst    hdr(host) -i localhost
         block if invalid_src || local_dst
   \end{verbatim}
-\end{samepage}
 
   See section 7 about ACL usage.
 
@@ -715,11 +709,9 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   configured in the sources by default to 64 characters. It is not possible to
   specify a capture in a "defaults" section.
 
-\begin{samepage}
   Example:
 
   \verb|capture cookie ASPSESSION len 32|
-\end{samepage}
 
   See also : "capture request header", "capture response header" as well as
             section 8 about logging.
@@ -762,14 +754,12 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   same frontend, header captures can only be declared in a frontend. It is not
   possible to specify a capture in a "defaults" section.
 
-\begin{samepage}
   Example:
   \begin{verbatim}
         capture request header Host len 15
         capture request header X-Forwarded-For len 15
         capture request header Referrer len 15
   \end{verbatim}
-\end{samepage}
 
   See also : "capture cookie", "capture response header" as well as section 8
              about logging.

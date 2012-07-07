@@ -1,6 +1,5 @@
 \chapter{Configuring HAProxy}
 \section{Configuration file format}
-\begin{samepage}
 HAProxy's configuration process involves 3 major sources of parameters:
 \begin{enumerate}
 \item the arguments from the command-line, which always take precedence
@@ -8,7 +7,6 @@ HAProxy's configuration process involves 3 major sources of parameters:
 \item the proxies sections which can take form of "defaults", "listen",
     "frontend" and "backend".
 \end{enumerate}
-\end{samepage}
 
 The configuration file syntax consists in lines beginning with a keyword
 referenced in this manual, optionally followed by one or several parameters
@@ -23,7 +21,6 @@ otherwise) but may be expressed in any other unit by suffixing the unit to the
 numeric value. It is important to consider this because it will not be repeated
 for every keyword.
 
-\begin{samepage}
 \vspace{5mm}
 Supported units are:
 \begin{description}
@@ -34,7 +31,6 @@ Supported units are:
 \item[h:]  hours.   1h = 60m = 3600s = 3600000ms
 \item[d:]  days.    1d = 24h = 1440m = 86400s = 86400000ms
 \end{description}
-\end{samepage}
 
 \section{Examples}
 \begin{verbatim}

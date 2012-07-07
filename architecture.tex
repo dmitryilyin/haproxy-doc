@@ -97,7 +97,6 @@
 %  \end{tikzpicture}
 %\end{figure}
 %
-%%\begin{samepage}
 %\paragraph{Config on haproxy (LB1)}
 %\begin{verbatim}
 %    listen webfarm 192.168.1.1:80
@@ -110,9 +109,7 @@
 %       server webC 192.168.1.13:80 cookie C check
 %       server webD 192.168.1.14:80 cookie D check      
 %\end{verbatim}
-%%\end{samepage}
 %
-%\begin{samepage}
 %\paragraph{Description}
 %
 %\begin{itemize}
@@ -127,7 +124,6 @@
 %\item[-] if server "webA" dies, the requests will be sent to another valid server
 %   and a cookie will be reassigned.
 %\end{itemize}
-%\end{samepage}
 %
 %\paragraph{Flows}
 %
@@ -302,7 +298,6 @@
 %  \end{tikzpicture}
 %\end{figure}
 %
-%\begin{samepage}
 %\paragraph{Config on both proxies (LB1 and LB2)}
 %     
 %\begin{verbatim}
@@ -318,7 +313,6 @@
 %       server webC 192.168.1.13:80 cookie C check
 %       server webD 192.168.1.14:80 cookie D check
 %\end{verbatim}
-%\end{samepage}
 %
 %\paragraph{Notes}
 %
@@ -498,7 +492,6 @@
 %  \end{tikzpicture}
 %\end{figure}
 %
-%\begin{samepage}
 %\paragraph{Config on both proxies (LB1 and LB2)}
 %
 %\begin{verbatim}
@@ -516,7 +509,6 @@
 %       server webC 192.168.1.13:80 cookie C check
 %       server webD 192.168.1.14:80 cookie D check
 %\end{verbatim}
-%\end{samepage}
 %
 %The "dontlognull" option is used to prevent the proxy from logging the health
 %checks from the Alteon. If a session exchanges no data, then it will not be
