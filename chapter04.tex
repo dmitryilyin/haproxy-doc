@@ -2,10 +2,10 @@
 
 Proxy configuration can be located in a set of sections:
 \begin{itemize}
-  \item[-] defaults <name>
-  \item[-] frontend <name>
-  \item[-] backend  <name>
-  \item[-] listen   <name>
+\item[-] defaults <name>
+\item[-] frontend <name>
+\item[-] backend  <name>
+\item[-] listen   <name>
 \end{itemize}
 
 \begin{description}
@@ -88,18 +88,17 @@ appsession <cookie> len <length> timeout <holdtime>
   
   Arguments:
   \begin{description}
-
-    \item[<cookie>]   this is the name of the cookie used by the application and which
+  \item[<cookie>]   this is the name of the cookie used by the application and which
                HAProxy will have to learn for each new session.
 
-    \item[<length>]   this is the max number of characters that will be memorized and
+  \item[<length>]   this is the max number of characters that will be memorized and
                checked in each cookie value.
 
-    \item[<holdtime>] this is the time after which the cookie will be removed from
+  \item[<holdtime>] this is the time after which the cookie will be removed from
                memory if unused. If no unit is specified, this time is in
                milliseconds.
 
-    \item[request-learn]
+  \item[request-learn]
                If this option is specified, then haproxy will be able to learn
                the cookie found in the request in case the server does not
                specify any in response. This is typically what happens with
@@ -107,17 +106,18 @@ appsession <cookie> len <length> timeout <holdtime>
                the application's session and the correct server is selected.
                It is recommended to specify this option to improve reliability.
 
-    \item[prefix]     When this option is specified, haproxy will match on the cookie
+  \item[prefix]     When this option is specified, haproxy will match on the cookie
                prefix (or URL parameter prefix). The appsession value is the
                data following this prefix.
 
                Example:
+               
                \verb|appsession ASPSESSIONID len 64 timeout 3h prefix|
 
                This will match the cookie ASPSESSIONIDXXXX=XXXXX,
                the appsession value will be XXXX=XXXXX.
 
-    \item[mode]       This option allows to change the URL parser mode.
+  \item[mode]       This option allows to change the URL parser mode.
                2 modes are currently supported:
                \begin{itemize}
                \item[-] path-parameters:
@@ -143,12 +143,12 @@ appsession <cookie> len <length> timeout <holdtime>
 
   The definition of an application cookie is limited to one per backend.
 
-  \paragraph{Note:}
+  \emph{Note:}
          Consider not using this feature in multi-process mode (nbproc > 1)
          unless you know what you do: memory is not shared between the
          processes, which can result in random behaviours.
          
-  \example{appsession JSESSIONID len 52 timeout 3h}
+  \verb|appsession JSESSIONID len 52 timeout 3h|
 
   See also : "cookie", "capture cookie", "balance", "stick", "stick-table",
              "ignore-persist", "nbproc" and "bind-process".
@@ -161,7 +161,7 @@ backlog <conns>
   
   Arguments:
   \begin{description}
-    \item[<conns>]
+  \item[<conns>]
          is the number of pending connections. Depending on the operating
               system, it may represent the number of already acknowledged
               connections, of non-acknowledged ones, or both.
@@ -181,20 +181,26 @@ backlog <conns>
   two, and never more than some limits (usually 32768).
 
   See also : "maxconn" and the target operating system's tuning guide.
-\end{document}
 
+\subsubsection[balance] {
 balance <algorithm> [ <arguments> ]
-balance url_param <param> [check_post [<max_wait>]]
+}
+\subsubsection*{
+balance url\_param <param> [check\_post [<max\_wait>]]
+}
+
   Define the load balancing algorithm to be used in a backend.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <algorithm> is the algorithm used to select a server when doing load
+
+  \dflb{yes}{no}{yes}{yes}
+  
+  Arguments:
+    \paragraph*{<algorithm>}
+                is the algorithm used to select a server when doing load
                 balancing. This only applies when no persistence information
                 is available, or when a connection is redispatched to another
-                server. <algorithm> may be one of the following :
-
-      roundrobin  Each server is used in turns, according to their weights.
+                server. <algorithm> may be one of the following:
+      \begin{description}
+      \item[roundrobin]  Each server is used in turns, according to their weights.
                   This is the smoothest and fairest algorithm when the server's
                   processing time remains equally distributed. This algorithm
                   is dynamic, which means that server weights may be adjusted
@@ -207,16 +213,16 @@ balance url_param <param> [check_post [<max_wait>]]
                   indicated here in case you would have the chance to observe
                   it, so that you don't worry.
 
-      static-rr   Each server is used in turns, according to their weights.
+      \item[static-rr]   Each server is used in turns, according to their weights.
                   This algorithm is as similar to roundrobin except that it is
                   static, which means that changing a server's weight on the
                   fly will have no effect. On the other hand, it has no design
                   limitation on the number of servers, and when a server goes
                   up, it is always immediately reintroduced into the farm, once
                   the full map is recomputed. It also uses slightly less CPU to
-                  run (around -1%).
+                  run (around -1\%).
 
-      leastconn   The server with the lowest number of connections receives the
+      \item[leastconn]   The server with the lowest number of connections receives the
                   connection. Round-robin is performed within groups of servers
                   of the same load to ensure that all servers will be used. Use
                   of this algorithm is recommended where very long sessions are
@@ -225,7 +231,7 @@ balance url_param <param> [check_post [<max_wait>]]
                   algorithm is dynamic, which means that server weights may be
                   adjusted on the fly for slow starts for instance.
 
-      first       The first server with available connection slots receives the
+      \item[first]       The first server with available connection slots receives the
                   connection. The servers are choosen from the lowest numeric
                   identifier to the highest (see server parameter "id"), which
                   defaults to the server's position in the farm. Once a server
@@ -242,7 +248,7 @@ balance url_param <param> [check_post [<max_wait>]]
                   turn new servers on when the queue inflates. Alternatively,
                   using "http-check send-state" may inform servers on the load.
 
-      source      The source IP address is hashed and divided by the total
+      \item[source]      The source IP address is hashed and divided by the total
                   weight of the running servers to designate which server will
                   receive the request. This ensures that the same client IP
                   address will always reach the same server as long as no
@@ -256,7 +262,7 @@ balance url_param <param> [check_post [<max_wait>]]
                   weight on the fly will have no effect, but this can be
                   changed using "hash-type".
 
-      uri         This algorithm hashes either the left part of the URI (before
+      \item[uri]         This algorithm hashes either the left part of the URI (before
                   the question mark) or the whole URI (if the "whole" parameter
                   is present) and divides the hash value by the total weight of
                   the running servers. The result designates which server will
@@ -283,10 +289,10 @@ balance url_param <param> [check_post [<max_wait>]]
                   slash in the request. If both parameters are specified, the
                   evaluation stops when either is reached.
 
-      url_param   The URL parameter specified in argument will be looked up in
+      \item[url\_param]   The URL parameter specified in argument will be looked up in
                   the query string of each HTTP GET request.
 
-                  If the modifier "check_post" is used, then an HTTP POST
+                  If the modifier "check\_post" is used, then an HTTP POST
                   request entity will be searched for the parameter argument,
                   when it is not found in a query string after a question mark
                   ('?') in the URL. Optionally, specify a number of octets to
@@ -296,11 +302,11 @@ balance url_param <param> [check_post [<max_wait>]]
                   parameter in the first 128 bytes, then specify that. The
                   default is 48. The entity data will not be scanned until the
                   required number of octets have arrived at the gateway, this
-                  is the minimum of: (default/max_wait, Content-Length or first
+                  is the minimum of: (default/max\_wait, Content-Length or first
                   chunk length). If Content-Length is missing or zero, it does
                   not need to wait for more data than the client promised to
                   send. When Content-Length is present and larger than
-                  <max_wait>, then waiting is limited to <max_wait> and it is
+                  <max\_wait>, then waiting is limited to <max\_wait> and it is
                   assumed that this will be enough data to search for the
                   presence of the parameter. In the unlikely event that
                   Transfer-Encoding: chunked is used, only the first chunk is
@@ -321,13 +327,13 @@ balance url_param <param> [check_post [<max_wait>]]
                   that changing a server's weight on the fly will have no
                   effect, but this can be changed using "hash-type".
 
-      hdr(<name>) The HTTP header <name> will be looked up in each HTTP
+      \item[hdr(<name>)] The HTTP header <name> will be looked up in each HTTP
                   request. Just as with the equivalent ACL 'hdr()' function,
                   the header name in parenthesis is not case sensitive. If the
                   header is absent or if it does not contain any value, the
                   roundrobin algorithm is applied instead.
 
-                  An optional 'use_domain_only' parameter is available, for
+                  An optional 'use\_domain\_only' parameter is available, for
                   reducing the hash algorithm to the main domain part with some
                   specific headers such as 'Host'. For instance, in the Host
                   value "haproxy.1wt.eu", only "1wt" will be considered.
@@ -336,11 +342,10 @@ balance url_param <param> [check_post [<max_wait>]]
                   changing a server's weight on the fly will have no effect,
                   but this can be changed using "hash-type".
 
-      rdp-cookie
-      rdp-cookie(<name>)
+      \item[rdp-cookie(<name>)]
                   The RDP cookie <name> (or "mstshash" if omitted) will be
                   looked up and hashed for each incoming TCP request. Just as
-                  with the equivalent ACL 'req_rdp_cookie()' function, the name
+                  with the equivalent ACL 'req\_rdp\_cookie()' function, the name
                   is not case-sensitive. This mechanism is useful as a degraded
                   persistence mode, as it makes it possible to always send the
                   same user (or the same session ID) to the same server. If the
@@ -350,100 +355,113 @@ balance url_param <param> [check_post [<max_wait>]]
                   Note that for this to work, the frontend must ensure that an
                   RDP cookie is already present in the request buffer. For this
                   you must use 'tcp-request content accept' rule combined with
-                  a 'req_rdp_cookie_cnt' ACL.
+                  a 'req\_rdp\_cookie\_cnt' ACL.
 
                   This algorithm is static by default, which means that
                   changing a server's weight on the fly will have no effect,
                   but this can be changed using "hash-type".
 
-                  See also the rdp_cookie pattern fetch function.
+                  See also the rdp\_cookie pattern fetch function.
+       \end{description}
 
-    <arguments> is an optional list of arguments which may be needed by some
-                algorithms. Right now, only "url_param" and "uri" support an
+    \paragraph*{<arguments>}
+                is an optional list of arguments which may be needed by some
+                algorithms. Right now, only "url\_param" and "uri" support an
                 optional argument.
 
+                \begin{verbatim}
                 balance uri [len <len>] [depth <depth>]
                 balance url_param <param> [check_post [<max_wait>]]
+                \end{verbatim}
 
   The load balancing algorithm of a backend is set to roundrobin when no other
   algorithm, mode nor option have been set. The algorithm may only be set once
   for each backend.
 
-  Examples :
+  Examples:
+  \begin{verbatim}
         balance roundrobin
         balance url_param userid
         balance url_param session_id check_post 64
         balance hdr(User-Agent)
         balance hdr(host)
         balance hdr(Host) use_domain_only
+  \end{verbatim}
 
-  Note: the following caveats and limitations on using the "check_post"
-  extension with "url_param" must be considered :
-
-    - all POST requests are eligible for consideration, because there is no way
+  \emph{Note:} the following caveats and limitations on using the "check\_post"
+  extension with "url\_param" must be considered:
+  
+  \begin{itemize}
+  \item[-] all POST requests are eligible for consideration, because there is no way
       to determine if the parameters will be found in the body or entity which
       may contain binary data. Therefore another method may be required to
       restrict consideration of POST requests that have no URL parameters in
-      the body. (see acl reqideny http_end)
+      the body. (see acl reqideny http\_end)
 
-    - using a <max_wait> value larger than the request buffer size does not
+  \item[-] using a <max\_wait> value larger than the request buffer size does not
       make sense and is useless. The buffer size is set at build time, and
       defaults to 16 kB.
 
-    - Content-Encoding is not supported, the parameter search will probably
+  \item[-] Content-Encoding is not supported, the parameter search will probably
       fail; and load balancing will fall back to Round Robin.
 
-    - Expect: 100-continue is not supported, load balancing will fall back to
+  \item[-] Expect: 100-continue is not supported, load balancing will fall back to
       Round Robin.
 
-    - Transfer-Encoding (RFC2616 3.6.1) is only supported in the first chunk.
+  \item[-] Transfer-Encoding (RFC2616 3.6.1) is only supported in the first chunk.
       If the entire parameter value is not present in the first chunk, the
       selection of server is undefined (actually, defined by how little
       actually appeared in the first chunk).
 
-    - This feature does not support generation of a 100, 411 or 501 response.
+  \item[-] This feature does not support generation of a 100, 411 or 501 response.
 
-    - In some cases, requesting "check_post" MAY attempt to scan the entire
+  \item[-] In some cases, requesting "check\_post" MAY attempt to scan the entire
       contents of a message body. Scanning normally terminates when linear
       white space or control characters are found, indicating the end of what
       might be a URL parameter list. This is probably not a concern with SGML
       type message bodies.
+  \end{itemize}
 
   See also : "dispatch", "cookie", "appsession", "transparent", "hash-type" and
-             "http_proxy".
+             "http\_proxy".
 
+\subsubsection[bind]{bind [<address>]:<port\_range> [, ...]}
+\subsubsection*{bind [<address>]:<port\_range> [, ...] interface <interface>}
+\subsubsection*{bind [<address>]:<port\_range> [, ...] mss <maxseg>}
+\subsubsection*{bind [<address>]:<port\_range> [, ...] transparent}
+\subsubsection*{bind [<address>]:<port\_range> [, ...] id <id>}
+\subsubsection*{bind [<address>]:<port\_range> [, ...] name <name>}
+\subsubsection*{bind [<address>]:<port\_range> [, ...] defer-accept}
+\subsubsection*{bind [<address>]:<port\_range> [, ...] accept-proxy}
+\subsubsection*{bind /<path> [, ...]}
+\subsubsection*{bind /<path> [, ...] mode <mode>}
+\subsubsection*{bind /<path> [, ...] [ user <user> | uid <uid> ]}
+\subsubsection*{bind /<path> [, ...] [ group <user> | gid <gid> ]}
 
-bind [<address>]:<port_range> [, ...]
-bind [<address>]:<port_range> [, ...] interface <interface>
-bind [<address>]:<port_range> [, ...] mss <maxseg>
-bind [<address>]:<port_range> [, ...] transparent
-bind [<address>]:<port_range> [, ...] id <id>
-bind [<address>]:<port_range> [, ...] name <name>
-bind [<address>]:<port_range> [, ...] defer-accept
-bind [<address>]:<port_range> [, ...] accept-proxy
-bind /<path> [, ...]
-bind /<path> [, ...] mode <mode>
-bind /<path> [, ...] [ user <user> | uid <uid> ]
-bind /<path> [, ...] [ group <user> | gid <gid> ]
   Define one or several listening addresses and/or ports in a frontend.
-  May be used in sections :   defaults | frontend | listen | backend
-                                  no   |    yes   |   yes  |   no
-  Arguments :
-    <address>     is optional and can be a host name, an IPv4 address, an IPv6
+    
+  \dflb{no}{yes}{yes}{no}
+                                
+  Arguments:
+  \begin{description}
+  \item[<address>]     is optional and can be a host name, an IPv4 address, an IPv6
                   address, or '*'. It designates the address the frontend will
                   listen on. If unset, all IPv4 addresses of the system will be
                   listened on. The same will apply for '*' or the system's
                   special address "0.0.0.0". The IPv6 equivalent is '::'.
 
-    <port_range>  is either a unique TCP port, or a port range for which the
+  \item[<port\_range>]  is either a unique TCP port, or a port range for which the
                   proxy will accept connections for the IP address specified
                   above. The port is mandatory for TCP listeners. Note that in
                   the case of an IPv6 address, the port is always the number
-                  after the last colon (':'). A range can either be :
-                   - a numerical port (ex: '80')
-                   - a dash-delimited ports range explicitly stating the lower
+                  after the last colon (':'). A range can either be:
+                  
+                  \begin{itemize}
+                  \item[-] a numerical port (ex: '80')
+                  \item[-] a dash-delimited ports range explicitly stating the lower
                      and upper bounds (ex: '2000-2100') which are included in
                      the range.
+                  \end{itemize}
 
                   Particular care must be taken against port ranges, because
                   every <address:port> couple consumes one socket (= a file
@@ -455,7 +473,7 @@ bind /<path> [, ...] [ group <user> | gid <gid> ]
                   privileges to start the program, which are independant of
                   the 'uid' parameter.
 
-    <path>        is a UNIX socket path beginning with a slash ('/'). This is
+  \item[<path>]        is a UNIX socket path beginning with a slash ('/'). This is
                   alternative to the TCP listening port. Haproxy will then
                   receive UNIX connections on the socket located at this place.
                   The path must begin with a slash and by default is absolute.
@@ -464,7 +482,7 @@ bind /<path> [, ...] [ group <user> | gid <gid> ]
                   followed by the socket path cannot exceed some system limits
                   for UNIX sockets, which commonly are set to 107 characters.
 
-    <interface>   is an optional physical interface name. This is currently
+  \item[<interface>]   is an optional physical interface name. This is currently
                   only supported on Linux. The interface must be a physical
                   interface, not an aliased interface. When specified, all
                   addresses on the same line will only be accepted if the
@@ -475,7 +493,7 @@ bind /<path> [, ...] [ group <user> | gid <gid> ]
                   privileges. This parameter is only compatible with TCP
                   sockets.
 
-    <maxseg>      is an optional TCP Maximum Segment Size (MSS) value to be
+  \item[<maxseg>]      is an optional TCP Maximum Segment Size (MSS) value to be
                   advertised on incoming connections. This can be used to force
                   a lower MSS for certain specific ports, for instance for
                   connections passing through a VPN. Note that this relies on a
@@ -490,39 +508,39 @@ bind /<path> [, ...] [ group <user> | gid <gid> ]
                   advertised MSS for outgoing segments. This parameter is only
                   compatible with TCP sockets.
 
-    <id>          is a persistent value for socket ID. Must be positive and
+  \item[<id>]          is a persistent value for socket ID. Must be positive and
                   unique in the proxy. An unused value will automatically be
                   assigned if unset. Can only be used when defining only a
                   single socket.
 
-    <name>        is an optional name provided for stats
+  \item[<name>]        is an optional name provided for stats
 
-    <mode>        is the octal mode used to define access permissions on the
+  \item[<mode>]        is the octal mode used to define access permissions on the
                   UNIX socket. It can also be set by default in the global
                   section's "unix-bind" statement. Note that some platforms
                   simply ignore this.
 
-    <user>        is the name of user that will be marked owner of the UNIX
+  \item[<user>]        is the name of user that will be marked owner of the UNIX
                   socket.  It can also be set by default in the global
                   section's "unix-bind" statement. Note that some platforms
                   simply ignore this.
 
-    <group>       is the name of a group that will be used to create the UNIX
+  \item[<group>]       is the name of a group that will be used to create the UNIX
                   socket. It can also be set by default in the global section's
                   "unix-bind" statement. Note that some platforms simply ignore
                   this.
 
-    <uid>         is the uid of user that will be marked owner of the UNIX
+  \item[<uid>]         is the uid of user that will be marked owner of the UNIX
                   socket. It can also be set by default in the global section's
                   "unix-bind" statement. Note that some platforms simply ignore
                   this.
 
-    <gid>         is the gid of a group that will be used to create the UNIX
+  \item[<gid>]         is the gid of a group that will be used to create the UNIX
                   socket. It can also be set by default in the global section's
                   "unix-bind" statement. Note that some platforms simply ignore
                   this.
 
-    transparent   is an optional keyword which is supported only on certain
+  \item[transparent]   is an optional keyword which is supported only on certain
                   Linux kernels. It indicates that the addresses will be bound
                   even if they do not belong to the local machine. Any packet
                   targeting any of these addresses will be caught just as if
@@ -530,10 +548,10 @@ bind /<path> [, ...] [ group <user> | gid <gid> ]
                   that IP forwarding is enabled. Caution! do not use this with
                   the default address '*', as it would redirect any traffic for
                   the specified port. This keyword is available only when
-                  HAProxy is built with USE_LINUX_TPROXY=1. This parameter is
+                  HAProxy is built with USE\_LINUX\_TPROXY=1. This parameter is
                   only compatible with TCP sockets.
 
-    defer-accept  is an optional keyword which is supported only on certain
+  \item[defer-accept]  is an optional keyword which is supported only on certain
                   Linux kernels. It states that a connection will only be
                   accepted once some data arrive on it, or at worst after the
                   first retransmit. This should be used only on protocols for
@@ -545,9 +563,9 @@ bind /<path> [, ...] [ group <user> | gid <gid> ]
                   broken in all kernels up to 2.6.31, as the connection is
                   never accepted until the client talks. This can cause issues
                   with front firewalls which would see an established
-                  connection while the proxy will only see it in SYN_RECV.
+                  connection while the proxy will only see it in SYN\_RECV.
 
-    accept-proxy  is an optional keyword which enforces use of the PROXY
+  \item[accept-proxy]  is an optional keyword which enforces use of the PROXY
                   protocol over any connection accepted by this listener. The
                   PROXY protocol dictates the layer 3/4 addresses of the
                   incoming connection to be used everywhere an address is used,
@@ -559,6 +577,7 @@ bind /<path> [, ...] [ group <user> | gid <gid> ]
                   can be used as an efficient and reliable alternative to the
                   X-Forwarded-For mechanism which is not always reliable and
                   not even always usable.
+  \end{description}
 
   It is possible to specify a list of address:port combinations delimited by
   commas. The frontend will then listen on all of these addresses. There is no
@@ -566,36 +585,40 @@ bind /<path> [, ...] [ group <user> | gid <gid> ]
   a frontend, as well as there is no limit to the number of "bind" statements
   in a frontend.
 
-  Example :
+  Example:
+  \begin{verbatim}
         listen http_proxy
             bind :80,:443
             bind 10.0.0.1:10080,10.0.0.1:10443
             bind /var/run/ssl-frontend.sock user root mode 600 accept-proxy
+  \end{verbatim}
 
   See also : "source", "option forwardfor", "unix-bind" and the PROXY protocol
              documentation.
 
-
-bind-process [ all | odd | even | <number 1-32> ] ...
+\subsubsection[bind-process]{bind-process [ all | odd | even | <number 1-32> ] ...}
   Limit visibility of an instance to a certain set of processes numbers.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments :
-    all           All process will see this instance. This is the default. It
+  
+  \dflb{yes}{yes}{yes}{yes}
+                                 
+  Arguments:
+  \begin{description}
+  \item[all]   All process will see this instance. This is the default. It
                   may be used to override a default value.
 
-    odd           This instance will be enabled on processes 1,3,5,...31. This
+  \item[odd]   This instance will be enabled on processes 1,3,5,...31. This
                   option may be combined with other numbers.
 
-    even          This instance will be enabled on processes 2,4,6,...32. This
+  \item[even]  This instance will be enabled on processes 2,4,6,...32. This
                   option may be combined with other numbers. Do not use it
                   with less than 2 processes otherwise some instances might be
                   missing from all processes.
 
-    number        The instance will be enabled on this process number, between
+  \item[number] The instance will be enabled on this process number, between
                   1 and 32. You must be careful not to reference a process
                   number greater than the configured global.nbproc, otherwise
                   some instances might be missing from all processes.
+  \end{description}
 
   This keyword limits binding of certain instances to certain processes. This
   is useful in order not to have too many processes listening to the same
@@ -611,7 +634,8 @@ bind-process [ all | odd | even | <number 1-32> ] ...
   If some backends are referenced by frontends bound to other processes, the
   backend automatically inherits the frontend's processes.
 
-  Example :
+  Example:
+  \begin{verbatim}
         listen app_ip1
             bind 10.0.0.1:80
             bind-process odd
@@ -623,14 +647,14 @@ bind-process [ all | odd | even | <number 1-32> ] ...
         listen management
             bind 10.0.0.3:80
             bind-process 1 2 3 4
+  \end{verbatim}
 
   See also : "nbproc" in global section.
 
-
-block { if | unless } <condition>
+\subsubsection[block]{block { if | unless } <condition>}
   Block a layer 7 request if/unless a condition is matched
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
+
+  \dflb{no}{yes}{yes}{yes}
 
   The HTTP request will be blocked very early in the layer 7 processing
   if/unless <condition> is matched. A 403 error will be returned if the request
@@ -640,29 +664,33 @@ block { if | unless } <condition>
   "block" statements per instance.
 
   Example:
+  \begin{verbatim}
         acl invalid_src  src          0.0.0.0/7 224.0.0.0/3
         acl invalid_src  src_port     0:1023
         acl local_dst    hdr(host) -i localhost
         block if invalid_src || local_dst
-
+  \end{verbatim}
+  
   See section 7 about ACL usage.
 
-
-capture cookie <name> len <length>
+\subsubsection[capture cookie]{capture cookie <name> len <length>}
   Capture and log a cookie in the request and in the response.
-  May be used in sections :   defaults | frontend | listen | backend
-                                  no   |    yes   |   yes  |   no
-  Arguments :
-    <name>    is the beginning of the name of the cookie to capture. In order
+
+  \dflb{no}{yes}{yes}{no}
+                                  
+  Arguments:
+  \begin{description} 
+  \item[<name>]    is the beginning of the name of the cookie to capture. In order
               to match the exact name, simply suffix the name with an equal
               sign ('='). The full name will appear in the logs, which is
               useful with application servers which adjust both the cookie name
               and value (eg: ASPSESSIONXXXXX).
 
-    <length>  is the maximum number of characters to report in the logs, which
+  \item[<length>]  is the maximum number of characters to report in the logs, which
               include the cookie name, the equal sign and the value, all in the
               standard "name=value" form. The string will be truncated on the
               right if it exceeds <length>.
+  \end{description}
 
   Only the first cookie is captured. Both the "cookie" request headers and the
   "set-cookie" response headers are monitored. This is particularly useful to
@@ -681,29 +709,31 @@ capture cookie <name> len <length>
   specify a capture in a "defaults" section.
 
   Example:
-        capture cookie ASPSESSION len 32
+        \verb|capture cookie ASPSESSION len 32|
 
   See also : "capture request header", "capture response header" as well as
             section 8 about logging.
 
-
-capture request header <name> len <length>
+\subsubsection[capture request]{capture request header <name> len <length>}
   Capture and log the first occurrence of the specified request header.
-  May be used in sections :   defaults | frontend | listen | backend
-                                  no   |    yes   |   yes  |   no
-  Arguments :
-    <name>    is the name of the header to capture. The header names are not
+
+  \dflb{no}{yes}{yes}{no}
+  
+  Arguments:
+  \begin{description}
+  \item[<name>]    is the name of the header to capture. The header names are not
               case-sensitive, but it is a common practice to write them as they
               appear in the requests, with the first letter of each word in
               upper case. The header name will not appear in the logs, only the
               value is reported, but the position in the logs is respected.
 
-    <length>  is the maximum number of characters to extract from the value and
+  \item[<length>]  is the maximum number of characters to extract from the value and
               report in the logs. The string will be truncated on the right if
               it exceeds <length>.
+  \end{description}
 
   Only the first value of the last occurrence of the header is captured. The
-  value will be added to the logs between braces ('{}'). If multiple headers
+  value will be added to the logs between braces ('\{\}'). If multiple headers
   are captured, they will be delimited by a vertical bar ('|') and will appear
   in the same order they were declared in the configuration. Non-existent
   headers will be logged just as an empty string. Common uses for request
@@ -723,13 +753,15 @@ capture request header <name> len <length>
   possible to specify a capture in a "defaults" section.
 
   Example:
+  \begin{verbatim}
         capture request header Host len 15
         capture request header X-Forwarded-For len 15
         capture request header Referrer len 15
+  \end{verbatim}
 
   See also : "capture cookie", "capture response header" as well as section 8
              about logging.
-
+\endinput
 
 capture response header <name> len <length>
   Capture and log the first occurrence of the specified response header.

@@ -3,9 +3,9 @@
 HAProxy's configuration process involves 3 major sources of parameters:
 
 \begin{enumerate}
-  \item the arguments from the command-line, which always take precedence
-  \item the "global" section, which sets process-wide parameters
-  \item the proxies sections which can take form of "defaults", "listen",
+\item the arguments from the command-line, which always take precedence
+\item the "global" section, which sets process-wide parameters
+\item the proxies sections which can take form of "defaults", "listen",
     "frontend" and "backend".
 \end{enumerate}
 
@@ -23,12 +23,12 @@ numeric value. It is important to consider this because it will not be repeated
 for every keyword. Supported units are:
 
 \begin{description}
-  \item[us:] microseconds. 1 microsecond = 1/1000000 second
-  \item[ms:] milliseconds. 1 millisecond = 1/1000 second. This is the default.
-  \item[s:]  seconds. 1s = 1000ms
-  \item[m:]  minutes. 1m = 60s = 60000ms
-  \item[h:]  hours.   1h = 60m = 3600s = 3600000ms
-  \item[d:]  days.    1d = 24h = 1440m = 86400s = 86400000ms
+\item[us:] microseconds. 1 microsecond = 1/1000000 second
+\item[ms:] milliseconds. 1 millisecond = 1/1000 second. This is the default.
+\item[s:]  seconds. 1s = 1000ms
+\item[m:]  minutes. 1m = 60s = 60000ms
+\item[h:]  hours.   1h = 60m = 3600s = 3600000ms
+\item[d:]  days.    1d = 24h = 1440m = 86400s = 86400000ms
 \end{description}
 
 \section{Examples}

@@ -1,5 +1,4 @@
-8. Logging
-----------
+\chapter{Logging}
 
 One of HAProxy's strong points certainly lies is its precise logs. It probably
 provides the finest level of information available for such a product, which is
@@ -13,11 +12,13 @@ In order to improve administrators reactivity, it offers a great transparency
 about encountered problems, both internal and external, and it is possible to
 send logs to different sources at the same time with different level filters :
 
-  - global process-level logs (system errors, start/stop, etc..)
-  - per-instance system and internal errors (lack of resource, bugs, ...)
-  - per-instance external troubles (servers up/down, max connections)
-  - per-instance activity (client connections), either at the establishment or
+\begin{itemize}
+\item[-] global process-level logs (system errors, start/stop, etc..)
+\item[-] per-instance system and internal errors (lack of resource, bugs, ...)
+\item[-] per-instance external troubles (servers up/down, max connections)
+\item[-] per-instance activity (client connections), either at the establishment or
     at the termination.
+\end{itemize}
 
 The ability to distribute different levels of logs to different log servers
 allow several production teams to interact and to fix their problems as soon
@@ -27,8 +28,7 @@ real time, and the security team might analyze the activity logs with one hour
 delay.
 
 
-8.1. Log levels
----------------
+\section{Log levels}
 
 TCP and HTTP connections can be logged with information such as the date, time,
 source IP address, destination address, connection duration, response times,
@@ -39,38 +39,39 @@ syslog servers. Check the "log" keyword in section 4.2 for more information
 about log facilities.
 
 
-8.2. Log formats
-----------------
+\section{Log formats}
 
 HAProxy supports 5 log formats. Several fields are common between these formats
 and will be detailed in the following sections. A few of them may vary
 slightly with the configuration, due to indicators specific to certain
-options. The supported formats are as follows :
+options. The supported formats are as follows:
 
-  - the default format, which is very basic and very rarely used. It only
+\begin{itemize}
+\item[-] the default format, which is very basic and very rarely used. It only
     provides very basic information about the incoming connection at the moment
     it is accepted : source IP:port, destination IP:port, and frontend-name.
     This mode will eventually disappear so it will not be described to great
     extents.
 
-  - the TCP format, which is more advanced. This format is enabled when "option
+\item[-] the TCP format, which is more advanced. This format is enabled when "option
     tcplog" is set on the frontend. HAProxy will then usually wait for the
     connection to terminate before logging. This format provides much richer
     information, such as timers, connection counts, queue size, etc... This
     format is recommended for pure TCP proxies.
 
-  - the HTTP format, which is the most advanced for HTTP proxying. This format
+\item[-] the HTTP format, which is the most advanced for HTTP proxying. This format
     is enabled when "option httplog" is set on the frontend. It provides the
     same information as the TCP format with some HTTP-specific fields such as
     the request, the status code, and captures of headers and cookies. This
     format is recommended for HTTP proxies.
 
-  - the CLF HTTP format, which is equivalent to the HTTP format, but with the
+\item[-] the CLF HTTP format, which is equivalent to the HTTP format, but with the
     fields arranged in the same order as the CLF format. In this mode, all
     timers, captures, flags, etc... appear one per field after the end of the
     common fields, in the same order they appear in the standard HTTP format.
 
-  - the custom log format, allows you to make your own log line.
+\item[-] the custom log format, allows you to make your own log line.
+\end{itemize}
 
 Next sections will go deeper into details for each of these formats. Format
 specification will be performed on a "field" basis. Unless stated otherwise, a
@@ -79,21 +80,21 @@ servers are susceptible of inserting fields at the beginning of a line, it is
 always assumed that the first field is the one containing the process name and
 identifier.
 
-Note : Since log lines may be quite long, the log examples in sections below
+\emph{Note:} Since log lines may be quite long, the log examples in sections below
        might be broken into multiple lines. The example log lines will be
-       prefixed with 3 closing angle brackets ('>>>') and each time a log is
+       prefixed with 3 closing angle brackets ('\verb|>>>|') and each time a log is
        broken into multiple lines, each non-final line will end with a
-       backslash ('\') and the next line will start indented by two characters.
+       backslash ('\textbackslash') and the next line will start indented by two characters.
 
 
-8.2.1. Default log format
--------------------------
+\subsection{Default log format}
 
 This format is used when no specific option is set. The log is emitted as soon
 as the connection is accepted. One should note that this currently is the only
 format which logs the request's destination IP and ports.
 
-  Example :
+  Example:
+\begin{verbatim}
         listen www
             mode http
             log global
@@ -110,15 +111,19 @@ format which logs the request's destination IP and ports.
       4   'to'                                                              to
       5   destination_ip ':' destination_port                   10.0.3.31:8012
       6   '(' frontend_name '/' mode ')'                            (www/HTTP)
+\end{verbatim}
 
-Detailed fields description :
-  - "source_ip" is the IP address of the client which initiated the connection.
-  - "source_port" is the TCP port of the client which initiated the connection.
-  - "destination_ip" is the IP address the client connected to.
-  - "destination_port" is the TCP port the client connected to.
-  - "frontend_name" is the name of the frontend (or listener) which received
+Detailed fields description:
+
+\begin{itemize}
+\item[-] "source\_ip" is the IP address of the client which initiated the connection.
+\item[-] "source\_port" is the TCP port of the client which initiated the connection.
+\item[-] "destination\_ip" is the IP address the client connected to.
+\item[-] "destination\_port" is the TCP port the client connected to.
+\item[-] "frontend\_name" is the name of the frontend (or listener) which received
     and processed the connection.
-  - "mode is the mode the frontend is operating (TCP or HTTP).
+\item[-] "mode" is the mode the frontend is operating (TCP or HTTP).
+\end{itemize}
 
 In case of a UNIX socket, the source and destination addresses are marked as
 "unix:" and the ports reflect the internal ID of the socket which accepted the
@@ -128,8 +133,9 @@ It is advised not to use this deprecated format for newer installations as it
 will eventually disappear.
 
 
-8.2.2. TCP log format
----------------------
+\subsection{TCP log format}
+
+\endinput
 
 The TCP format is used when "option tcplog" is specified in the frontend, and
 is the recommended format for pure TCP proxies. It provides a lot of precious
@@ -144,7 +150,7 @@ not be logged if "option dontlog-normal" is specified in the frontend. A few
 fields may slightly vary depending on some configuration options, those are
 marked with a star ('*') after the field name below.
 
-  Example :
+  Example:
         frontend fnt
             mode tcp
             option tcplog

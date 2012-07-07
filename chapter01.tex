@@ -1,26 +1,3 @@
-\maketitle
-\tableofcontents
-\listoffigures
-\newpage
-
-This document covers the configuration language as implemented in the version
-specified above. It does not provide any hint, example or advice. For such
-documentation, please refer to the Reference Manual or the Architecture Manual.
-The summary below is meant to help you search sections by name and navigate
-through the document.
-
-\subsubsection*{Note to documentation contributors:}
-This document is formated with 80 columns per line, with even number of
-spaces for indentation and without tabs. Please follow these rules strictly
-so that it remains easily printable everywhere. If a line needs to be
-printed verbatim and does not fit, please end each line with a backslash
-('\') and continue on next line, indented by two characters. It is also
-sometimes useful to prefix all output lines (logs, console outs) with 3
-closing angle brackets ('>>>') in order to help get the difference between
-inputs and outputs when it can become ambiguous. If you add sections,
-please update the summary below for easier searching.
-
-
 \chapter{Quick reminder about HTTP}
 When haproxy is running in HTTP mode, both the request and the response are
 fully analyzed and indexed, thus it becomes possible to build matching criteria
@@ -208,6 +185,7 @@ mode.
 
 \section{HTTP request}
 First, let's consider this HTTP request:
+
 \begin{verbatim}
   Line     Contents
   number
@@ -222,9 +200,9 @@ First, let's consider this HTTP request:
 Line 1 is the "request line". It is always composed of 3 fields:
 
 \begin{enumerate}
-  \item METHOD : GET
-  \item URI : \verb|/serv/login.php?lang=en&profile=2|
-  \item a version tag : HTTP/1.1
+\item METHOD : GET
+\item URI : \verb|/serv/login.php?lang=en&profile=2|
+\item a version tag : HTTP/1.1
 \end{enumerate}
 
 All of them are delimited by what the standard calls LWS (linear white spaces),
@@ -248,7 +226,8 @@ The URI itself can have several forms:
     name or address, optionally a colon (':') followed by a port number, then
     a relative URI beginning at the first slash ('/') after the address part.
     This is generally what proxies receive, but a server supporting HTTP/1.1
-    must accept this form too.\\
+    must accept this form too.
+    
     \verb|http://192.168.0.12:8080/serv/login.php?lang=en&profile=2|
 
 \item[A star "*"]
@@ -259,7 +238,8 @@ The URI itself can have several forms:
 \item[An address:port combination]
     This is used with the CONNECT method, which is used to establish TCP
     tunnels through HTTP proxies, generally for HTTPS, but sometimes for
-    other protocols too.\\
+    other protocols too.
+    
     \verb|192.168.0.12:80|
 \end{description}
 
@@ -292,7 +272,7 @@ headers, checking values and counting them, so there is no reason to worry
 about the way they could be written, but it is important not to accuse an
 application of being buggy if it does unusual, valid things.
 
-\subsubsection*{Important note:}
+\emph{Important note:}
    As suggested by RFC2616, HAProxy normalizes headers by replacing line breaks
    in the middle of headers by LWS in order to join multi-line headers. This
    is necessary for proper analysis and helps less capable HTTP parsers to work
@@ -304,9 +284,9 @@ An HTTP response looks very much like an HTTP request. Both are called HTTP
 messages. Let's consider this HTTP response:
 
 \begin{enumerate}
-   \item HTTP/1.1 200 OK
-   \item Content-length: 350
-   \item Content-Type: text/html
+\item HTTP/1.1 200 OK
+\item Content-length: 350
+\item Content-Type: text/html
 \end{enumerate}
 
 As a special case, HTTP supports so called "Informational responses" as status
@@ -328,19 +308,19 @@ information about the type of protocol the connection is switching to.
 Line 1 is the "response line". It is always composed of 3 fields:
 
 \begin{enumerate}
-  \item a version tag : HTTP/1.1
-  \item a status code : 200
-  \item a reason      : OK
+\item a version tag : HTTP/1.1
+\item a status code : 200
+\item a reason      : OK
 \end{enumerate}
 
 The status code is always 3-digit. The first digit indicates a general status:
 
 \begin{description}
-  \item[1xx] informational message to be skipped (eg: 100, 101)
-  \item[2xx] OK, content is following   (eg: 200, 206)
-  \item[3xx] OK, no content following   (eg: 302, 304)
-  \item[4xx] error caused by the client (eg: 401, 403, 404)
-  \item[5xx] error caused by the server (eg: 500, 502, 503)
+\item[1xx] informational message to be skipped (eg: 100, 101)
+\item[2xx] OK, content is following   (eg: 200, 206)
+\item[3xx] OK, no content following   (eg: 302, 304)
+\item[4xx] error caused by the client (eg: 401, 403, 404)
+\item[5xx] error caused by the server (eg: 500, 502, 503)
 \end{description}
 
 Please refer to RFC2616 for the detailed meaning of all such codes. The
@@ -352,22 +332,22 @@ or "Authentication Required".
 Haproxy may emit the following status codes by itself:
 
 \begin{description}
-  \item[200] access to stats page, and when replying to monitoring requests
-  \item[301] when performing a redirection, depending on the configured code
-  \item[302] when performing a redirection, depending on the configured code
-  \item[303] when performing a redirection, depending on the configured code
-  \item[400] for an invalid or too large request
-  \item[401] when an authentication is required to perform the action (when
+\item[200] access to stats page, and when replying to monitoring requests
+\item[301] when performing a redirection, depending on the configured code
+\item[302] when performing a redirection, depending on the configured code
+\item[303] when performing a redirection, depending on the configured code
+\item[400] for an invalid or too large request
+\item[401] when an authentication is required to perform the action (when
         accessing the stats page)
-  \item[403] when a request is forbidden by a "block" ACL or "reqdeny" filter
-  \item[408] when the request timeout strikes before the request is complete
-  \item[500] when haproxy encounters an unrecoverable internal error, such as a
+\item[403] when a request is forbidden by a "block" ACL or "reqdeny" filter
+\item[408] when the request timeout strikes before the request is complete
+\item[500] when haproxy encounters an unrecoverable internal error, such as a
         memory allocation failure, which should never happen
-  \item[502] when the server returns an empty, invalid or incomplete response, or
+\item[502] when the server returns an empty, invalid or incomplete response, or
         when an "rspdeny" filter blocks the response.
-  \item[503] when no server was available to handle the request, or in response to
+\item[503] when no server was available to handle the request, or in response to
         monitoring requests which match the "monitor fail" condition
-  \item[504] when the response timeout strikes before the server responds
+\item[504] when the response timeout strikes before the server responds
 \end{description}
 
 The error 4xx and 5xx codes above may be customized (see "errorloc" in section
