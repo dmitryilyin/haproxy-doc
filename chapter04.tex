@@ -716,7 +716,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also : "capture request header", "capture response header" as well as
             section 8 about logging.
 
-\subsubsection[capture request]{capture request header <name> len <length>}
+\subsubsection[capture request header]{capture request header <name> len <length>}
   Capture and log the first occurrence of the specified request header.
 
   \dflb{no}{yes}{yes}{no}
@@ -763,25 +763,27 @@ balance url\_param <param> [check\_post [<max\_wait>]]
 
   See also : "capture cookie", "capture response header" as well as section 8
              about logging.
-\endinput
 
-capture response header <name> len <length>
+\subsubsection[capture response header]{capture response header <name> len <length>}
   Capture and log the first occurrence of the specified response header.
-  May be used in sections :   defaults | frontend | listen | backend
-                                  no   |    yes   |   yes  |   no
-  Arguments :
-    <name>    is the name of the header to capture. The header names are not
+  
+  \dflb{no}{yes}{yes}{no}
+
+  Arguments:
+  \begin{description}
+  \item[<name>]    is the name of the header to capture. The header names are not
               case-sensitive, but it is a common practice to write them as they
               appear in the response, with the first letter of each word in
               upper case. The header name will not appear in the logs, only the
               value is reported, but the position in the logs is respected.
 
-    <length>  is the maximum number of characters to extract from the value and
+  \item[<length>]  is the maximum number of characters to extract from the value and
               report in the logs. The string will be truncated on the right if
               it exceeds <length>.
+  \end{description}
 
   Only the first value of the last occurrence of the header is captured. The
-  result will be added to the logs between braces ('{}') after the captured
+  result will be added to the logs between braces ('\{\}') after the captured
   request headers. If multiple headers are captured, they will be delimited by
   a vertical bar ('|') and will appear in the same order they were declared in
   the configuration. Non-existent headers will be logged just as an empty
@@ -795,21 +797,25 @@ capture response header <name> len <length>
   is not possible to specify a capture in a "defaults" section.
 
   Example:
+  \begin{verbatim}
         capture response header Content-length len 9
         capture response header Location len 15
+  \end{verbatim}
 
-  See also : "capture cookie", "capture request header" as well as section 8
+  See also: "capture cookie", "capture request header" as well as section 8
              about logging.
 
-
-clitimeout <timeout> (deprecated)
+\subsubsection[clitimeout]{clitimeout <timeout> (deprecated)}
   Set the maximum inactivity time on the client side.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments :
-    <timeout> is the timeout value is specified in milliseconds by default, but
+  
+  \dflb{yes}{yes}{yes}{no}
+  
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value is specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
-              as explained at the top of this document.
+              as explained at the top of this document.  
+  \end{description}
 
   The inactivity timeout applies when the client is expected to acknowledge or
   send data. In HTTP mode, this timeout is particularly important to consider
@@ -833,18 +839,19 @@ clitimeout <timeout> (deprecated)
   This parameter is provided for compatibility but is currently deprecated.
   Please use "timeout client" instead.
 
-  See also : "timeout client", "timeout http-request", "timeout server", and
+  See also: "timeout client", "timeout http-request", "timeout server", and
              "srvtimeout".
 
-
-contimeout <timeout> (deprecated)
+\subsubsection[contimeout]{contimeout <timeout> (deprecated)}
   Set the maximum time to wait for a connection attempt to a server to succeed.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <timeout> is the timeout value is specified in milliseconds by default, but
+  \dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value is specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
-              as explained at the top of this document.
+              as explained at the top of this document.  
+  \end{description}
 
   If the server is located on the same LAN as haproxy, the connection should be
   immediate (less than a few milliseconds). Anyway, it is a good practice to
@@ -865,18 +872,18 @@ contimeout <timeout> (deprecated)
   deprecated. Please use "timeout connect", "timeout queue" or "timeout tarpit"
   instead.
 
-  See also : "timeout connect", "timeout queue", "timeout tarpit",
+  See also: "timeout connect", "timeout queue", "timeout tarpit",
              "timeout server", "contimeout".
 
 
-cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
-              [ postonly ] [ preserve ] [ httponly ] [ secure ]
-              [ domain <domain> ]* [ maxidle <idle> ] [ maxlife <life> ]
+\subsubsection[cookie]{cookie <name> [ rewrite | insert | prefix ] [ indirect ]  [ nocache ] [ postonly ] [ preserve ] [ httponly ] [ secure ] [ domain <domain> ]* [ maxidle <idle> ] [ maxlife <life> ]}
   Enable cookie-based persistence in a backend.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <name>    is the name of the cookie which will be monitored, modified or
+  
+  \dflb{yes}{no}{yes}{yes}
+  
+  Arguments:
+  \begin{description}
+  \item[<name>]    is the name of the cookie which will be monitored, modified or
               inserted in order to bring persistence. This cookie is sent to
               the client via a "Set-Cookie" header in the response, and is
               brought back by the client in a "Cookie" header in all requests.
@@ -886,7 +893,7 @@ cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
               HTTP/HTTPS), care should be taken to use different cookie names
               between all backends if persistence between them is not desired.
 
-    rewrite   This keyword indicates that the cookie will be provided by the
+  \item[rewrite]   This keyword indicates that the cookie will be provided by the
               server and that haproxy will have to modify its value to set the
               server's identifier in it. This mode is handy when the management
               of complex combinations of "Set-cookie" and "Cache-control"
@@ -898,7 +905,7 @@ cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
               mode for new deployments. This keyword is incompatible with
               "insert" and "prefix".
 
-    insert    This keyword indicates that the persistence cookie will have to
+  \item[insert]    This keyword indicates that the persistence cookie will have to
               be inserted by haproxy in server responses if the client did not
 
               already have a cookie that would have permitted it to access this
@@ -913,7 +920,7 @@ cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
               "postonly" keywords (see below). The "insert" keyword is not
               compatible with "rewrite" and "prefix".
 
-    prefix    This keyword indicates that instead of relying on a dedicated
+  \item[prefix]    This keyword indicates that instead of relying on a dedicated
               cookie for the persistence, an existing one will be completed.
               This may be needed in some specific environments where the client
               does not support more than one single cookie and the application
@@ -927,7 +934,7 @@ cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
               recommended not to use "indirect" with "prefix", otherwise server
               cookie updates would not be sent to clients.
 
-    indirect  When this option is specified, no cookie will be emitted to a
+  \item[indirect]  When this option is specified, no cookie will be emitted to a
               client which already has a valid one for the server which has
               processed the request. If the server sets such a cookie itself,
               it will be removed, unless the "preserve" option is also set. In
@@ -938,7 +945,7 @@ cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
               "prefix", otherwise server cookie updates would not be sent to
               clients.
 
-    nocache   This option is recommended in conjunction with the insert mode
+  \item[nocache]   This option is recommended in conjunction with the insert mode
               when there is a cache between the client and HAProxy, as it
               ensures that a cacheable response will be tagged non-cacheable if
               a cookie needs to be inserted. This is important because if all
@@ -948,7 +955,7 @@ cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
               leading to one server receiving much more traffic than others.
               See also the "insert" and "postonly" options.
 
-    postonly  This option ensures that cookie insertion will only be performed
+  \item[postonly]  This option ensures that cookie insertion will only be performed
               on responses to POST requests. It is an alternative to the
               "nocache" option, because POST responses are not cacheable, so
               this ensures that the persistence cookie will never get cached.
@@ -958,7 +965,7 @@ cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
               persistence cookie in the cache.
               See also the "insert" and "nocache" options.
 
-    preserve  This option may only be used with "insert" and/or "indirect". It
+  \item[preserve]  This option may only be used with "insert" and/or "indirect". It
               allows the server to emit the persistence cookie itself. In this
               case, if a cookie is found in the response, haproxy will leave it
               untouched. This is useful in order to end persistence after a
@@ -969,19 +976,19 @@ cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
               shutdown because users will definitely leave the server after
               they logout.
 
-    httponly  This option tells haproxy to add an "HttpOnly" cookie attribute
+  \item[httponly]  This option tells haproxy to add an "HttpOnly" cookie attribute
               when a cookie is inserted. This attribute is used so that a
               user agent doesn't share the cookie with non-HTTP components.
               Please check RFC6265 for more information on this attribute.
 
-    secure    This option tells haproxy to add a "Secure" cookie attribute when
+  \item[secure]    This option tells haproxy to add a "Secure" cookie attribute when
               a cookie is inserted. This attribute is used so that a user agent
               never emits this cookie over non-secure channels, which means
               that a cookie learned with this flag will be presented only over
               SSL/TLS connections. Please check RFC6265 for more information on
               this attribute.
 
-    domain    This option allows to specify the domain at which a cookie is
+  \item[domain]    This option allows to specify the domain at which a cookie is
               inserted. It requires exactly one parameter: a valid domain
               name. If the domain begins with a dot, the browser is allowed to
               use it for any host ending with that name. It is also possible to
@@ -990,7 +997,7 @@ cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
               domains, so be careful when doing that. For the record, sending
               10 domains to MSIE 6 or Firefox 2 works as expected.
 
-    maxidle   This option allows inserted cookies to be ignored after some idle
+  \item[maxidle]   This option allows inserted cookies to be ignored after some idle
               time. It only works with insert-mode cookies. When a cookie is
               sent to the client, the date this cookie was emitted is sent too.
               Upon further presentations of this cookie, if the date is older
@@ -1006,7 +1013,7 @@ cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
               lets admins fix timezone issues without risking kicking users off
               the site.
 
-    maxlife   This option allows inserted cookies to be ignored after some life
+  \item[maxlife]   This option allows inserted cookies to be ignored after some life
               time, whether they're in use or not. It only works with insert
               mode cookies. When a cookie is first sent to the client, the date
               this cookie was emitted is sent too. Upon further presentations
@@ -1022,64 +1029,74 @@ cookie <name> [ rewrite | insert | prefix ] [ indirect ] [ nocache ]
               too long on the same server (eg: after a farm size change). This
               is stronger than the maxidle method in that it forces a
               redispatch after some absolute delay.
+  \end{description}
 
   There can be only one persistence cookie per HTTP backend, and it can be
   declared in a defaults section. The value of the cookie will be the value
   indicated after the "cookie" keyword in a "server" statement. If no cookie
   is declared for a given server, the cookie is not set.
 
-  Examples :
+  Examples:
+  \begin{verbatim}
         cookie JSESSIONID prefix
         cookie SRV insert indirect nocache
         cookie SRV insert postonly indirect
         cookie SRV insert indirect nocache maxidle 30m maxlife 8h
+  \end{verbatim}
 
-  See also : "appsession", "balance source", "capture cookie", "server"
+  See also: "appsession", "balance source", "capture cookie", "server"
              and "ignore-persist".
 
-
-default-server [param*]
+\subsubsection[default-server]{default-server [param*]}
   Change default options for a server in a backend
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
+  
+  \dflb{yes}{no}{yes}{yes}
+  
   Arguments:
-    <param*>  is a list of parameters for this server. The "default-server"
+  \begin{description}
+  \item[<param*>]  is a list of parameters for this server. The "default-server"
               keyword accepts an important number of options and has a complete
               section dedicated to it. Please refer to section 5 for more
               details.
+  \end{description}
 
-  Example :
+  Example:
+  \begin{verbatim}
         default-server inter 1000 weight 13
+  \end{verbatim}
 
   See also: "server" and section 5 about server options
 
-
-default_backend <backend>
-  Specify the backend to use when no "use_backend" rule has been matched.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments :
-    <backend> is the name of the backend to use.
+\subsubsection[default\_backend]{default\_backend <backend>}
+  Specify the backend to use when no "use\_backend" rule has been matched.
+  
+  \dflb{yes}{yes}{yes}{no}
+  
+  Arguments:
+  \begin{description}
+  \item[<backend>] is the name of the backend to use.
+  \end{description}
 
   When doing content-switching between frontend and backends using the
-  "use_backend" keyword, it is often useful to indicate which backend will be
+  "use\_backend" keyword, it is often useful to indicate which backend will be
   used when no rule has matched. It generally is the dynamic backend which
   will catch all undetermined requests.
 
-  Example :
-
+  Example:
+  \begin{verbatim}
         use_backend     dynamic  if  url_dyn
         use_backend     static   if  url_css url_img extension_img
         default_backend dynamic
+  \end{verbatim}
 
-  See also : "use_backend", "reqsetbe", "reqisetbe"
+  See also: "use\_backend", "reqsetbe", "reqisetbe"
 
-
-disabled
+\subsubsection[disabled]{disabled}
   Disable a proxy, frontend or backend.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments : none
+  
+  \dflb{yes}{yes}{yes}{yes}
+
+  Arguments: none
 
   The "disabled" keyword is used to disable an instance, mainly in order to
   liberate a listening port or to temporarily disable a service. The instance
@@ -1089,22 +1106,23 @@ disabled
   is possible to disable many instances at once by adding the "disabled"
   keyword in a "defaults" section.
 
-  See also : "enabled"
+  See also: "enabled"
 
-
-dispatch <address>:<port>
+\subsubsection[dispatch]{dispatch <address>:<port>}
   Set a default server address
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    no    |   yes  |   yes
-  Arguments :
-
-    <address> is the IPv4 address of the default server. Alternatively, a
+  
+  \dflb{no}{no}{yes}{yes}
+  
+  Arguments:
+  \begin{description}
+  \item[<address>] is the IPv4 address of the default server. Alternatively, a
               resolvable hostname is supported, but this name will be resolved
               during start-up.
 
-    <ports>   is a mandatory port specification. All connections will be sent
+  \item[<ports>]   is a mandatory port specification. All connections will be sent
               to this port, and it is not permitted to use port offsets as is
               possible with normal servers.
+  \end{description}
 
   The "dispatch" keyword designates a default server for use when no other
   server can take the connection. In the past it was used to forward non
@@ -1112,34 +1130,36 @@ dispatch <address>:<port>
   syntax, it has also been used for simple TCP relays. It is recommended not to
   use it for more clarity, and to use the "server" directive instead.
 
-  See also : "server"
+  See also: "server"
 
-
-enabled
+\subsubsection[enabled]{enabled}
   Enable a proxy, frontend or backend.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments : none
+  
+  \dflb{yes}{yes}{yes}{yes}
+  
+  Arguments: none
 
   The "enabled" keyword is used to explicitly enable an instance, when the
   defaults has been set to "disabled". This is very rarely used.
 
-  See also : "disabled"
+  See also: "disabled"
 
-
-errorfile <code> <file>
+\subsubsection[errorfile]{errorfile <code> <file>}
   Return a file contents instead of errors generated by HAProxy
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments :
-    <code>    is the HTTP status code. Currently, HAProxy is capable of
+  
+  \dflb{yes}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<code>]    is the HTTP status code. Currently, HAProxy is capable of
               generating codes 200, 400, 403, 408, 500, 502, 503, and 504.
 
-    <file>    designates a file containing the full HTTP response. It is
+   \item[<file>]    designates a file containing the full HTTP response. It is
               recommended to follow the common practice of appending ".http" to
               the filename so that people do not confuse the response with HTML
               error pages, and to use absolute paths, since files are read
               before any chroot is performed.
+  \end{description}
 
   It is important to understand that this keyword is not meant to rewrite
   errors returned by the server, but errors detected and returned by HAProxy.
@@ -1165,28 +1185,32 @@ errorfile <code> <file>
   simple method for developing those files consists in associating them to the
   403 status code and interrogating a blocked URL.
 
-  See also : "errorloc", "errorloc302", "errorloc303"
+  See also: "errorloc", "errorloc302", "errorloc303"
 
-  Example :
+  Example:
+  \begin{verbatim}
         errorfile 400 /etc/haproxy/errorfiles/400badreq.http
         errorfile 403 /etc/haproxy/errorfiles/403forbid.http
         errorfile 503 /etc/haproxy/errorfiles/503sorry.http
+  \end{verbatim}
 
-
-errorloc <code> <url>
-errorloc302 <code> <url>
+\subsubsection[errorloc]{errorloc <code> <url>}
+\subsubsection[errorloc302]{errorloc302 <code> <url>}
   Return an HTTP redirection to a URL instead of errors generated by HAProxy
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments :
-    <code>    is the HTTP status code. Currently, HAProxy is capable of
+  
+  \dflb{yes}{yes}{yes}{yes}
+  
+  Arguments:
+  \begin{description}
+  \item[<code>]    is the HTTP status code. Currently, HAProxy is capable of
               generating codes 200, 400, 403, 408, 500, 502, 503, and 504.
 
-    <url>     it is the exact contents of the "Location" header. It may contain
+  \item[<url>]     it is the exact contents of the "Location" header. It may contain
               either a relative URI to an error page hosted on the same site,
               or an absolute URI designating an error page on another site.
               Special care should be given to relative URIs to avoid redirect
               loops if the URI itself may generate the same error (eg: 500).
+  \end{description}
 
   It is important to understand that this keyword is not meant to rewrite
   errors returned by the server, but errors detected and returned by HAProxy.
@@ -1202,22 +1226,24 @@ errorloc302 <code> <url>
   status code, indicating to the client that the URL must be fetched with a GET
   request.
 
-  See also : "errorfile", "errorloc303"
+  See also: "errorfile", "errorloc303"
 
-
-errorloc303 <code> <url>
+\subsubsection[errorloc303]{errorloc303 <code> <url>}
   Return an HTTP redirection to a URL instead of errors generated by HAProxy
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments :
-    <code>    is the HTTP status code. Currently, HAProxy is capable of
+  
+  \dflb{yes}{yes}{yes}{yes}
+  
+  Arguments:
+  \begin{description}
+  \item[<code>]    is the HTTP status code. Currently, HAProxy is capable of
               generating codes 400, 403, 408, 500, 502, 503, and 504.
 
-    <url>     it is the exact contents of the "Location" header. It may contain
+  \item[<url>]     it is the exact contents of the "Location" header. It may contain
               either a relative URI to an error page hosted on the same site,
               or an absolute URI designating an error page on another site.
               Special care should be given to relative URIs to avoid redirect
               loops if the URI itself may generate the same error (eg: 500).
+  \end{description}
 
   It is important to understand that this keyword is not meant to rewrite
   errors returned by the server, but errors detected and returned by HAProxy.
@@ -1231,13 +1257,12 @@ errorloc303 <code> <url>
   possible that some very old browsers designed before HTTP/1.1 do not support
   it, but no such problem has been reported till now.
 
-  See also : "errorfile", "errorloc", "errorloc302"
+  See also: "errorfile", "errorloc", "errorloc302"
 
-
-force-persist { if | unless } <condition>
+\subsubsection[force-persist]{force-persist { if | unless } <condition>}
   Declare a condition to force persistence on down servers
-  May be used in sections:    defaults | frontend | listen | backend
-                                  no   |    yes   |   yes  |   yes
+  
+  \dflb{no}{yes}{yes}{yes}
 
   By default, requests are not dispatched to down servers. It is possible to
   force this using "option persist", but it is unconditional and redispatches
@@ -1259,17 +1284,19 @@ force-persist { if | unless } <condition>
   "unless" condition is met. The final redispatch is always disabled when this
   is used.
 
-  See also : "option redispatch", "ignore-persist", "persist",
+  See also: "option redispatch", "ignore-persist", "persist",
              and section 7 about ACL usage.
 
-
-fullconn <conns>
+\subsubsection[fullconn]{fullconn <conns>}
   Specify at what backend load the servers will reach their maxconn
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <conns>   is the number of connections on the backend which will make the
+  
+  \dflb{yes}{no}{yes}{yes}
+  
+  Arguments:
+  \begin{description}
+  \item[<conns>]   is the number of connections on the backend which will make the
               servers use the maximal number of connections.
+  \end{description}
 
   When a server has a "maxconn" parameter specified, it means that its number
   of concurrent connections will never go higher. Additionally, if it has a
@@ -1282,10 +1309,11 @@ fullconn <conns>
   exceptional loads.
 
   Since it's hard to get this value right, haproxy automatically sets it to
-  10% of the sum of the maxconns of all frontends that may branch to this
+  10\% of the sum of the maxconns of all frontends that may branch to this
   backend. That way it's safe to leave it unset.
 
-  Example :
+  Example:
+  \begin{verbatim}
      # The servers will accept between 100 and 1000 concurrent connections each
      # and the maximum of 1000 will be reached when the backend reaches 10000
      # connections.
@@ -1293,18 +1321,21 @@ fullconn <conns>
         fullconn   10000
         server     srv1   dyn1:80 minconn 100 maxconn 1000
         server     srv2   dyn2:80 minconn 100 maxconn 1000
+  \end{verbatim}
 
-  See also : "maxconn", "server"
+  See also: "maxconn", "server"
 
-
-grace <time>
+\subsubsection[grace]{grace <time>}
   Maintain a proxy operational for some time after a soft stop
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments :
-    <time>    is the time (by default in milliseconds) for which the instance
+  
+  \dflb{yes}{yes}{yes}{yes}
+  
+  Arguments:
+  \begin{description}
+  \item[<time>]    is the time (by default in milliseconds) for which the instance
               will remain operational with the frontend sockets still listening
               when a soft-stop is received via the SIGUSR1 signal.
+  \end{description}
 
   This may be used to ensure that the services disappear in a certain order.
   This was designed so that frontends which are dedicated to monitoring by an
@@ -1315,13 +1346,14 @@ grace <time>
   and it may in fact complicate the soft-reconfiguration process more than
   simplify it.
 
-
-hash-type <method>
+\subsubsection[hash-type]{hash-type <method>}
   Specify a method to use for mapping hashes to servers
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    map-based   the hash table is a static array containing all alive servers.
+  
+  \dflb{yes}{no}{yes}{yes}
+  
+  Arguments:
+  \begin{description}
+  \item[map-based]   the hash table is a static array containing all alive servers.
                 The hashes will be very smooth, will consider weights, but will
                 be static in that weight changes while a server is up will be
                 ignored. This means that there will be no slow start. Also,
@@ -1331,7 +1363,7 @@ hash-type <method>
                 to a farm, most connections will be redistributed to different
                 servers. This can be inconvenient with caches for instance.
 
-    avalanche   this mechanism uses the default map-based hashing described
+  \item[avalanche]   this mechanism uses the default map-based hashing described
                 above but applies a full avalanche hash before performing the
                 mapping. The result is a slightly less smooth hash for most
                 situations, but the hash becomes better than pure map-based
@@ -1340,7 +1372,7 @@ hash-type <method>
                 multiple of 64, it's desirable to change the hash type to
                 this value.
 
-    consistent  the hash table is a tree filled with many occurrences of each
+  \item[consistent]  the hash table is a tree filled with many occurrences of each
                 server. The hash key is looked up in the tree and the closest
                 server is chosen. This hash is dynamic, it supports changing
                 weights while the servers are up, so it is compatible with the
@@ -1353,17 +1385,18 @@ hash-type <method>
                 weight or its ID to get a more balanced distribution. In order
                 to get the same distribution on multiple load balancers, it is
                 important that all servers have the same IDs.
+  \end{description}
 
   The default hash type is "map-based" and is recommended for most usages.
 
-  See also : "balance", "server"
+  See also: "balance", "server"
 
-
-http-check disable-on-404
+\subsubsection[http-check disable-on-404]{http-check disable-on-404}
   Enable a maintenance mode upon HTTP/404 response to health-checks
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments : none
+  
+  \dflb{yes}{no}{yes}{yes}
+  
+  Arguments: none
 
   When this option is set, a server which returns an HTTP code 404 will be
   excluded from further load-balancing, but will still receive persistent
@@ -1379,43 +1412,47 @@ http-check disable-on-404
 
   See also : "option httpchk", "http-check expect"
 
-
-http-check expect [!] <match> <pattern>
-  Make HTTP health checks consider reponse contents or specific status codes
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <match>   is a keyword indicating how to look for a specific pattern in the
+\subsubsection[http-check expect]{http-check expect [!] <match> <pattern>}
+  Make HTTP health checks consider response contents or specific status codes
+  
+  \dflb{yes}{no}{yes}{yes}
+  
+  Arguments:
+  \begin{description}
+  \item[<match>]   is a keyword indicating how to look for a specific pattern in the
               response. The keyword may be one of "status", "rstatus",
-              "string", or "rstring". The keyword may be preceeded by an
+              "string", or "rstring". The keyword may be preceded by an
               exclamation mark ("!") to negate the match. Spaces are allowed
               between the exclamation mark and the keyword. See below for more
               details on the supported keywords.
 
-    <pattern> is the pattern to look for. It may be a string or a regular
+  \item[<pattern>] is the pattern to look for. It may be a string or a regular
               expression. If the pattern contains spaces, they must be escaped
-              with the usual backslash ('\').
+              with the usual backslash ('\textbackslash').
+  \end{description}
 
   By default, "option httpchk" considers that response statuses 2xx and 3xx
   are valid, and that others are invalid. When "http-check expect" is used,
   it defines what is considered valid or invalid. Only one "http-check"
   statement is supported in a backend. If a server fails to respond or times
-  out, the check obviously fails. The available matches are :
-
-    status <string> : test the exact string match for the HTTP status code.
+  out, the check obviously fails.
+  
+  The available matches are:
+  \begin{description}
+  \item[status <string>] test the exact string match for the HTTP status code.
                       A health check respose will be considered valid if the
                       response's status code is exactly this string. If the
                       "status" keyword is prefixed with "!", then the response
                       will be considered invalid if the status code matches.
 
-    rstatus <regex> : test a regular expression for the HTTP status code.
+    \item[rstatus <regex>] test a regular expression for the HTTP status code.
                       A health check respose will be considered valid if the
                       response's status code matches the expression. If the
                       "rstatus" keyword is prefixed with "!", then the response
                       will be considered invalid if the status code matches.
                       This is mostly used to check for multiple codes.
 
-    string <string> : test the exact string match in the HTTP response body.
+    \item[string <string>] test the exact string match in the HTTP response body.
                       A health check respose will be considered valid if the
                       response's body contains this exact string. If the
                       "string" keyword is prefixed with "!", then the response
@@ -1425,7 +1462,7 @@ http-check expect [!] <match> <pattern>
                       specific error appears on the check page (eg: a stack
                       trace).
 
-    rstring <regex> : test a regular expression on the HTTP response body.
+    \item[rstring <regex>] test a regular expression on the HTTP response body.
                       A health check respose will be considered valid if the
                       response's body matches this expression. If the "rstring"
                       keyword is prefixed with "!", then the response will be
@@ -1433,6 +1470,7 @@ http-check expect [!] <match> <pattern>
                       This can be used to look for a mandatory word at the end
                       of a dynamic page, or to detect a failure when a specific
                       error appears on the check page (eg: a stack trace).
+  \end{description}
 
   It is important to note that the responses will be limited to a certain size
   defined by the global "tune.chksize" option, which defaults to 16384 bytes.
@@ -1446,7 +1484,8 @@ http-check expect [!] <match> <pattern>
   Last, if "http-check expect" is combined with "http-check disable-on-404",
   then this last one has precedence when the server responds with 404.
 
-  Examples :
+  Examples:
+  \begin{verbatim}
          # only accept status 200 as valid
          http-check expect status 200
 
@@ -1458,15 +1497,16 @@ http-check expect [!] <match> <pattern>
 
          # check that we have a correct hexadecimal tag before /html
          http-check expect rstring <!--tag:[0-9a-f]*</html>
+  \end{verbatim}
 
-  See also : "option httpchk", "http-check disable-on-404"
+  See also: "option httpchk", "http-check disable-on-404"
 
-
-http-check send-state
+\subsubsection[http-check send-state]{http-check send-state}
   Enable emission of a state header with HTTP health checks
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments : none
+  
+  \dflb{yes}{no}{yes}{yes}
+  
+  Arguments: none
 
   When this option is set, haproxy will systematically send a special header
   "X-Haproxy-Server-State" with a list of parameters indicating to each server
@@ -1478,31 +1518,38 @@ http-check send-state
   is a word ("UP", "DOWN", "NOLB"), possibly followed by a number of valid
   checks on the total number before transition, just as appears in the stats
   interface. Next headers are in the form "<variable>=<value>", indicating in
-  no specific order some values available in the stats interface :
-    - a variable "name", containing the name of the backend followed by a slash
+  no specific order some values available in the stats interface:
+  
+  \begin{itemize}
+  \item[-] a variable "name", containing the name of the backend followed by a slash
       ("/") then the name of the server. This can be used when a server is
       checked in multiple backends.
 
-    - a variable "node" containing the name of the haproxy node, as set in the
+  \item[-] a variable "node" containing the name of the haproxy node, as set in the
       global "node" variable, otherwise the system's hostname if unspecified.
 
-    - a variable "weight" indicating the weight of the server, a slash ("/")
+  \item[-] a variable "weight" indicating the weight of the server, a slash ("/")
       and the total weight of the farm (just counting usable servers). This
       helps to know if other servers are available to handle the load when this
       one fails.
 
-    - a variable "scur" indicating the current number of concurrent connections
+  \item[-] a variable "scur" indicating the current number of concurrent connections
       on the server, followed by a slash ("/") then the total number of
       connections on all servers of the same backend.
 
-    - a variable "qcur" indicating the current number of requests in the
+  \item[-] a variable "qcur" indicating the current number of requests in the
       server's queue.
+  \end{itemize}
 
-  Example of a header received by the application server :
+  Example of a header received by the application server:
+  \begin{verbatim}
     >>>  X-Haproxy-Server-State: UP 2/3; name=bck/srv2; node=lb1; weight=1/2; \
            scur=13/22; qcur=0
+  \end{verbatim}
 
-  See also : "option httpchk", "http-check disable-on-404"
+  See also: "option httpchk", "http-check disable-on-404"
+
+\endinput
 
 http-request { allow | deny | auth [realm <realm>] }
              [ { if | unless } <condition> ]
