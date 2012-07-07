@@ -14,21 +14,6 @@ from the client to the server, a request is sent by the client on the
 connection, the server responds and the connection is closed. A new request
 will involve a new connection as shown on Figure ~\ref{fig:http_close}.
 
-\tikzstyle{reqresp} = [
-rounded rectangle,
-thick,
-minimum size=1cm,
-draw=red!50!black!50,
-top color=white,
-bottom color=blue!50!black!20,
-drop shadow,
-]
-
-\tikzstyle{conclo} = [
-reqresp,
-diamond,
-]
-
 \begin{figure}[!h]
 \centering
 \begin{tikzpicture} [
@@ -49,7 +34,7 @@ node distance=3cm,
 \path[->] (req1)  edge node[above] {\ldots} (resp1);
 \path[->] (resp1) edge (clo1);
   
-\path[line,dashed,->] (clo1)  edge node[midway,sloped,above] {Next connection} (con2);
+\path[dashed,->] (clo1)  edge node[midway,sloped,above] {Next connection} (con2);
   
 \path[->] (con2)  edge (req2);
 \path[->] (req2)  edge node[above] {\ldots} (resp2);
