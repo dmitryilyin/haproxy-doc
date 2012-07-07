@@ -11,36 +11,131 @@ which is not much loaded. User contexts are stored on the server itself, and
 not in the database, so that simply adding another server with simple IP/TCP
 load-balancing would not work.
 
-\begin{verbatim}
-                +-------+
-                |clients|  clients and/or reverse-proxy
-                +---+---+
-                    |
-                   -+-----+--------+----
-                          |       _|_db
-                       +--+--+   (___)
-                       | web |   (___)
-                       +-----+   (___)
-                   192.168.1.1   192.168.1.2
-\end{verbatim}
+  \tikzstyle{point} = [
+    inner sep=0pt,
+    minimum size=1mm,
+    circle,
+    fill=blue!20,
+    draw,
+  ]
+  
+  \tikzstyle{block} = [
+    rectangle,
+    thick,
+ 	 minimum size=1cm,
+ 	 draw=red!50!black!50,
+ 	 top color=white,
+ 	 bottom color=blue!50!black!20,
+ 	 drop shadow,
+  ]
+
+  \tikzstyle{round} = [
+  block,
+  rounded rectangle,
+  ]
+  
+  \tikzstyle{cld} = [
+  block,
+  cloud,
+  cloud ignores aspect,
+  ]
+  
+  \tikzstyle{db} = [
+  block,
+  cylinder,
+  shape border rotate=90,
+  aspect=0.5,
+  yshift=-2mm,
+  ]
+
+\begin{figure}[!h]
+  \centering
+
+  \begin{tikzpicture} [
+    thick,
+    node distance=1.5cm,
+  ]
+	                   
+  \node[point](a);
+  \node[point,right of=a](b);
+  \node[point,right of=b,xshift=1cm](c);
+  
+  \draw (a) -- (b);
+  \draw (b) -- (c);
+  \draw (c) -- ++(1,0);
+  \draw (a) -- ++(-1,0);
+  
+  \node[block,below of=b] (web)  {Web};
+  \node[db,below of=c] (db) {DB};
+  \node[cld,above of=a] (clients) {Clients};
+
+  \draw (clients) -- (a);
+  \draw (web) -- (b);
+  \draw (db) -- (c);
+
+  \node[right] at (clients.east)
+  {Clients and/or reverse-proxy};
+  
+  \node[below] at (web.south) {192.168.1.1};
+  \node[below] at (db.south)  {192.168.1.2};
+	
+  \end{tikzpicture}
+\end{figure}
 
 Replacing the web server with a bigger SMP system would cost much more than
 adding low-cost pizza boxes. The solution is to buy N cheap boxes and install
 the application on them. Install haproxy on the old one which will spread the
 load across the new boxes.
 
-\begin{verbatim}
-  192.168.1.1    192.168.1.11-192.168.1.14   192.168.1.2
- -------+-----------+-----+-----+-----+--------+----
-        |           |     |     |     |       _|_db
-     +--+--+      +-+-+ +-+-+ +-+-+ +-+-+    (___)
-     | LB1 |      | A | | B | | C | | D |    (___)
-     +-----+      +---+ +---+ +---+ +---+    (___)
-     haproxy        4 cheap web servers
-\end{verbatim}
+\begin{figure}[!h]
+  \centering
 
-\subsubsection{Config on haproxy (LB1)}
+  \begin{tikzpicture} [
+    thick,
+    node distance=1.5cm,
+  ]
+	                   
+  \node[point](a);
+  \node[point,right of=a,xshift=2cm](b);
+  \node[point,right of=b](c);
+  \node[point,right of=c](d);
+  \node[point,right of=d](e);
+  \node[point,right of=e,xshift=2cm](f);
+  
+  \draw (a) -- (b);
+  \draw (b) -- (c);
+  \draw (c) -- (d);
+  \draw (d) -- (e);
+  \draw (e) -- (f);
+  \draw (a) -- ++(-1,0);
+  \draw (f) -- ++(1,0);
 
+  \node[round,below of=a] (lb1)  {LB1};
+  \node[block,below of=b] (web-a) {A};
+  \node[block,below of=c] (web-b) {B};
+  \node[block,below of=d] (web-c) {C};
+  \node[block,below of=e] (web-d) {D};
+  \node[db,below of=f]    (db) {DB};
+
+  \draw (lb1)   -- (a);
+  \draw (web-a) -- (b);
+  \draw (web-b) -- (c);
+  \draw (web-c) -- (d);
+  \draw (web-d) -- (e);
+  \draw (db)    -- (f);
+
+  \node[below] at (lb1.south) {haproxy};  
+  \node[below right] at (web-a.south east) {4 cheap web servers};
+  \node[above right] at (b.north east)
+  {192.168.1.11 - 192.168.1.14};
+  \node[above] at (f.north) {192.168.1.2};
+  \node[above] at (a.north) { 192.168.1.1};
+	
+  \end{tikzpicture}
+\end{figure}
+
+%\begin{samepage}
+\paragraph{Config on haproxy (LB1)}
 \begin{verbatim}
     listen webfarm 192.168.1.1:80
        mode http
@@ -52,8 +147,10 @@ load across the new boxes.
        server webC 192.168.1.13:80 cookie C check
        server webD 192.168.1.14:80 cookie D check      
 \end{verbatim}
+%\end{samepage}
 
-\subsubsection{Description}
+\begin{samepage}
+\paragraph{Description}
 
 \begin{itemize}
 \item[-] LB1 will receive clients requests.
@@ -67,8 +164,9 @@ load across the new boxes.
 \item[-] if server "webA" dies, the requests will be sent to another valid server
    and a cookie will be reassigned.
 \end{itemize}
+\end{samepage}
 
-\subsubsection{Flows}
+\paragraph{Flows}
 
 \begin{verbatim}
 (client)                           (haproxy)                         (server A)
@@ -91,7 +189,7 @@ load across the new boxes.
                                     ( ... )
 \end{verbatim}
 
-\subsubsection{Limits}
+\paragraph{Limits}
 
 \begin{itemize}
 \item[-] if clients use keep-alive (HTTP/1.1), only the first response will have
@@ -132,7 +230,7 @@ load across the new boxes.
    \end{verbatim}
 \end{itemize}
 
-\subsubsection{Hints}
+\paragraph{Hints}
 
 Sometimes on the internet, you will find a few percent of the clients which
 disable cookies on their browser. Obviously they have troubles everywhere on
@@ -167,8 +265,7 @@ one in VRRP mode using keepalived under Linux.
 
 Download the latest version of keepalived from this site and install it
 on each load-balancer LB1 and LB2:
-
-       \verb|http://www.keepalived.org/|
+\verb|http://www.keepalived.org/|
 
 You then have a shared IP between the two load-balancers (we will still use the
 original IP). It is active only on one of them at any moment. To allow the
@@ -176,21 +273,74 @@ proxy to bind to the shared IP on Linux 2.4, you must enable it in /proc:
 
 \verb|# echo 1 >/proc/sys/net/ipv4/ip_nonlocal_bind|
 
-\begin{verbatim}
+\begin{figure}[!h]
+  \centering
 
-    shared IP=192.168.1.1
-  192.168.1.3  192.168.1.4    192.168.1.11-192.168.1.14   192.168.1.2
- -------+------------+-----------+-----+-----+-----+--------+----
-        |            |           |     |     |     |       _|_db
-     +--+--+      +--+--+      +-+-+ +-+-+ +-+-+ +-+-+    (___)
-     | LB1 |      | LB2 |      | A | | B | | C | | D |    (___)
-     +-----+      +-----+      +---+ +---+ +---+ +---+    (___)
-     haproxy      haproxy        4 cheap web servers
-     keepalived   keepalived
+  \begin{tikzpicture} [
+    thick,
+    node distance=1.5cm,
+    every text node part/.style={align=left},
+  ]
+	                   
+  \node[point](a);
+  \node[point,right of=a,xshift=1cm](b);
+  \node[point,right of=b,xshift=2cm](c);
+  \node[point,right of=c](d);
+  \node[point,right of=d](e);
+  \node[point,right of=e](f);
+  \node[point,right of=f,xshift=2cm](g);
+  
+  \draw (a) -- (b);
+  \draw (b) -- (c);
+  \draw (c) -- (d);
+  \draw (d) -- (e);
+  \draw (e) -- (f);
+  \draw (f) -- (g);
+  \draw (a) -- ++(-1,0);
+  \draw (g) -- ++(1,0);
 
-\end{verbatim}
+  \node[round,below of=a] (lb1)  {LB1};
+  \node[round,below of=b] (lb2)  {LB2};
+  \node[block,below of=c] (web-a) {A};
+  \node[block,below of=d] (web-b) {B};
+  \node[block,below of=e] (web-c) {C};
+  \node[block,below of=f] (web-d) {D};
+  \node[db,below of=g]    (db) {DB};
 
-\subsubsection{Config on both proxies (LB1 and LB2)}
+  \draw (lb1)   -- (a);
+  \draw (lb2)   -- (b);
+  \draw (web-a) -- (c);
+  \draw (web-b) -- (d);
+  \draw (web-c) -- (e);
+  \draw (web-d) -- (f);
+  \draw (db)    -- (g);
+
+  \node[below] at (lb1.south) {
+  haproxy \\
+  keepalived
+  };
+  \node[below] at (lb2.south) {
+  haproxy \\
+  keepalived
+  };  
+  \node[below right] at (web-a.south east)
+  {4 cheap web servers};
+  \node[above right] at (c.north east)
+  {192.168.1.11 - 192.168.1.14};
+  \node[above] at (g.north)
+  {192.168.1.2};
+  \node[above](ip1) at (a.north)
+  {192.168.1.3};
+  \node[above](ip2) at (b.north)
+  {192.168.1.4};
+  \node[above] at (ip1.north east)
+  {Shared IP=192.168.1.1};
+	
+  \end{tikzpicture}
+\end{figure}
+
+\begin{samepage}
+\paragraph{Config on both proxies (LB1 and LB2)}
      
 \begin{verbatim}
     listen webfarm 192.168.1.1:80
@@ -205,8 +355,9 @@ proxy to bind to the shared IP on Linux 2.4, you must enable it in /proc:
        server webC 192.168.1.13:80 cookie C check
        server webD 192.168.1.14:80 cookie D check
 \end{verbatim}
+\end{samepage}
 
-\subsubsection{Notes}
+\paragraph{Notes}
 
 The proxy will modify EVERY cookie sent by the client and the server,
 so it is important that it can access to ALL cookies in ALL requests for
@@ -215,7 +366,7 @@ each session. This implies that there is no keep-alive (HTTP/1.1), thus the
 use keep-alive (eg: Apache 1.3 in reverse-proxy mode), you can remove this
 option.
 
-\subsubsection{Configuration for keepalived on LB1/LB2}
+\paragraph{Configuration for keepalived on LB1/LB2}
 
 \begin{verbatim}
 
@@ -239,7 +390,7 @@ option.
     }
 \end{verbatim}
 
-\subsubsection{Description}
+\paragraph{Description}
 
 \begin{itemize}
 \item[-] LB1 is VRRP master (keepalived), LB2 is backup. Both monitor the haproxy
@@ -258,7 +409,7 @@ option.
    and a cookie will be reassigned.
 \end{itemize}
 
-\subsubsection{Flows}
+\paragraph{Flows}
 
 \begin{verbatim}
 (client)                           (haproxy)                         (server A)
@@ -291,7 +442,7 @@ option.
                                     ( ... )
 \end{verbatim}
 
-\subsubsection{Hints}
+\paragraph{Hints}
 
 Sometimes, there will be some powerful servers in the farm, and some smaller
 ones. In this situation, it may be desirable to tell haproxy to respect the
@@ -330,7 +481,7 @@ which will also check that the services run fine on both proxies:
      haproxy      haproxy        4 cheap web servers
 \end{verbatim}
 
-\subsubsection{Config on both proxies (LB1 and LB2)}
+\paragraph{Config on both proxies (LB1 and LB2)}
        
     listen webfarm 0.0.0.0:80
        mode http
@@ -350,7 +501,7 @@ The "dontlognull" option is used to prevent the proxy from logging the health
 checks from the Alteon. If a session exchanges no data, then it will not be
 logged.
        
-\subsubsection{Config on the Alteon}
+\paragraph{Config on the Alteon}
 
 \begin{verbatim}
     /c/slb/real  11
@@ -374,7 +525,7 @@ logged.
            group 10
 \end{verbatim}
 
-\subsubsection{Notes}
+\paragraph{Notes}
 
 The health-check on the Alteon is set to "tcp" to prevent the proxy from
 forwarding the connections. It can also be set to "http", but for this the
@@ -410,7 +561,7 @@ than or equal to 1.1.32 or 1.2.6.
 \end{verbatim}
 
 
-\subsubsection{Config on both proxies (LB1 and LB2)}
+\paragraph{Config on both proxies (LB1 and LB2)}
 
 \begin{verbatim}    
     listen tse-proxy
@@ -426,7 +577,7 @@ The "monitor-net" option instructs the proxies that any connection coming from
 closed immediately. The Alteon load-balancers will then see the proxies alive
 without perturbating the service.
 
-\subsubsection{Config on the Alteon}
+\paragraph{Config on the Alteon}
 
 \begin{verbatim}
     /c/l3/if 1
@@ -458,7 +609,7 @@ without perturbating the service.
            group 10
 \end{verbatim}
 
-\subsubsection{Special handling of SSL}
+\paragraph{Special handling of SSL}
 
 Sometimes, you want to send health-checks to remote systems, even in TCP mode,
 in order to be able to failover to a backup server in case the first one is
@@ -520,7 +671,7 @@ measures must be taken to ensure that inserted cookies will not be cached.
      haproxy 
 \end{verbatim}
 
-\subsubsection{Config on haproxy (LB1)}
+\paragraph{Config on haproxy (LB1)}
 
 \begin{verbatim}     
     listen 127.0.0.1:8000
@@ -534,7 +685,7 @@ measures must be taken to ensure that inserted cookies will not be cached.
        server webD 192.168.1.14:80 cookie D check
 \end{verbatim}
 
-\subsubsection{Description}
+\paragraph{Description}
 
 \begin{itemize}
 \item[-] apache on LB1 will receive clients requests on port 443
@@ -551,7 +702,7 @@ measures must be taken to ensure that inserted cookies will not be cached.
    and a cookie will be reassigned.
 \end{itemize}
 
-\subsubsection{Notes}
+\paragraph{Notes}
 
 \begin{itemize}
  - if the cookie works in "prefix" mode, there is no need to add the "nocache"
@@ -564,7 +715,7 @@ measures must be taken to ensure that inserted cookies will not be cached.
    it on haproxy if you need the application to know about the client's IP.
 \end{itemize}
 
-\subsubsection{Flows}
+\paragraph{Flows}
 
 \begin{verbatim}
 (apache)                           (haproxy)                         (server A)
@@ -613,7 +764,7 @@ haproxy that connections from local host already have a valid header.
      haproxy 
 \end{verbatim}
 
-\subsubsection{Config on stunnel (LB1)}
+\paragraph{Config on stunnel (LB1)}
 
 \begin{verbatim}
     cert=/etc/stunnel/stunnel.pem
@@ -629,7 +780,7 @@ haproxy that connections from local host already have a valid header.
     xforwardedfor=yes
 \end{verbatim}
 
-\subsubsection{Config on haproxy (LB1)}
+\paragraph{Config on haproxy (LB1)}
 
 \begin{verbatim}
     listen 192.168.1.1:80
@@ -644,7 +795,7 @@ haproxy that connections from local host already have a valid header.
        server webD 192.168.1.14:80 cookie D check
 \end{verbatim}
 
-\subsubsection{Description}
+\paragraph{Description}
 
 \begin{itemize}
 \item[-] stunnel on LB1 will receive clients requests on port 443
@@ -688,7 +839,7 @@ stop the server when it does not receive anymore connections.
        contimeout 5000
 \end{verbatim}
 
-\subsubsection{Description}
+\paragraph{Description}
 
 \begin{itemize}
 \item[-] every 2 seconds, haproxy will try to access the file "/running" on the
@@ -702,7 +853,7 @@ stop the server when it does not receive anymore connections.
 \item[-] if the server is totally stopped, the connection will fail and the proxy
    will rebalance the client to another server ("redispatch")
 
-\subsubsection{Usage on the web servers}
+\paragraph{Usage on the web servers}
 
 \begin{itemize}
 \item[-] to start the server
@@ -720,7 +871,7 @@ stop the server when it does not receive anymore connections.
 \end{verbatim}
 \end{itemize}
 
-\subsubsection{Limits}
+\paragraph{Limits}
 
 If the server is totally powered down, the proxy will still try to reach it
 for those clients who still have a cookie referencing it, and the connection
@@ -754,7 +905,7 @@ the same cookie as a standard server.
        server bkpD 192.168.1.14:80 cookie D check port 80 inter 2000 backup
 \end{verbatim}
 
-\subsubsection{Description}
+\paragraph{Description}
 
 Four servers webA..D are checked on their port 81 every 2 seconds. The same
 servers named bkpA..D are checked on the port 80, and share the exact same
@@ -805,16 +956,16 @@ The associated backup server will in turn fail, and if any client still tries
 to access this particular server, he will be redispatched to any other valid
 server because of the "redispatch" option.
 
-This method has an advantage : you never touch the proxy when doing server
+This method has an advantage: you never touch the proxy when doing server
 maintenance. The people managing the servers can make them disappear smoothly.
 
-\paragraph{Variations for operating systems without any firewall software}
-\endinput
+\subsubsection{Variations for operating systems without any firewall software}
 
 The downside is that you need a redirection solution on the server just for
 the health-checks. If the server OS does not support any firewall software,
-this redirection can also be handled by a simple haproxy in tcp mode :
+this redirection can also be handled by a simple haproxy in tcp mode:
 
+\begin{verbatim}
     global
         daemon
         quiet
@@ -825,60 +976,67 @@ this redirection can also be handled by a simple haproxy in tcp mode :
         contimeout 1000
         clitimeout 10000
         srvtimeout 10000
+\end{verbatim}
 
-To start the web service :
-
+\begin{itemize}
+\item[-] To start the web service
+\begin{verbatim}
   # /etc/init.d/httpd start
   # haproxy -f /etc/haproxy/haproxy-checks.cfg
-
-To soft-stop the service :
-
+\end{verbatim}
+\item[-] To soft-stop the service
+\begin{verbatim}
   # kill $(</var/run/haproxy-checks.pid)
+\end{verbatim}
+\end{itemize}
 
 The port 81 will stop responding and the load-balancer will notice the failure.
 
-
-4.2.2 Centralizing the server management
-----------------------------------------
+\subsubsection{Centralizing the server management}
 
 If one finds it preferable to manage the servers from the load-balancer itself,
 the port redirector can be installed on the load-balancer itself. See the
 example with iptables below.
 
-Make the servers appear as operational :
+Make the servers appear as operational:
+\begin{verbatim}
   # iptables -t nat -A OUTPUT -d 192.168.1.11 -p tcp --dport 81 -j DNAT --to-dest :80
   # iptables -t nat -A OUTPUT -d 192.168.1.12 -p tcp --dport 81 -j DNAT --to-dest :80
   # iptables -t nat -A OUTPUT -d 192.168.1.13 -p tcp --dport 81 -j DNAT --to-dest :80
   # iptables -t nat -A OUTPUT -d 192.168.1.14 -p tcp --dport 81 -j DNAT --to-dest :80
+\end{verbatim}
 
-Soft stop one server :
+Soft stop one server:
+\begin{verbatim}
   # iptables -t nat -D OUTPUT -d 192.168.1.12 -p tcp --dport 81 -j DNAT --to-dest :80
+\end{verbatim}
 
 Another solution is to use the "COMAFILE" patch provided by Alexander Lazic,
-which is available for download here :
+which is available for download here:
 
-   http://w.ods.org/tools/haproxy/contrib/
+   \verb|http://w.ods.org/tools/haproxy/contrib/|
 
 
-4.2.3 Notes :
--------------
-  - Never, ever, start a fake service on port 81 for the health-checks, because
+\subsubsection{Notes}
+
+\begin{itemize}
+\item[-] Never, ever, start a fake service on port 81 for the health-checks, because
     a real web service failure will not be detected as long as the fake service
     runs. You must really forward the check port to the real application.
 
-  - health-checks will be sent twice as often, once for each standard server,
+\item[-] health-checks will be sent twice as often, once for each standard server,
     and once for each backup server. All this will be multiplicated by the
     number of processes if you use multi-process mode. You will have to ensure
     that all the checks sent to the server do not overload it.
+\end{itemize}
 
-=======================
-4.3 Hot reconfiguration
-=======================
+\subsection{Hot reconfiguration}
 
-There are two types of haproxy users :
-  - those who can never do anything in production out of maintenance periods ;
-  - those who can do anything at any time provided that the consequences are
-    limited.
+There are two types of haproxy users:
+\begin{itemize}
+\item[-] those who can never do anything in production out of maintenance periods
+\item[-] those who can do anything at any time provided that the consequences are limited.
+\end{itemize}
 
 The first ones have no problem stopping the server to change configuration
 because they got some maintenance periods during which they can break anything.
@@ -892,7 +1050,7 @@ be the case for the first category because humans are not failsafe.
 
 For this reason, a new hot reconfiguration mechanism has been introduced in
 version 1.1.34. Its usage is very simple and works even in chrooted
-environments with lowered privileges. The principle is very simple : upon
+environments with lowered privileges. The principle is very simple: upon
 reception of a SIGTTOU signal, the proxy will stop listening to all the ports.
 This will release the ports so that a new instance can be started. Existing
 connections will not be broken at all. If the new instance fails to start,
@@ -902,8 +1060,9 @@ the sockets will not have been closed, so the bind() is still valid. Otherwise,
 if the new process starts successfully, then sending a SIGUSR1 signal to the
 old one ensures that it will exit as soon as its last session ends.
 
-A hot reconfiguration script would look like this :
+A hot reconfiguration script would look like this:
 
+\begin{verbatim}
   # save previous state
   mv /etc/haproxy/config /etc/haproxy/config.old
   mv /var/run/haproxy.pid /var/run/haproxy.pid.old
@@ -924,23 +1083,22 @@ A hot reconfiguration script would look like this :
     mv /etc/haproxy/config.old /etc/haproxy/config
     exit 0
   fi
+\end{verbatim}
 
 After this, you can still force old connections to end by sending
 a SIGTERM to the old process if it still exists :
 
+\begin{verbatim}
     kill $(cat /var/run/haproxy.pid.old)
     rm -f /var/run/haproxy.pid.old
+\end{verbatim}
 
 Be careful with this as in multi-process mode, some pids might already
 have been reallocated to completely different processes.
 
+\section{Multi-site load-balancing with local preference}
 
-==================================================
-5. Multi-site load-balancing with local preference
-==================================================
-
-5.1 Description of the problem
-==============================
+\subsection{Description of the problem}
 
 Consider a world-wide company with sites on several continents. There are two
 production sites SITE1 and SITE2 which host identical applications. There are
@@ -950,28 +1108,31 @@ the event of a site or application failure. There also are users on the
 production sites, which use their local sites by default, but can switch to the
 other site in case of a local application failure.
 
-The main constraints are :
+The main constraints are:
 
-  - application persistence : although the application is the same on both
+\begin{itemize}
+\item[-] application persistence: although the application is the same on both
     sites, there is no session synchronisation between the sites. A failure
     of one server or one site can cause a user to switch to another server
     or site, but when the server or site comes back, the user must not switch
     again.
 
-  - communication costs : inter-site communication should be reduced to the
+\item[-] communication costs: inter-site communication should be reduced to the
     minimum. Specifically, in case of a local application failure, every
     office should be able to switch to the other site without continuing to
     use the default site.
+\end{itemize}
 
-5.2 Solution
-============
-  - Each production site will have two haproxy load-balancers in front of its
+\subsection{Solution}
+
+\begin{itemize}
+\item[-] Each production site will have two haproxy load-balancers in front of its
     application servers to balance the load across them and provide local HA.
     We will call them "S1L1" and "S1L2" on site 1, and "S2L1" and "S2L2" on
     site 2. These proxies will extend the application's JSESSIONID cookie to
     put the server name as a prefix.
 
-  - Each production site will have one front-end haproxy director to provide
+\item[-] Each production site will have one front-end haproxy director to provide
     the service to local users and to remote offices. It will load-balance
     across the two local load-balancers, and will use the other site's
     load-balancers as backup servers. It will insert the local site identifier
@@ -979,7 +1140,7 @@ The main constraints are :
     identifier for the remote load-balancers. These front-end directors will
     be called "SD1" and "SD2" for "Site Director".
 
-  - Each office will have one haproxy near the border gateway which will direct
+\item[-] Each office will have one haproxy near the border gateway which will direct
     local users to their preference site by default, or to the backup site in
     the event of a previous failure. It will also analyze the SITE cookie, and
     direct the users to the site referenced in the cookie. Thus, the preferred
@@ -988,17 +1149,16 @@ The main constraints are :
     site is unreachable, or when the primary site's director has forwarded
     traffic to the second site. These proxies will be called "OP1".."OPXX"
     for "Office Proxy #XX".
-
+\end{itemize}
   
-5.3 Network diagram
-===================
+\subsection{Network diagram}
 
-Note : offices 1 and 2 are on the same continent as site 1, while
+\emph{Note:} offices 1 and 2 are on the same continent as site 1, while
        office 3 is on the same continent as site 3. Each production
        site can reach the second one either through the WAN or through
        a dedicated link.
 
-
+\begin{verbatim}
         Office1         Office2                          Office3
          users           users                            users
 192.168  # # #   192.168 # # #                            # # #
@@ -1032,33 +1192,35 @@ Note : offices 1 and 2 are on the same continent as site 1, while
                  +---+     +---+                     +---+     +---+    
               4 application servers               4 application servers
                     on site 1                           on site 2
+\end{verbatim}
 
 
+\subsection{Description}
 
-5.4 Description
-===============
+\subsubsection{Local users}
 
-5.4.1 Local users
------------------
- - Office 1 users connect to OP1 = 192.168.1.1
- - Office 2 users connect to OP2 = 192.168.2.1
- - Office 3 users connect to OP3 = 192.168.3.1
- - Site 1 users connect to SD1 = 10.1.1.1
- - Site 2 users connect to SD2 = 10.2.1.1
+\begin{itemize}
+\item[-] Office 1 users connect to OP1 = 192.168.1.1
+\item[-] Office 2 users connect to OP2 = 192.168.2.1
+\item[-] Office 3 users connect to OP3 = 192.168.3.1
+\item[-] Site 1 users connect to SD1 = 10.1.1.1
+\item[-] Site 2 users connect to SD2 = 10.2.1.1
+\end{itemize}
 
-5.4.2 Office proxies
---------------------
- - Office 1 connects to site 1 by default and uses site 2 as a backup.
- - Office 2 connects to site 1 by default and uses site 2 as a backup.
- - Office 3 connects to site 2 by default and uses site 1 as a backup.
+\subsubsection{Office proxies}
+
+\begin{itemize}
+\item[-] Office 1 connects to site 1 by default and uses site 2 as a backup.
+\item[-] Office 2 connects to site 1 by default and uses site 2 as a backup.
+\item[-] Office 3 connects to site 2 by default and uses site 1 as a backup.
+\end{itemize}
 
 The offices check the local site's SD proxy every 30 seconds, and the
 remote one every 60 seconds.
 
+\paragraph{Configuration for Office Proxy OP1}
 
-Configuration for Office Proxy OP1
-----------------------------------
-
+\begin{verbatim}
     listen 192.168.1.1:80
        mode http
        balance roundrobin
@@ -1067,11 +1229,11 @@ Configuration for Office Proxy OP1
        option httpchk HEAD / HTTP/1.0
        server SD1 10.1.1.1:80 cookie SITE1 check inter 30000
        server SD2 10.2.1.1:80 cookie SITE2 check inter 60000 backup
+\end{verbatim}
 
+\paragraph{Configuration for Office Proxy OP2}
 
-Configuration for Office Proxy OP2
-----------------------------------
-
+\begin{verbatim}
     listen 192.168.2.1:80
        mode http
        balance roundrobin
@@ -1080,11 +1242,11 @@ Configuration for Office Proxy OP2
        option httpchk HEAD / HTTP/1.0
        server SD1 10.1.1.1:80 cookie SITE1 check inter 30000
        server SD2 10.2.1.1:80 cookie SITE2 check inter 60000 backup
+\end{verbatim}
 
+\paragraph{Configuration for Office Proxy OP3}
 
-Configuration for Office Proxy OP3
-----------------------------------
-
+\begin{verbatim}
     listen 192.168.3.1:80
        mode http
        balance roundrobin
@@ -1093,10 +1255,10 @@ Configuration for Office Proxy OP3
        option httpchk HEAD / HTTP/1.0
        server SD2 10.2.1.1:80 cookie SITE2 check inter 30000
        server SD1 10.1.1.1:80 cookie SITE1 check inter 60000 backup
+\end{verbatim}
 
+\subsubsection{Site directors ( SD1 and SD2 )}
 
-5.4.3 Site directors ( SD1 and SD2 )
-------------------------------------
 The site directors forward traffic to the local load-balancers, and set a
 cookie to identify the site. If no local load-balancer is available, or if
 the local application servers are all down, it will redirect traffic to the
@@ -1118,9 +1280,9 @@ port 80 but which allows them to tell the SD that they are going down soon
 and that the SD must not use them anymore.
 
 
-Configuration for SD1
----------------------
+\paragraph{Configuration for SD1}
 
+\begin{verbatim}
     listen 10.1.1.1:80
        mode http
        balance roundrobin
@@ -1132,10 +1294,11 @@ Configuration for SD1
        server S1L2 10.1.1.12:80 cookie SITE1 check port 81 inter 4000
        server S2L1 10.2.1.11:80 cookie SITE2 check port 81 inter 8000 backup
        server S2L2 10.2.1.12:80 cookie SITE2 check port 81 inter 8000 backup
+\end{verbatim}
 
-Configuration for SD2
----------------------
+\paragraph{Configuration for SD2}
 
+\begin{verbatim}
     listen 10.2.1.1:80
        mode http
        balance roundrobin
@@ -1147,10 +1310,10 @@ Configuration for SD2
        server S2L2 10.2.1.12:80 cookie SITE2 check port 81 inter 4000
        server S1L1 10.1.1.11:80 cookie SITE1 check port 81 inter 8000 backup
        server S1L2 10.1.1.12:80 cookie SITE1 check port 81 inter 8000 backup
+\end{verbatim}
 
+\subsubsection{Local load-balancers S1L1, S1L2, S2L1, S2L2}
 
-5.4.4 Local load-balancers S1L1, S1L2, S2L1, S2L2
--------------------------------------------------
 Please first note that because SD1 and SD2 use the same cookie for both
 servers on a same site, the second load-balancer of each site will only
 receive load-balanced requests, but as soon as the SITE cookie will be
@@ -1173,9 +1336,9 @@ These proxies will also be the only ones to disable HTTP keep-alive in the
 chain, because it is enough to do it at one place, and it's necessary to do
 it with 'prefix' cookies.
 
-Configuration for S1L1/S1L2
----------------------------
+\paragraph{Configuration for S1L1/S1L2}
 
+\begin{verbatim}
     listen 10.1.1.11:80 # 10.1.1.12:80 for S1L2
        grace 20000  # don't kill us until 20 seconds have elapsed
        mode http
@@ -1197,11 +1360,11 @@ Configuration for S1L1/S1L2
     listen 10.1.1.11:81 # 10.1.1.12:81 for S1L2
        mode tcp
        dispatch 10.1.1.11:80  # 10.1.1.12:80 for S1L2
+\end{verbatim}
 
+\paragraph{Configuration for S2L1/S2L2}
 
-Configuration for S2L1/S2L2
----------------------------
-
+\begin{verbatim}
     listen 10.2.1.11:80 # 10.2.1.12:80 for S2L2
        grace 20000  # don't kill us until 20 seconds have elapsed
        mode http
@@ -1223,10 +1386,10 @@ Configuration for S2L1/S2L2
     listen 10.2.1.11:81 # 10.2.1.12:81 for S2L2
        mode tcp
        dispatch 10.2.1.11:80  # 10.2.1.12:80 for S2L2
+\end{verbatim}
 
+\subsection{Comments}
 
-5.5 Comments
-------------
 Since each site director sets a cookie identifying the site, remote office
 users will have their office proxies direct them to the right site and stick
 to this site as long as the user still uses the application and the site is
@@ -1237,11 +1400,13 @@ If the WAN link dies on a production site, the remote office users will not
 see their site anymore, so they will redirect the traffic to the second site.
 If there are dedicated inter-site links as on the diagram above, the second
 SD will see the cookie and still be able to reach the original site. For
-example :
+example:
 
-Office 1 user sends the following to OP1 :
+\begin{verbatim}
+Office 1 user sends the following to OP1:
   GET / HTTP/1.0
   Cookie: SITE=SITE1; JSESSIONID=W14~123;
+\end{verbatim}
 
 OP1 cannot reach site 1 because its external router is dead. So the SD1 server
 is seen as dead, and OP1 will then forward the request to SD2 on site 2,
@@ -1262,10 +1427,7 @@ because of the network failure, it will direct the request to SD2 on site 2,
 which will by default direct the traffic to the local load-balancers, S2L1 and
 S2L2. So only initial users will load the inter-site link, not the new ones.
 
-
-===================
-6. Source balancing
-===================
+\section{Source balancing}
 
 Sometimes it may reveal useful to access servers from a pool of IP addresses
 instead of only one or two. Some equipments (NAT firewalls, load-balancers)
@@ -1273,8 +1435,9 @@ are sensible to source address, and often need many sources to distribute the
 load evenly amongst their internal hash buckets.
 
 To do this, you simply have to use several times the same server with a
-different source. Example :
+different source. Example:
 
+\begin{verbatim}
     listen 0.0.0.0:80
        mode tcp
        balance roundrobin
@@ -1286,11 +1449,9 @@ different source. Example :
        server from6to1 10.1.1.1:80 source 10.1.2.6
        server from7to1 10.1.1.1:80 source 10.1.2.7
        server from8to1 10.1.1.1:80 source 10.1.2.8
+\end{verbatim}
 
-
-=============================================
-7. Managing high loads on application servers
-=============================================
+\section{Managing high loads on application servers}
 
 One of the roles often expected from a load balancer is to mitigate the load on
 the servers during traffic peaks. More and more often, we see heavy frameworks
@@ -1320,36 +1481,36 @@ basis, and you let all the users you want connect to it. It will then fill all
 the servers up to the configured connection limit, and will put the remaining
 connections in a queue, waiting for a connection to be released on a server.
 
-This ensures five essential principles :
+This ensures five essential principles:
 
-  - all clients can be served whatever their number without crashing the
+\begin{itemize}
+\item[-] all clients can be served whatever their number without crashing the
     servers, the only impact it that the response time can be delayed.
 
-  - the servers can be used at full throttle without the risk of stalling,
+\item[-] the servers can be used at full throttle without the risk of stalling,
     and fine tuning can lead to optimal performance.
 
-  - response times can be reduced by making the servers work below the
+\item[-] response times can be reduced by making the servers work below the
     congestion point, effectively leading to shorter response times even
     under moderate loads.
 
-  - no domino effect when a server goes down or starts up. Requests will be
+\item[-] no domino effect when a server goes down or starts up. Requests will be
     queued more or less, always respecting servers limits.
 
-  - it's easy to achieve high performance even on memory-limited hardware.
+\item[-] it's easy to achieve high performance even on memory-limited hardware.
     Indeed, heavy frameworks often consume huge amounts of RAM and not always
     all the CPU available. In case of wrong sizing, reducing the number of
     concurrent connections will protect against memory shortages while still
     ensuring optimal CPU usage.
+\end{itemize}
 
-
-Example :
----------
+Example:
 
 Haproxy is installed in front of an application servers farm. It will limit
 the concurrent connections to 4 per server (one thread per CPU), thus ensuring
 very fast response times.
 
-
+\begin{verbatim}
   192.168.1.1   192.168.1.11-192.168.1.13   192.168.1.2
  -------+-------------+-----+-----+------------+----
         |             |     |     |           _|_db
@@ -1358,11 +1519,11 @@ very fast response times.
      +-----+        +---+ +---+ +---+        (___)
      haproxy       3 application servers
                    with heavy frameworks
+\end{verbatim}
 
+\paragraph{Config on haproxy (LB1)}
 
-Config on haproxy (LB1) :
--------------------------
-       
+\begin{verbatim}       
     listen appfarm 192.168.1.1:80
        mode http
        maxconn 10000
@@ -1375,10 +1536,10 @@ Config on haproxy (LB1) :
        server railsB 192.168.1.12:80 cookie B maxconn 4 check
        server railsC 192.168.1.13:80 cookie C maxconn 4 check
        contimeout 60000
+\end{verbatim}
 
+\paragraph{Description}
 
-Description :
--------------
 The proxy listens on IP 192.168.1.1, port 80, and expects HTTP requests. It
 can accept up to 10000 concurrent connections on this socket. It follows the
 roundrobin algorithm to assign servers to connections as long as servers are
@@ -1391,9 +1552,9 @@ is also used to set the maximum time a connection may stay unserved in the
 queue (1 minute here).
 
 If the servers can each process 4 requests in 10 ms on average, then at 3000
-connections, response times will be delayed by at most :
+connections, response times will be delayed by at most:
 
-   3000 / 3 servers / 4 conns * 10 ms = 2.5 seconds
+   \verb|3000 / 3 servers / 4 conns * 10 ms = 2.5 seconds|
 
 Which is not that dramatic considering the huge number of users for such a low
 number of servers.
@@ -1403,15 +1564,13 @@ times will grow and users might abort by clicking on the "Stop" button. It is
 very undesirable to send aborted requests to servers, because they will eat
 CPU cycles for nothing.
 
-An option has been added to handle this specific case : "option abortonclose".
+An option has been added to handle this specific case: "option abortonclose".
 By specifying it, you tell haproxy that if an input channel is closed on the
 client side AND the request is still waiting in the queue, then it is highly
 likely that the user has stopped, so we remove the request from the queue
 before it will get served.
 
-
-Managing unfair response times
-------------------------------
+\paragraph{Managing unfair response times}
 
 Sometimes, the application server will be very slow for some requests (eg:
 login page) and faster for other requests. This may cause excessive queueing
@@ -1431,9 +1590,9 @@ that during low-to-medium loads, the minconn will be applied, and during surges
 the maxconn will be applied. It ensures both optimal response times under
 normal loads, and availability under very high loads.
 
-Example :
----------
-       
+Example:
+
+\begin{verbatim}
     listen appfarm 192.168.1.1:80
        mode http
        maxconn 10000
@@ -1447,4 +1606,4 @@ Example :
        server railsB 192.168.1.12:80 minconn 4 maxconn 12 check
        server railsC 192.168.1.13:80 minconn 4 maxconn 12 check
        contimeout 60000
-
+\end{verbatim}

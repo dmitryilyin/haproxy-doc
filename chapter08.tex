@@ -93,7 +93,8 @@ This format is used when no specific option is set. The log is emitted as soon
 as the connection is accepted. One should note that this currently is the only
 format which logs the request's destination IP and ports.
 
-  Example:
+%\begin{samepage}
+Example:
 \begin{verbatim}
         listen www
             mode http
@@ -112,9 +113,10 @@ format which logs the request's destination IP and ports.
       5   destination_ip ':' destination_port                   10.0.3.31:8012
       6   '(' frontend_name '/' mode ')'                            (www/HTTP)
 \end{verbatim}
+%\end{samepage}
 
+\begin{samepage}
 Detailed fields description:
-
 \begin{itemize}
 \item[-] "source\_ip" is the IP address of the client which initiated the connection.
 \item[-] "source\_port" is the TCP port of the client which initiated the connection.
@@ -124,6 +126,7 @@ Detailed fields description:
     and processed the connection.
 \item[-] "mode" is the mode the frontend is operating (TCP or HTTP).
 \end{itemize}
+\end{samepage}
 
 In case of a UNIX socket, the source and destination addresses are marked as
 "unix:" and the ports reflect the internal ID of the socket which accepted the

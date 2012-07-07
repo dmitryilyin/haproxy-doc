@@ -14,49 +14,51 @@ from the client to the server, a request is sent by the client on the
 connection, the server responds and the connection is closed. A new request
 will involve a new connection as shown on Figure ~\ref{fig:http_close}.
 
-\begin{figure}[p]
-  \centering
-  \begin{tikzpicture} [
-    thick,
-    node distance=3cm,
-  ]
-                     
-  \tikzstyle{reqresp} = [
-    rounded rectangle,
-    thick,
- 	 minimum size=1cm,
- 	 draw=red!50!black!50,
- 	 top color=white,
- 	 bottom color=blue!50!black!20,
- 	 drop shadow,
-  ]
-  \tikzstyle{conclo} = [
-    reqresp,
-    diamond,
-  ]                 
-	                    
-  \node[conclo]                (con1)  {CON1};
-  \node[reqresp,right of=con1] (req1)  {REQ1};
-  \node[reqresp,right of=req1] (resp1) {RESP1};
-  \node[conclo,right of=resp1] (clo1)  {CLO1};
-  \node[conclo,below of=con1]  (con2)  {CON2};
-  \node[reqresp,right of=con2] (req2)  {REQ2};
-  \node[reqresp,right of=req2] (resp2) {RESP2};
-  \node[conclo,right of=resp2] (clo2)  {CLO2};
-	
-  \path[->] (con1)  edge (req1);
-  \path[->] (req1)  edge node[above] {\ldots} (resp1);
-  \path[->] (resp1) edge (clo1);
+\tikzstyle{reqresp} = [
+rounded rectangle,
+thick,
+minimum size=1cm,
+draw=red!50!black!50,
+top color=white,
+bottom color=blue!50!black!20,
+drop shadow,
+]
+
+\tikzstyle{conclo} = [
+reqresp,
+diamond,
+]
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture} [
+thick,
+node distance=3cm,
+]
+
+\node[conclo]                (con1)  {CON1};
+\node[reqresp,right of=con1] (req1)  {REQ1};
+\node[reqresp,right of=req1] (resp1) {RESP1};
+\node[conclo,right of=resp1] (clo1)  {CLO1};
+\node[conclo,below of=con1]  (con2)  {CON2};
+\node[reqresp,right of=con2] (req2)  {REQ2};
+\node[reqresp,right of=req2] (resp2) {RESP2};
+\node[conclo,right of=resp2] (clo2)  {CLO2};
+
+\path[->] (con1)  edge (req1);
+\path[->] (req1)  edge node[above] {\ldots} (resp1);
+\path[->] (resp1) edge (clo1);
   
-  \path[line,dashed,->] (clo1)  edge node[midway,sloped,above] {Next connection} (con2);
+\path[line,dashed,->] (clo1)  edge node[midway,sloped,above] {Next connection} (con2);
   
-  \path[->] (con2)  edge (req2);
-  \path[->] (req2)  edge node[above] {\ldots} (resp2);
-  \path[->] (resp2) edge (clo2);
+\path[->] (con2)  edge (req2);
+\path[->] (req2)  edge node[above] {\ldots} (resp2);
+\path[->] (resp2) edge (clo2);
 	
-  \end{tikzpicture}
-  \caption{HTTP close mode}
-  \label{fig:http_close}
+\end{tikzpicture}
+
+\caption{HTTP close mode}
+\label{fig:http_close}
 \end{figure}
 
 In this mode, called the "HTTP close" mode, there are as many connection
@@ -71,49 +73,32 @@ response so that the client does not wait indefinitely. For this, a special
 header is used: "Content-length". This mode is called the "keep-alive" mode
 and is shown on Figure shown on Figure ~\ref{fig:http_keep_alive}.
 
-\begin{figure}[p]
-  \centering
-  \begin{tikzpicture} [
-    thick,
-    node distance=4cm,
-  ]
-                     
-  \tikzstyle{reqresp} = [
-    rounded rectangle,
-    thick,
- 	 minimum size=1cm,
- 	 draw=red!50!black!50,
- 	 top color=white,
- 	 bottom color=blue!50!black!20,
- 	 drop shadow,
-  ]
-  \tikzstyle{conclo} = [
-    reqresp,
-    diamond,
-  ]
-	                    
-  \node[conclo,diamond]        (con)   {CON};
-  \node[reqresp,right of=con]   (req1)  {REQ1};
-  \node[reqresp,right of=req1]  (resp1) {RESP1};
-  \node[reqresp,below of=req1]  (req2)  {REQ2};
-  \node[reqresp,right of=req2]  (resp2) {RESP2};
 
-  \node[reqresp,below of=req2]  (req3)  {REQ3};
-  \node[reqresp,right of=req3] (resp3) {RESP3};  
-  
-  \node[conclo,right of=resp3] (clo)   {CLO};
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture} [
+  thick,
+  node distance=4cm,
+]
+                    
+\node[conclo,diamond]        (con)   {CON};
+\node[reqresp,right of=con]   (req1)  {REQ1};
+\node[reqresp,right of=req1]  (resp1) {RESP1};
+\node[reqresp,below of=req1]  (req2)  {REQ2};
+\node[reqresp,right of=req2]  (resp2) {RESP2}; 
+\node[conclo,right of=resp2] (clo)   {CLO};
 	
-  \path[->] (con)   edge node[above] {Start}  (req1);
-  \path[->] (req1)  edge node[above] {\ldots} (resp1);
-  \path[->] (resp1) edge node[midway,sloped,above] {Next request} (req2);
-  \path[->] (req2)  edge node[above] {\ldots} (resp2);
-  \path[->] (resp2) edge node[midway,sloped,above] {Next request} (req3);
-  \path[->] (req3)  edge node[above] {\ldots} (resp3);
-  \path[->] (resp3) edge node[above] {End}    (clo);
+\path[->] (con)   edge node[above] {Start}  (req1);
+\path[->] (req1)  edge node[above] {\ldots} (resp1);
+\path[->] (resp1) edge node[midway,sloped,above]
+{Next request} (req2);
+\path[->] (req2)  edge node[above] {\ldots} (resp2);
+\path[->] (resp2) edge node[above] {End}    (clo);
 	
-  \end{tikzpicture}
-  \caption{HTTP keep-alive mode}
-  \label{fig:http_keep_alive}
+\end{tikzpicture}
+
+\caption{HTTP keep-alive mode}
+\label{fig:http_keep_alive}
 \end{figure}
 
 Its advantages are a reduced latency between transactions, and less processing
@@ -126,43 +111,30 @@ keep-alive, but the client does not wait for the first response to send the
 second request. This is useful for fetching large number of images composing a
 page. This mode is shown on Figure ~\ref{fig:http_pipelining}.
 
-\begin{figure}[p]
+\begin{figure}[!h]
   \centering
   \begin{tikzpicture} [
     thick,
     node distance=3cm,
   ]
-                     
-  \tikzstyle{reqresp} = [
-    rounded rectangle,
-    thick,
- 	 minimum size=1cm,
- 	 draw=red!50!black!50,
- 	 top color=white,
- 	 bottom color=blue!50!black!20,
- 	 drop shadow,
-  ]
-  \tikzstyle{conclo} = [
-    reqresp,
-    diamond,
-  ]                    
-	                    
-  \node[conclo]                             (con)   {CON};
-  \node[reqresp,right of=con]               (req1)  {REQ1};
-  \node[reqresp,right of=req1]              (req2)  {REQ2};
-  \node[reqresp,right of=req2, xshift=1cm]  (resp1) {RESP1};
-  \node[reqresp,right of=resp1]             (resp2) {RESP2};
-  \node[conclo,right of=resp2]              (clo)   {CLO};
+                    
+\node[conclo]                               (con)   {CON};
+\node[reqresp,right of=con]                 (req1)  {REQ1};
+\node[reqresp,right of=req1]                (req2)  {REQ2};
+\node[reqresp,right of=req2, xshift=0.5cm]  (resp1) {RESP1};
+\node[reqresp,right of=resp1]               (resp2) {RESP2};
+\node[conclo,right of=resp2]                (clo)   {CLO};
 	
-  \path[->] (con)   edge node[above] {Start} (req1);
-  \path[->] (req1)  edge (req2);
-  \path[->] (req2)  edge node[above] {\ldots} (resp1);
-  \path[->] (resp1) edge (resp2);
-  \path[->] (resp2) edge node[above] {End} (clo);
+\path[->] (con)   edge node[above] {Start} (req1);
+\path[->] (req1)  edge (req2);
+\path[->] (req2)  edge node[above] {\ldots} (resp1);
+\path[->] (resp1) edge (resp2);
+\path[->] (resp2) edge node[above] {End} (clo);
 
-  \end{tikzpicture}
-  \caption{HTTP pipelining mode}
-  \label{fig:http_pipelining}
+\end{tikzpicture}
+
+\caption{HTTP pipelining mode}
+\label{fig:http_pipelining}
 \end{figure}
 
 This can obviously have a tremendous benefit on performance because the network
@@ -184,8 +156,9 @@ mode.
 
 
 \section{HTTP request}
-First, let's consider this HTTP request:
 
+\begin{samepage}
+First, let's consider this HTTP request:
 \begin{verbatim}
   Line     Contents
   number
@@ -195,15 +168,17 @@ First, let's consider this HTTP request:
      4     Accept: image/jpeg, image/gif
      5     Accept: image/png
 \end{verbatim}
+\end{samepage}
 
 \subsection{The Request line}
+\begin{samepage}
 Line 1 is the "request line". It is always composed of 3 fields:
-
-\begin{enumerate}
-\item METHOD : GET
-\item URI : \verb|/serv/login.php?lang=en&profile=2|
-\item a version tag : HTTP/1.1
-\end{enumerate}
+\begin{verbatim}
+  - a METHOD      : GET
+  - a URI         : /serv/login.php?lang=en&amp;profile=2
+  - a version tag : HTTP/1.1
+\end{verbatim}
+\end{samepage}
 
 All of them are delimited by what the standard calls LWS (linear white spaces),
 which are commonly spaces, but can also be tabs or line feeds/carriage returns
@@ -280,14 +255,15 @@ application of being buggy if it does unusual, valid things.
 
 
 \section{HTTP response}
+\begin{samepage}
 An HTTP response looks very much like an HTTP request. Both are called HTTP
 messages. Let's consider this HTTP response:
-
 \begin{enumerate}
 \item HTTP/1.1 200 OK
 \item Content-length: 350
 \item Content-Type: text/html
 \end{enumerate}
+\end{samepage}
 
 As a special case, HTTP supports so called "Informational responses" as status
 codes 1xx. These messages are special in that they don't convey any part of the
@@ -305,16 +281,17 @@ if a CONNECT had occurred. Then the Upgrade header would contain additional
 information about the type of protocol the connection is switching to.
 
 \subsection{The Response line}
+\begin{samepage}
 Line 1 is the "response line". It is always composed of 3 fields:
-
 \begin{enumerate}
 \item a version tag : HTTP/1.1
 \item a status code : 200
 \item a reason      : OK
 \end{enumerate}
+\end{samepage}
 
+\begin{samepage}
 The status code is always 3-digit. The first digit indicates a general status:
-
 \begin{description}
 \item[1xx] informational message to be skipped (eg: 100, 101)
 \item[2xx] OK, content is following   (eg: 200, 206)
@@ -322,6 +299,7 @@ The status code is always 3-digit. The first digit indicates a general status:
 \item[4xx] error caused by the client (eg: 401, 403, 404)
 \item[5xx] error caused by the server (eg: 500, 502, 503)
 \end{description}
+\end{samepage}
 
 Please refer to RFC2616 for the detailed meaning of all such codes. The
 "reason" field is just a hint, but is not parsed by clients. Anything can be
@@ -329,8 +307,8 @@ found there, but it's a common practice to respect the well-established
 messages. It can be composed of one or multiple words, such as "OK", "Found",
 or "Authentication Required".
 
+\begin{samepage}
 Haproxy may emit the following status codes by itself:
-
 \begin{description}
 \item[200] access to stats page, and when replying to monitoring requests
 \item[301] when performing a redirection, depending on the configured code
@@ -352,6 +330,7 @@ Haproxy may emit the following status codes by itself:
 
 The error 4xx and 5xx codes above may be customized (see "errorloc" in section
 4.2).
+\end{samepage}
 
 \subsection{The response headers}
 Response headers work exactly like request headers, and as such, HAProxy uses

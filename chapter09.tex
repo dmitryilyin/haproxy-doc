@@ -316,6 +316,7 @@ own stats.
   will be followed by a '+' sign, indicating it is a continuation of previous
   line.
 
+\begin{samepage}
   Example:
   \begin{verbatim}
         $ echo "show errors" | socat stdio /tmp/sock1
@@ -332,6 +333,7 @@ own stats.
           00204+ minal\r\n
           00211  \r\n
   \end{verbatim}
+\end{samepage}
 
     In the example above, we see that the backend "http-in" which has internal
     ID 2 has blocked an invalid response from its server s2 which has internal
@@ -372,6 +374,7 @@ own stats.
   \item[-] <sid> is a server ID, -1 to dump everything from the selected proxy.
   \end{itemize}
 
+\begin{samepage}
   Example:
   \begin{verbatim}
         $ echo "show info;show stat" | socat stdio unix-connect:/tmp/sock1
@@ -387,9 +390,8 @@ own stats.
         stats,BACKEND,0,0,0,0,1000,0,0,0,0,0,,0,0,0,0,UP,0,0,0,,0,250,(...)
         (...)
         www1,BACKEND,0,0,0,0,1000,0,0,0,0,0,,0,0,0,0,UP,1,1,0,,0,250, (...)
-
-        $
     \end{verbatim}
+\end{samepage}
 
     Here, two commands have been issued at once. That way it's easy to find
     which process the stats apply to in multi-process mode. Notice the empty
@@ -470,7 +472,8 @@ own stats.
 
   It is possible to use this to extract lists of IP addresses abusing the
   service, in order to monitor them or even blacklist them in a firewall.
-  
+
+\begin{samepage}
   Example:
   \begin{verbatim}
         $ echo "show table http_proxy data.gpc0 gt 0" \
@@ -478,6 +481,7 @@ own stats.
           | fgrep 'key=' | cut -d' ' -f2 | cut -d= -f2 > abusers-ip.txt
           ( or | awk '/key/{ print a[split($2,a,"=")]; }' )
   \end{verbatim}
+\end{samepage}
 
 \subsubsection[shutdown frontend]{shutdown frontend <frontend>}
   Completely delete the specified frontend. All the ports it was bound to will
