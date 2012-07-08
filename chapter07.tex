@@ -1,20 +1,24 @@
 \chapter{Using ACLs and pattern extraction}
-\endinput
 
 The use of Access Control Lists (ACL) provides a flexible solution to perform
 content switching and generally to take decisions based on content extracted
 from the request, the response or any environmental status. The principle is
-simple :
+simple:
 
-  - define test criteria with sets of values
-  - perform actions only if a set of tests is valid
+\begin{itemize}
+\item[-] define test criteria with sets of values
+\item[-] perform actions only if a set of tests is valid
+\end{itemize}
 
 The actions generally consist in blocking the request, or selecting a backend.
 
-In order to define a test, the "acl" keyword is used. The syntax is :
+In order to define a test, the "acl" keyword is used. The syntax is:
 
+\begin{verbatim}
    acl <aclname> <criterion> [flags] [operator] <value> ...
+\end{verbatim}
 
+\index{ACL}
 This creates a new ACL <aclname> or completes an existing one with new tests.
 Those tests apply to the portion of request/response specified in <criterion>
 and may be adjusted with optional flags [flags]. Some criteria also support
@@ -22,22 +26,24 @@ an operator which may be specified before the set of values. The values are
 of the type supported by the criterion, and are separated by spaces.
 
 ACL names must be formed from upper and lower case letters, digits, '-' (dash),
-'_' (underscore) , '.' (dot) and ':' (colon). ACL names are case-sensitive,
-which means that "my_acl" and "My_Acl" are two different ACLs.
+'\_' (underscore) , '.' (dot) and ':' (colon). ACL names are case-sensitive,
+which means that "my\_acl" and "My\_Acl" are two different ACLs.
 
 There is no enforced limit to the number of ACLs. The unused ones do not affect
 performance, they just consume a small amount of memory.
 
-The following ACL flags are currently supported :
+The following ACL flags are currently supported:
 
-   -i : ignore case during matching of all subsequent patterns.
-   -f : load patterns from a file.
-   -- : force end of flags. Useful when a string looks like one of the flags.
+\begin{description}
+\item[-i] ignore case during matching of all subsequent patterns.
+\item[-f] load patterns from a file.
+\item[{-}{-}] force end of flags. Useful when a string looks like one of the flags.
+\end{description}
 
 The "-f" flag is special as it loads all of the lines it finds in the file
 specified in argument and loads all of them before continuing. It is even
 possible to pass multiple "-f" arguments if the patterns are to be loaded from
-multiple files. Empty lines as well as lines beginning with a sharp ('#') will
+multiple files. Empty lines as well as lines beginning with a sharp ('\#') will
 be ignored. All leading spaces and tabs will be stripped. If it is absolutely
 needed to insert a valid pattern beginning with a sharp, just prefix it with a
 space so that it is not taken for a comment. Depending on the data type and
@@ -45,9 +51,11 @@ match method, haproxy may load the lines into a binary tree, allowing very fast
 lookups. This is true for IPv4 and exact string matching. In this case,
 duplicates will automatically be removed. Also, note that the "-i" flag applies
 to subsequent entries and not to entries loaded from files preceeding it. For
-instance :
+instance:
 
+\begin{verbatim}
     acl valid-ua hdr(user-agent) -f exact-ua.lst -i -f generic-ua.lst  test
+\end{verbatim}
 
 In this example, each line of "exact-ua.lst" will be exactly matched against
 the "user-agent" header of the request. Then each line of "generic-ua" will be
@@ -58,17 +66,17 @@ Note that right now it is difficult for the ACL parsers to report errors, so if
 a file is unreadable or unparsable, the most you'll get is a parse error in the
 ACL. Thus, file-based ACLs should only be produced by reliable processes.
 
-Supported types of values are :
+Supported types of values are:
+\begin{itemize}
+\item[-] integers or integer ranges
+\item[-] strings
+\item[-] regular expressions
+\item[-] IP addresses and networks
+\end{itemize}
 
-  - integers or integer ranges
-  - strings
-  - regular expressions
-  - IP addresses and networks
+\section{Matching integers}
 
-
-7.1. Matching integers
-----------------------
-
+\index{Matching integers}
 Matching integers is special in that ranges and operators are permitted. Note
 that integer matching only applies to positive values. A range is a value
 expressed with a lower and an upper bound separated with a colon, both of which
@@ -88,49 +96,52 @@ operators with ranges does not make much sense and is strongly discouraged.
 Similarly, it does not make much sense to perform order comparisons with a set
 of values.
 
-Available operators for integer matching are :
+Available operators for integer matching are:
 
-  eq : true if the tested value equals at least one value
-  ge : true if the tested value is greater than or equal to at least one value
-  gt : true if the tested value is greater than at least one value
-  le : true if the tested value is less than or equal to at least one value
-  lt : true if the tested value is less than at least one value
+\begin{description}
+\item[eq] true if the tested value equals at least one value
+\item[ge] true if the tested value is greater than or equal to at least one value
+\item[gt] true if the tested value is greater than at least one value
+\item[le] true if the tested value is less than or equal to at least one value
+\item[lt] true if the tested value is less than at least one value
+\end{description}
 
-For instance, the following ACL matches any negative Content-Length header :
+For instance, the following ACL matches any negative Content-Length header:
 
+\begin{verbatim}
   acl negative-length hdr_val(content-length) lt 0
+\end{verbatim}
 
-This one matches SSL versions between 3.0 and 3.1 (inclusive) :
+This one matches SSL versions between 3.0 and 3.1 (inclusive):
 
+\begin{verbatim}
   acl sslv3 req_ssl_ver 3:3.1
+\end{verbatim}
 
+\section{Matching strings}
 
-7.2. Matching strings
----------------------
-
+\index{Matching strings}
 String matching applies to verbatim strings as they are passed, with the
-exception of the backslash ("\") which makes it possible to escape some
+exception of the backslash ("\textbackslash") which makes it possible to escape some
 characters such as the space. If the "-i" flag is passed before the first
 string, then the matching will be performed ignoring the case. In order
-to match the string "-i", either set it second, or pass the "--" flag
-before the first string. Same applies of course to match the string "--".
+to match the string "-i", either set it second, or pass the "{-}{-}" flag
+before the first string. Same applies of course to match the string "{-}{-}".
 
+\section{Matching regular expressions (regexes)}
 
-7.3. Matching regular expressions (regexes)
--------------------------------------------
-
+\index{Matching regular expressions}
 Just like with string matching, regex matching applies to verbatim strings as
-they are passed, with the exception of the backslash ("\") which makes it
+they are passed, with the exception of the backslash ("\textbackslash") which makes it
 possible to escape some characters such as the space. If the "-i" flag is
 passed before the first regex, then the matching will be performed ignoring
 the case. In order to match the string "-i", either set it second, or pass
-the "--" flag before the first string. Same principle applies of course to
-match the string "--".
+the "{-}{-}" flag before the first string. Same principle applies of course to
+match the string "{-}{-}".
 
+\section{Matching IPv4 and IPv6 addresses}
 
-7.4. Matching IPv4 and IPv6 addresses
-----------------------------
-
+\index{Matching IPv4 and IPv6 addresses}
 IPv4 addresses values can be specified either as plain addresses or with a
 netmask appended, in which case the IPv4 address matches whenever it is
 within the network. Plain addresses may also be replaced with a resolvable
@@ -146,39 +157,42 @@ trouble with randomly resolved IP addresses, host names are never allowed in
 IPv6 patterns.
 
 HAProxy is also able to match IPv4 addresses with IPv6 addresses in the
-following situations :
-  - tested address is IPv4, pattern address is IPv4, the match applies
+following situations:
+\begin{itemize}
+\item[-] tested address is IPv4, pattern address is IPv4, the match applies
     in IPv4 using the supplied mask if any.
-  - tested address is IPv6, pattern address is IPv6, the match applies
+\item[-] tested address is IPv6, pattern address is IPv6, the match applies
     in IPv6 using the supplied mask if any.
-  - tested address is IPv6, pattern address is IPv4, the match applies in IPv4
+\item[-] tested address is IPv6, pattern address is IPv4, the match applies in IPv4
     using the pattern's mask if the IPv6 address matches with 2002:IPV4::,
     ::IPV4 or ::ffff:IPV4, otherwise it fails.
-  - tested address is IPv4, pattern address is IPv6, the IPv4 address is first
+\item[-] tested address is IPv4, pattern address is IPv6, the IPv4 address is first
     converted to IPv6 by prefixing ::ffff: in front of it, then the match is
     applied in IPv6 using the supplied IPv6 mask.
+\end{itemize}
 
+\section{Available matching criteria}
 
-7.5. Available matching criteria
---------------------------------
+\subsection{Matching at Layer 4 and below}
 
-7.5.1. Matching at Layer 4 and below
-------------------------------------
-
+\index{Matching at Layer 4 and below}
 A first set of criteria applies to information which does not require any
 analysis of the request or response contents. Those generally include TCP/IP
-addresses and ports, as well as internal values independant on the stream.
+addresses and ports, as well as internal values independent on the stream.
 
-always_false
+\subsubsection{always\_false}
+  \index{always\_false}
   This one never matches. All values and flags are ignored. It may be used as
   a temporary replacement for another one when adjusting configurations.
 
-always_true
+\subsubsection{always\_true}
+  \index{always\_true}
   This one always matches. All values and flags are ignored. It may be used as
   a temporary replacement for another one when adjusting configurations.
 
-avg_queue <integer>
-avg_queue(<backend>) <integer>
+\subsubsection[avg\_queue]{avg\_queue <integer>}
+\subsubsection*{avg\_queue(<backend>) <integer>}
+  \index{avg\_queue}
   Returns the total number of queued connections of the designated backend
   divided by the number of active servers. This is very similar to "queue"
   except that the size of the farm is considered, in order to give a more
@@ -189,89 +203,101 @@ avg_queue(<backend>) <integer>
   number of queued connections as the measured value. This is a fair estimate,
   as we expect one server to get back soon anyway, but we still prefer to send
   new traffic to another backend if in better shape. See also the "queue",
-  "be_conn", and "be_sess_rate" criteria.
+  "be\_conn", and "be\_sess\_rate" criteria.
 
-be_conn <integer>
-be_conn(<backend>) <integer>
+\subsubsection[be\_conn]{be\_conn <integer>}
+\subsubsection*{be\_conn(<backend>) <integer>}
+  \index{be\_conn}
   Applies to the number of currently established connections on the backend,
   possibly including the connection being evaluated. If no backend name is
   specified, the current one is used. But it is also possible to check another
   backend. It can be used to use a specific farm when the nominal one is full.
-  See also the "fe_conn", "queue" and "be_sess_rate" criteria.
+  See also the "fe\_conn", "queue" and "be\_sess\_rate" criteria.
 
-be_id <integer>
+\subsubsection[be\_id]{be\_id <integer>}
+  \index{be\_id}
   Applies to the backend's id. Can be used in frontends to check from which
   backend it was called.
 
-be_sess_rate <integer>
-be_sess_rate(<backend>) <integer>
+\subsubsection[be\_sess\_rate]{be\_sess\_rate <integer>}
+\subsubsection*{be\_sess\_rate(<backend>) <integer>}
+  \index{be\_sess\_rate}
   Returns true when the sessions creation rate on the backend matches the
   specified values or ranges, in number of new sessions per second. This is
   used to switch to an alternate backend when an expensive or fragile one
   reaches too high a session rate, or to limit abuse of service (eg. prevent
   sucking of an online dictionary).
 
-  Example :
+  Example:
+  \begin{verbatim}
         # Redirect to an error page if the dictionary is requested too often
         backend dynamic
             mode http
             acl being_scanned be_sess_rate gt 100
             redirect location /denied.html if being_scanned
+  \end{verbatim}
 
-connslots <integer>
-connslots(<backend>) <integer>
+\subsubsection[connslots]{connslots <integer>}
+\subsubsection*{connslots(<backend>) <integer>}
+  \index{connslots}
   The basic idea here is to be able to measure the number of connection "slots"
   still available (connection + queue), so that anything beyond that (intended
-  usage; see "use_backend" keyword) can be redirected to a different backend.
+  usage; see "use\_backend" keyword) can be redirected to a different backend.
 
   'connslots' = number of available server connection slots, + number of
   available server queue slots.
 
-  Note that while "fe_conn" may be used, "connslots" comes in especially
+  Note that while "fe\_conn" may be used, "connslots" comes in especially
   useful when you have a case of traffic going to one single ip, splitting into
   multiple backends (perhaps using acls to do name-based load balancing) and
   you want to be able to differentiate between different backends, and their
   available "connslots".  Also, whereas "nbsrv" only measures servers that are
   actually *down*, this acl is more fine-grained and looks into the number of
-  available connection slots as well. See also "queue" and "avg_queue".
+  available connection slots as well. See also "queue" and "avg\_queue".
 
-  OTHER CAVEATS AND NOTES: at this point in time, the code does not take care
+  \emph{Other caveats and notes:} at this point in time, the code does not take care
   of dynamic connections. Also, if any of the server maxconn, or maxqueue is 0,
   then this acl clearly does not make sense, in which case the value returned
   will be -1.
 
-dst <ip_address>
+\subsubsection[dst]{dst <ip\_address>}
+  \index{dst}
   Applies to the local IPv4 or IPv6 address the client connected to. It can be
   used to switch to a different backend for some alternative addresses.
 
-dst_conn <integer>
+\subsubsection[dst\_conn]{dst\_conn <integer>}
+  \index{dst\_conn}
   Applies to the number of currently established connections on the same socket
   including the one being evaluated. It can be used to either return a sorry
   page before hard-blocking, or to use a specific backend to drain new requests
   when the socket is considered saturated. This offers the ability to assign
   different limits to different listening ports or addresses. See also the
-  "fe_conn" and "be_conn" criteria.
+  "fe\_conn" and "be\_conn" criteria.
 
-dst_port <integer>
+\subsubsection[dst\_port]{dst\_port <integer>}
+  \index{dst\_port}
   Applies to the local port the client connected to. It can be used to switch
   to a different backend for some alternative ports.
 
-fe_conn <integer>
-fe_conn(<frontend>) <integer>
+\subsubsection[fe_conn]{fe\_conn <integer>}
+\subsubsection*{fe\_conn(<frontend>) <integer>}
+  \index{fe\_conn}
   Applies to the number of currently established connections on the frontend,
   possibly including the connection being evaluated. If no frontend name is
   specified, the current one is used. But it is also possible to check another
   frontend. It can be used to either return a sorry page before hard-blocking,
   or to use a specific backend to drain new requests when the farm is
-  considered saturated. See also the "dst_conn", "be_conn" and "fe_sess_rate"
+  considered saturated. See also the "dst\_conn", "be\_conn" and "fe\_sess\_rate"
   criteria.
 
-fe_id <integer>
+\subsubsection[fe\_id]{fe\_id <integer>}
+  \index{fe\_id}
   Applies to the frontend's id. Can be used in backends to check from which
   frontend it was called.
 
-fe_sess_rate <integer>
-fe_sess_rate(<frontend>) <integer>
+\subsubsection[fe\_sess\_rate]{fe\_sess\_rate <integer>}
+\subsubsection*{fe\_sess\_rate(<frontend>) <integer>}
+  \index{fe\_sess\_rate}
   Returns true when the session creation rate on the current or the named
   frontend matches the specified values or ranges, expressed in new sessions
   per second. This is used to limit the connection rate to acceptable ranges in
@@ -279,7 +305,8 @@ fe_sess_rate(<frontend>) <integer>
   combined with layer 4 ACLs in order to force the clients to wait a bit for
   the rate to go down below the limit.
 
-  Example :
+  Example:
+  \begin{verbatim}
         # This frontend limits incoming mails to 10/s with a max of 100
         # concurrent connections. We accept any connection below 10/s, and
         # force excess clients to wait for 100 ms. Since clients are limited to
@@ -292,46 +319,56 @@ fe_sess_rate(<frontend>) <integer>
             tcp-request inspect-delay 100ms
             tcp-request content accept if ! too_fast
             tcp-request content accept if WAIT_END
+  \end{verbatim}
 
-nbsrv <integer>
-nbsrv(<backend>) <integer>
+\subsubsection[nbsrv]{nbsrv <integer>}
+\subsubsection*{nbsrv(<backend>) <integer>}
+  \index{nbsrv}
   Returns true when the number of usable servers of either the current backend
   or the named backend matches the values or ranges specified. This is used to
   switch to an alternate backend when the number of servers is too low to
   to handle some load. It is useful to report a failure when combined with
   "monitor fail".
 
-queue <integer>
-queue(<backend>) <integer>
+\subsubsection[queue]{queue <integer>}
+\subsubsection*{queue(<backend>) <integer>}
+  \index{queue}
   Returns the total number of queued connections of the designated backend,
   including all the connections in server queues. If no backend name is
   specified, the current one is used, but it is also possible to check another
   one. This can be used to take actions when queuing goes above a known level,
   generally indicating a surge of traffic or a massive slowdown on the servers.
   One possible action could be to reject new users but still accept old ones.
-  See also the "avg_queue", "be_conn", and "be_sess_rate" criteria.
+  See also the "avg\_queue", "be\_conn", and "be\_sess\_rate" criteria.
 
-sc1_bytes_in_rate
-sc2_bytes_in_rate
+\subsubsection{sc1\_bytes\_in\_rate}
+\subsubsection{sc2\_bytes\_in\_rate}
+  \index{sc1\_bytes\_in\_rate}
+  \index{sc2\_bytes\_in\_rate}
   Returns the average client-to-server bytes rate from the currently tracked
   counters, measured in amount of bytes over the period configured in the
-  table. See also src_bytes_in_rate.
+  table. See also src\_bytes\_in\_rate.
 
-sc1_bytes_out_rate
-sc2_bytes_out_rate
+\subsubsection{sc1\_bytes\_out\_rate}
+\subsubsection{sc2\_bytes\_out\_rate}
+  \index{sc1\_bytes\_out\_rate}
+  \index{sc2\_bytes\_out\_rate}
   Returns the average server-to-client bytes rate from the currently tracked
   counters, measured in amount of bytes over the period configured in the
-  table. See also src_bytes_out_rate.
+  table. See also src\_bytes\_out\_rate.
 
-sc1_clr_gpc0
-sc2_clr_gpc0
+\subsubsection{sc1\_clr\_gpc0}
+\subsubsection{sc2\_clr\_gpc0}
+  \index{sc1\_clr\_gpc0}
+  \index{sc2\_clr\_gpc0}
   Clears the first General Purpose Counter associated to the currently tracked
   counters, and returns its previous value. Before the first invocation, the
   stored value is zero, so first invocation will always return zero. The test
   can also be used alone and always returns true. This is typically used as a
   second ACL in an expression in order to mark a connection when a first ACL
-  was verified :
-
+  was verified:
+  
+  \begin{verbatim}
         # block if 5 consecutive requests continue to come faster than 10 sess
         # per second, and reset the counter as soon as the traffic slows down.
         acl abuse sc1_http_req_rate gt 10
@@ -339,131 +376,165 @@ sc2_clr_gpc0
         acl save  sc1_clr_gpc0
         tcp-request connection accept if !abuse save
         tcp-request connection reject if abuse kill
+  \end{verbatim}
 
-sc1_conn_cnt
-sc2_conn_cnt
+\subsubsection{sc1\_conn\_cnt}
+\subsubsection{sc2\_conn\_cnt}
+  \index{sc1\_conn\_cnt}
+  \index{sc2\_conn\_cnt}
   Returns the cumulated number of incoming connections from currently tracked
-  counters. See also src_conn_cnt.
+  counters. See also src\_conn\_cnt.
 
-sc1_conn_cur
-sc2_conn_cur
+\subsubsection{sc1\_conn\_cur}
+\subsubsection{sc2\_conn\_cur}
+  \index{sc1\_conn\_cur}
+  \index{sc2\_conn\_cur}
   Returns the current amount of concurrent connections tracking the same
   tracked counters. This number is automatically incremented when tracking
-  begins and decremented when tracking stops. See also src_conn_cur.
+  begins and decremented when tracking stops. See also src\_conn\_cur.
 
-sc1_conn_rate
-sc2_conn_rate
+\subsubsection{sc1\_conn\_rate}
+\subsubsection{sc2\_conn\_rate}
+  \index{sc1\_conn\_rate}
+  \index{sc2\_conn\_rate}
   Returns the average connection rate from the currently tracked counters,
   measured in amount of connections over the period configured in the table.
-  See also src_conn_rate.
+  See also src\_conn\_rate.
 
-sc1_get_gpc0
-sc2_get_gpc0
+\subsubsection{sc1\_get\_gpc0}
+\subsubsection{sc2\_get\_gpc0}
+  \index{sc1\_get\_gpc0}
+  \index{sc2\_get\_gpc0}
   Returns the value of the first General Purpose Counter associated to the
-  currently tracked counters. See also src_get_gpc0 and sc1/sc2_inc_gpc0.
+  currently tracked counters. See also src\_get\_gpc0 and sc1/sc2\_inc\_gpc0.
 
-sc1_http_err_cnt
-sc2_http_err_cnt
+\subsubsection{sc1\_http\_err\_cnt}
+\subsubsection{sc2\_http\_err\_cnt}
+  \index{sc1\_http\_err\_cnt}
+  \index{sc2\_http\_err\_cnt}
   Returns the cumulated number of HTTP errors from the currently tracked
   counters. This includes the both request errors and 4xx error responses.
-  See also src_http_err_cnt.
+  See also src\_http\_err\_cnt.
 
-sc1_http_err_rate
-sc2_http_err_rate
+\subsubsection{sc1\_http\_err\_rate}
+\subsubsection{sc2\_http\_err\_rate}
+  \index{sc1\_http\_err\_rate}
+  \index{sc2\_http\_err\_rate}
   Returns the average rate of HTTP errors from the currently tracked counters,
   measured in amount of errors over the period configured in the table. This
   includes the both request errors and 4xx error responses. See also
-  src_http_err_rate.
+  src\_http\_err\_rate.
 
-sc1_http_req_cnt
-sc2_http_req_cnt
+\subsubsection{sc1\_http\_req\_cnt}
+\subsubsection{sc2\_http\_req\_cnt}
+  \index{sc1\_http\_req\_cnt}
+  \index{sc2\_http\_req\_cnt}
   Returns the cumulated number of HTTP requests from the currently tracked
   counters. This includes every started request, valid or not. See also
-  src_http_req_cnt.
+  src\_http\_req\_cnt.
 
-sc1_http_req_rate
-sc2_http_req_rate
+\subsubsection{sc1\_http\_req\_rate}
+\subsubsection{sc2\_http\_req\_rate}
+  \index{sc1\_http\_req\_rate}
+  \index{sc2\_http\_req\_rate}
   Returns the average rate of HTTP requests from the currently tracked
   counters, measured in amount of requests over the period configured in
   the table. This includes every started request, valid or not. See also
-  src_http_req_rate.
+  src\_http\_req\_rate.
 
-sc1_inc_gpc0
-sc2_inc_gpc0
+\subsubsection{sc1\_inc\_gpc0}
+\subsubsection{sc2\_inc\_gpc0}
+  \index{sc1\_inc\_gpc0}
+  \index{sc2\_inc\_gpc0}
   Increments the first General Purpose Counter associated to the currently
   tracked counters, and returns its value. Before the first invocation, the
   stored value is zero, so first invocation will increase it to 1 and will
   return 1. The test can also be used alone and always returns true. This is
   typically used as a second ACL in an expression in order to mark a connection
-  when a first ACL was verified :
-
+  when a first ACL was verified:
+  \begin{verbatim}
         acl abuse sc1_http_req_rate gt 10
         acl kill  sc1_inc_gpc0
         tcp-request connection reject if abuse kill
+  \end{verbatim}
 
-sc1_kbytes_in
-sc2_kbytes_in
+\subsubsection{sc1\_kbytes\_in}
+\subsubsection{sc2\_kbytes\_in}
+  \index{sc1\_kbytes\_in}
+  \index{sc2\_kbytes\_in}
   Returns the amount of client-to-server data from the currently tracked
   counters, measured in kilobytes over the period configured in the table. The
   test is currently performed on 32-bit integers, which limits values to 4
-  terabytes. See also src_kbytes_in.
+  terabytes. See also src\_kbytes\_in.
 
-sc1_kbytes_out
-sc2_kbytes_out
+\subsubsection{sc1\_kbytes\_out}
+\subsubsection{sc2\_kbytes\_out}
+  \index{sc1\_kbytes\_out}
+  \index{sc2\_kbytes\_out}
   Returns the amount of server-to-client data from the currently tracked
   counters, measured in kilobytes over the period configured in the table. The
   test is currently performed on 32-bit integers, which limits values to 4
-  terabytes. See also src_kbytes_out.
+  terabytes. See also src\_kbytes\_out.
 
-sc1_sess_cnt
-sc2_sess_cnt
+\subsubsection{sc1\_sess\_cnt}
+\subsubsection{sc2\_sess\_cnt}
+  \index{sc1\_sess\_cnt}
+  \index{sc2\_sess\_cnt}
   Returns the cumulated number of incoming connections that were transformed
   into sessions, which means that they were accepted by a "tcp-request
   connection" rule, from the currently tracked counters. A backend may count
   more sessions than connections because each connection could result in many
   backend sessions if some HTTP keep-alive is performend over the connection
-  with the client. See also src_sess_cnt.
+  with the client. See also src\_sess\_cnt.
 
-sc1_sess_rate
-sc2_sess_rate
+\subsubsection{sc1\_sess\_rate}
+\subsubsection{sc2\_sess\_rate}
+  \index{sc1\_sess\_rate}
+  \index{sc2\_sess\_rate}
   Returns the average session rate from the currently tracked counters,
   measured in amount of sessions over the period configured in the table. A
   session is a connection that got past the early "tcp-request connection"
   rules. A backend may count more sessions than connections because each
   connection could result in many backend sessions if some HTTP keep-alive is
-  performend over the connection with the client. See also src_sess_rate.
+  performed over the connection with the client. See also src\_sess\_rate.
 
-so_id <integer>
+\subsubsection[so\_id]{so\_id <integer>}
+  \index{so\_id}
   Applies to the socket's id. Useful in frontends with many bind keywords.
 
-src <ip_address>
+\subsubsection[src]{src <ip\_address>}
+  \index{src}
   Applies to the client's IPv4 or IPv6 address. It is usually used to limit
   access to certain resources such as statistics. Note that it is the TCP-level
   source address which is used, and not the address of a client behind a proxy.
 
-src_bytes_in_rate <integer>
-src_bytes_in_rate(<table>) <integer>
+\subsubsection[src\_bytes\_in\_rate]{src\_bytes\_in\_rate <integer>}
+\subsubsection*{src\_bytes\_in\_rate(<table>) <integer>}
+  \index{src\_bytes\_in\_rate}
   Returns the average bytes rate from the connection's source IPv4 address in
   the current proxy's stick-table or in the designated stick-table, measured in
   amount of bytes over the period configured in the table. If the address is
-  not found, zero is returned. See also sc1/sc2_bytes_in_rate.
+  not found, zero is returned. See also sc1/sc2\_bytes\_in\_rate.
 
-src_bytes_out_rate <integer>
-src_bytes_out_rate(<table>) <integer>
+\subsubsection[src\_bytes\_out\_rate]{src\_bytes\_out\_rate <integer>}
+\subsubsection*{src\_bytes\_out\_rate(<table>) <integer>}
+  \index{src\_bytes\_out\_rate}
   Returns the average bytes rate to the connection's source IPv4 address in the
   current proxy's stick-table or in the designated stick-table, measured in
   amount of bytes over the period configured in the table. If the address is
-  not found, zero is returned. See also sc1/sc2_bytes_out_rate.
+  not found, zero is returned. See also sc1/sc2\_bytes\_out\_rate.
 
-src_clr_gpc0 <integer>
-src_clr_gpc0(<table>) <integer>
+\subsubsection[src\_clr\_gpc0]{src\_clr\_gpc0 <integer>}
+\subsubsection{src\_clr\_gpc0(<table>) <integer>}
+  \index{src\_clr\_gpc0}
   Clears the first General Purpose Counter associated to the connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table, and returns its previous value. If the address is not found, an
   entry is created and 0 is returned. The test can also be used alone and
   always returns true. This is typically used as a second ACL in an expression
-  in order to mark a connection when a first ACL was verified :
+  in order to mark a connection when a first ACL was verified:
 
+\begin{verbatim}
         # block if 5 consecutive requests continue to come faster than 10 sess
         # per second, and reset the counter as soon as the traffic slows down.
         acl abuse src_http_req_rate gt 10
@@ -471,67 +542,72 @@ src_clr_gpc0(<table>) <integer>
         acl save  src_clr_gpc0
         tcp-request connection accept if !abuse save
         tcp-request connection reject if abuse kill
+\end{verbatim}
 
-src_conn_cnt <integer>
-src_conn_cnt(<table>) <integer>
+\subsubsection[src\_conn\_cnt]{src\_conn\_cnt <integer>}
+\subsubsection{src\_conn\_cnt(<table>) <integer>}
+  \index{src\_conn\_cnt}
   Returns the cumulated number of connections initiated from the current
   connection's source IPv4 address in the current proxy's stick-table or in
   the designated stick-table. If the address is not found, zero is returned.
-  See also sc1/sc2_conn_cnt.
+  See also sc1/sc2\_conn\_cnt.
 
-src_conn_cur <integer>
-src_conn_cur(<table>) <integer>
+\subsubsection[src\_conn\_cur]{src\_conn\_cur <integer>}
+\subsubsection{src\_conn\_cur(<table>) <integer>}
+  \index{src\_conn\_cur}
   Returns the current amount of concurrent connections initiated from the
   current connection's source IPv4 address in the current proxy's stick-table
   or in the designated stick-table. If the address is not found, zero is
-  returned. See also sc1/sc2_conn_cur.
+  returned. See also sc1/sc2\_conn\_cur.
 
-src_conn_rate <integer>
-src_conn_rate(<table>) <integer>
+\subsubsection[src\_conn\_rate]{src\_conn\_rate <integer>}
+\subsubsection{src\_conn\_rate(<table>) <integer>}
   Returns the average connection rate from the connection's source IPv4 address
   in the current proxy's stick-table or in the designated stick-table, measured
   in amount of connections over the period configured in the table. If the
-  address is not found, zero is returned. See also sc1/sc2_conn_rate.
+  address is not found, zero is returned. See also sc1/sc2\_conn\_rate.
 
-src_get_gpc0 <integer>
-src_get_gpc0(<table>) <integer>
+\endinput
+
+\subsubsection src_get_gpc0 <integer>
+\subsubsection src_get_gpc0(<table>) <integer>
   Returns the value of the first General Purpose Counter associated to the
   connection's source IPv4 address in the current proxy's stick-table or in
   the designated stick-table. If the address is not found, zero is returned.
   See also sc1/sc2_get_gpc0 and src_inc_gpc0.
 
-src_http_err_cnt <integer>
-src_http_err_cnt(<table>) <integer>
+\subsubsection src_http_err_cnt <integer>
+\subsubsection src_http_err_cnt(<table>) <integer>
   Returns the cumulated number of HTTP errors from the current connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table. This includes the both request errors and 4xx error responses.
   If the address is not found, zero is returned. See also sc1/sc2_http_err_cnt.
 
-src_http_err_rate <integer>
-src_http_err_rate(<table>) <integer>
+\subsubsection src_http_err_rate <integer>
+\subsubsection src_http_err_rate(<table>) <integer>
   Returns the average rate of HTTP errors from the current connection's source
   IPv4 address in the current proxy's stick-table or in the designated stick-
   table, measured in amount of errors over the period configured in the table.
   This includes the both request errors and 4xx error responses. If the address
   is not found, zero is returned. See also sc1/sc2_http_err_rate.
 
-src_http_req_cnt <integer>
-src_http_req_cnt(<table>) <integer>
+\subsubsection src_http_req_cnt <integer>
+\subsubsection src_http_req_cnt(<table>) <integer>
   Returns the cumulated number of HTTP requests from the current connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table. This includes every started request, valid or not. If the
   address is not found, zero is returned. See also sc1/sc2_http_req_cnt.
 
-src_http_req_rate <integer>
-src_http_req_rate(<table>) <integer>
+\subsubsection src_http_req_rate <integer>
+\subsubsection src_http_req_rate(<table>) <integer>
   Returns the average rate of HTTP requests from the current connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table, measured in amount of requests over the period configured in the
   table. This includes every started request, valid or not. If the address is
   not found, zero is returned. See also sc1/sc2_http_req_rate.
 
-src_inc_gpc0 <integer>
-src_inc_gpc0(<table>) <integer>
+\subsubsection src_inc_gpc0 <integer>
+\subsubsection src_inc_gpc0(<table>) <integer>
   Increments the first General Purpose Counter associated to the connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table, and returns its value. If the address is not found, an entry is
@@ -543,43 +619,43 @@ src_inc_gpc0(<table>) <integer>
         acl kill  src_inc_gpc0
         tcp-request connection reject if abuse kill
 
-src_kbytes_in <integer>
-src_kbytes_in(<table>) <integer>
+\subsubsection src_kbytes_in <integer>
+\subsubsection src_kbytes_in(<table>) <integer>
   Returns the amount of data received from the connection's source IPv4 address
   in the current proxy's stick-table or in the designated stick-table, measured
   in kilobytes over the period configured in the table. If the address is not
   found, zero is returned. The test is currently performed on 32-bit integers,
   which limits values to 4 terabytes. See also sc1/sc2_kbytes_in.
 
-src_kbytes_out <integer>
-src_kbytes_out(<table>) <integer>
+\subsubsection src_kbytes_out <integer>
+\subsubsection src_kbytes_out(<table>) <integer>
   Returns the amount of data sent to the connection's source IPv4 address in
   the current proxy's stick-table or in the designated stick-table, measured
   in kilobytes over the period configured in the table. If the address is not
   found, zero is returned. The test is currently performed on 32-bit integers,
   which limits values to 4 terabytes. See also sc1/sc2_kbytes_out.
 
-src_port <integer>
+\subsubsection src_port <integer>
   Applies to the client's TCP source port. This has a very limited usage.
 
-src_sess_cnt <integer>
-src_sess_cnt(<table>) <integer>
+\subsubsection src_sess_cnt <integer>
+\subsubsection src_sess_cnt(<table>) <integer>
   Returns the cumulated number of connections initiated from the current
   connection's source IPv4 address in the current proxy's stick-table or in the
   designated stick-table, that were transformed into sessions, which means that
   they were accepted by "tcp-request" rules. If the address is not found, zero
   is returned. See also sc1/sc2_sess_cnt.
 
-src_sess_rate <integer>
-src_sess_rate(<table>) <integer>
+\subsubsection src_sess_rate <integer>
+\subsubsection src_sess_rate(<table>) <integer>
   Returns the average session rate from the connection's source IPv4 address in
   the current proxy's stick-table or in the designated stick-table, measured in
   amount of sessions over the period configured in the table. A session is a
   connection that got past the early "tcp-request" rules. If the address is not
   found, zero is returned. See also sc1/sc2_sess_rate.
 
-src_updt_conn_cnt <integer>
-src_updt_conn_cnt(<table>) <integer>
+\subsubsection src_updt_conn_cnt <integer>
+\subsubsection src_updt_conn_cnt(<table>) <integer>
   Creates or updates the entry associated to the source IPv4 address in the
   current proxy's stick-table or in the designated stick-table. This table
   must be configured to store the "conn_cnt" data type, otherwise the match
@@ -600,17 +676,17 @@ src_updt_conn_cnt(<table>) <integer>
             tcp-request content reject if { src_update_count gt 3 }
             server local 127.0.0.1:22
 
-srv_conn(<backend>/<server>) <integer>
+\subsubsection srv_conn(<backend>/<server>) <integer>
   Applies to the number of currently established connections on the server,
   possibly including the connection being evaluated.
   It can be used to use a specific farm when one server is full.
   See also the "fe_conn", "be_conn" and "queue" criteria.
 
-srv_id <integer>
+\subsubsection srv_id <integer>
   Applies to the server's id. Can be used in frontends or backends.
 
-srv_is_up(<server>)
-srv_is_up(<backend>/<server>)
+\subsubsection srv_is_up(<server>)
+\subsubsection srv_is_up(<backend>/<server>)
   Returns true when the designated server is UP, and false when it is either
   DOWN or in maintenance mode. If <backend> is omitted, then the server is
   looked up in the current backend. The function takes no arguments since it
@@ -620,33 +696,32 @@ srv_is_up(<backend>/<server>)
   as boolean variables that can be enabled or disabled from the CLI, so that
   rules depending on those ACLs can be tweaked in realtime.
 
-table_avl <integer>
-table_avl(<table>) <integer>
+\subsubsection table_avl <integer>
+\subsubsection table_avl(<table>) <integer>
   Returns the total number of available entries in the current proxy's
   stick-table or in the designated stick-table. See also table_cnt.
 
-table_cnt <integer>
-table_cnt(<table>) <integer>
+\subsubsection table_cnt <integer>
+\subsubsection table_cnt(<table>) <integer>
   Returns the total number of entries currently in use in the current proxy's
   stick-table or in the designated stick-table. See also src_conn_cnt and
   table_avl for other entry counting methods.
 
 
-7.5.2. Matching contents at Layer 4 (also called Layer 6)
----------------------------------------------------------
+\subsection{Matching contents at Layer 4 (also called Layer 6)}
 
 A second set of criteria depends on data found in buffers, but which can change
 during analysis. This requires that some data has been buffered, for instance
 through TCP request content inspection. Please see the "tcp-request content"
 keyword for more detailed information on the subject.
 
-rep_ssl_hello_type <integer>
+\subsubsection rep_ssl_hello_type <integer>
   Returns true when data in the response buffer looks like a complete SSL (v3
   or superior) hello message and handshake type is equal to <integer>.
   This test was designed to be used with TCP response content inspection: a
   SSL session ID may be fetched.
 
-req_len <integer>
+\subsubsection req_len <integer>
   Returns true when the length of the data in the request buffer matches the
   specified range. It is important to understand that this test does not
   return false as long as the buffer is changing. This means that a check with
@@ -655,15 +730,15 @@ req_len <integer>
   return false only when haproxy is certain that no more data will come in.
   This test was designed to be used with TCP request content inspection.
 
-req_proto_http
+\subsubsection req_proto_http
   Returns true when data in the request buffer look like HTTP and correctly
   parses as such. It is the same parser as the common HTTP request parser which
   is used so there should be no surprises. This test can be used for instance
   to direct HTTP traffic to a given port and HTTPS traffic to another one
   using TCP request content inspection rules.
 
-req_rdp_cookie       <string>
-req_rdp_cookie(<name>) <string>
+\subsubsection req_rdp_cookie       <string>
+\subsubsection req_rdp_cookie(<name>) <string>
   Returns true when data in the request buffer look like the RDP protocol, and
   a cookie is present and equal to <string>. By default, any cookie name is
   checked, but a specific cookie name can be specified in parenthesis. The
@@ -673,21 +748,21 @@ req_rdp_cookie(<name>) <string>
   connecting to the server if properly configured on the client. This can be
   used to restrict access to certain servers to certain users.
 
-req_rdp_cookie_cnt       <integer>
-req_rdp_cookie_cnt(<name>) <integer>
+\subsubsection req_rdp_cookie_cnt       <integer>
+\subsubsection req_rdp_cookie_cnt(<name>) <integer>
   Returns true when the data in the request buffer look like the RDP protocol
   and the number of RDP cookies matches the specified range (typically zero or
   one). Optionally a specific cookie name can be checked. This is a simple way
   of detecting the RDP protocol, as clients generally send the MSTS or MSTSHASH
   cookies.
 
-req_ssl_hello_type <integer>
+\subsubsection req_ssl_hello_type <integer>
   Returns true when data in the request buffer looks like a complete SSL (v3
   or superior) hello message and handshake type is equal to <integer>.
   This test was designed to be used with TCP request content inspection: an
   SSL session ID may be fetched.
 
-req_ssl_sni <string>
+\subsubsection req_ssl_sni <string>
   Returns true when data in the request buffer looks like a complete SSL (v3
   or superior) client hello message with a Server Name Indication TLS extension
   (SNI) matching <string>. SNI normally contains the name of the host the
@@ -704,7 +779,7 @@ req_ssl_sni <string>
      use_backend bk_allow if { req_ssl_sni -f allowed_sites }
      default_backend bk_sorry_page
 
-req_ssl_ver <decimal>
+\subsubsection req_ssl_ver <decimal>
   Returns true when data in the request buffer look like SSL, with a protocol
   version matching the specified range. Both SSLv2 hello messages and SSLv3
   messages are supported. The test tries to be strict enough to avoid being
@@ -713,7 +788,7 @@ req_ssl_ver <decimal>
   that TLSv1 is announced as SSL version 3.1. This test was designed to be used
   with TCP request content inspection.
 
-wait_end
+\subsubsection wait_end
   Waits for the end of the analysis period to return true. This may be used in
   conjunction with content analysis to avoid returning a wrong verdict early.
   It may also be used to delay some actions, such as a delayed reject for some
@@ -737,15 +812,14 @@ wait_end
      tcp-request content reject
 
 
-7.5.3. Matching at Layer 7
---------------------------
+\subsection{Matching at Layer 7}
 
 A third set of criteria applies to information which can be found at the
 application layer (layer 7). Those require that a full HTTP request has been
 read, and are only evaluated then. They may require slightly more CPU resources
 than the layer 4 ones, but not much since the request and response are indexed.
 
-cook(<name>) <string>
+\subsubsection cook(<name>) <string>
   All "cook*" matching criteria inspect all "Cookie" headers to find a cookie
   with the name between parenthesis. If multiple occurrences of the cookie are
   found in the request, they will all be evaluated. Spaces around the name and
@@ -759,64 +833,64 @@ cook(<name>) <string>
 
      cook(profile) silver gold
 
-cook_beg(<name>) <string>
+\subsubsection cook_beg(<name>) <string>
   Returns true if any of the request cookies <name> begins with one of the
   strings. See "cook" for more information on cookie matching. Use the
   scook_beg() variant for response cookies sent by the server.
 
-cook_cnt(<name>) <integer>
+\subsubsection cook_cnt(<name>) <integer>
   Returns true when the number of occurrences of the specified cookie matches
   the values or ranges specified. This is used to detect presence, absence or
   abuse of a specific cookie. See "cook" for more information on header
   matching. Use the scook_cnt() variant for response cookies sent by the
   server.
 
-cook_dir(<name>) <string>
+\subsubsection cook_dir(<name>) <string>
   Returns true if any of the request cookies <name> contains one of the strings
   either isolated or delimited by slashes. This is used to perform filename or
   directory name matching, though it generally is of limited use with cookies.
   See "cook" for more information on cookie matching. Use the scook_dir()
   variant for response cookies sent by the server.
 
-cook_dom(<name>) <string>
+\subsubsection cook_dom(<name>) <string>
   Returns true if any of the request cookies <name> contains one of the strings
   either isolated or delimited by dots. This is used to perform domain name
   matching. See "cook" for more information on cookie matching. Use the
   scook_dom() variant for response cookies sent by the server.
 
-cook_end(<name>) <string>
+\subsubsection cook_end(<name>) <string>
   Returns true if any of the request cookies <name> ends with one of the
   strings. See "cook" for more information on cookie matching. Use the
   scook_end() variant for response cookies sent by the server.
 
-cook_len(<name>) <integer>
+\subsubsection cook_len(<name>) <integer>
   Returns true if any of the request cookies <name> has a length which matches
   the values or ranges specified. This may be used to detect empty or too large
   cookie values. Note that an absent cookie does not match a zero-length test.
   See "cook" for more information on cookie matching. Use the scook_len()
   variant for response cookies sent by the server.
 
-cook_reg(<name>) <regex>
+\subsubsection cook_reg(<name>) <regex>
   Returns true if any of the request cookies <name> matches any of the regular
   expressions. It can be used at any time, but it is important to remember that
   regex matching is slower than other methods. See also other "cook_" criteria,
   as well as "cook" for more information on cookie matching. Use the
   scook_reg() variant for response cookies sent by the server.
 
-cook_sub(<name>) <string>
+\subsubsection cook_sub(<name>) <string>
   Returns true if any of the request cookies <name> contains at least one of
   the strings. See "cook" for more information on cookie matching. Use the
   scook_sub() variant for response cookies sent by the server.
 
-cook_val(<name>) <integer>
+\subsubsection cook_val(<name>) <integer>
   Returns true if any of the request cookies <name> starts with a number which
   matches the values or ranges specified. This may be used to select a server
   based on application-specific cookies. Note that an absent cookie does not
   match any value. See "cook" for more information on cookie matching. Use the
   scook_val() variant for response cookies sent by the server.
 
-hdr <string>
-hdr(<header>[,<occ>]) <string>
+\subsubsection hdr <string>
+\subsubsection hdr(<header>[,<occ>]) <string>
   Note: all the "hdr*" matching criteria either apply to all headers, or to a
   particular header whose name is passed between parenthesis and without any
   space. The header name is not case-sensitive. The header matching complies
@@ -833,14 +907,14 @@ hdr(<header>[,<occ>]) <string>
 
      hdr(Connection) -i close
 
-hdr_beg <string>
-hdr_beg(<header>[,<occ>]) <string>
+\subsubsection hdr_beg <string>
+\subsubsection hdr_beg(<header>[,<occ>]) <string>
   Returns true when one of the headers begins with one of the strings. See
   "hdr" for more information on header matching. Use the shdr_beg() variant for
   response headers sent by the server.
 
-hdr_cnt <integer>
-hdr_cnt(<header>) <integer>
+\subsubsection hdr_cnt <integer>
+\subsubsection hdr_cnt(<header>) <integer>
   Returns true when the number of occurrence of the specified header matches
   the values or ranges specified. It is important to remember that one header
   line may count as several headers if it has several values. This is used to
@@ -849,65 +923,65 @@ hdr_cnt(<header>) <integer>
   of certain headers. See "hdr" for more information on header matching. Use
   the shdr_cnt() variant for response headers sent by the server.
 
-hdr_dir <string>
-hdr_dir(<header>[,<occ>]) <string>
+\subsubsection hdr_dir <string>
+\subsubsection hdr_dir(<header>[,<occ>]) <string>
   Returns true when one of the headers contains one of the strings either
   isolated or delimited by slashes. This is used to perform filename or
   directory name matching, and may be used with Referer. See "hdr" for more
   information on header matching. Use the shdr_dir() variant for response
   headers sent by the server.
 
-hdr_dom <string>
-hdr_dom(<header>[,<occ>]) <string>
+\subsubsection hdr_dom <string>
+\subsubsection hdr_dom(<header>[,<occ>]) <string>
   Returns true when one of the headers contains one of the strings either
   isolated or delimited by dots. This is used to perform domain name matching,
   and may be used with the Host header. See "hdr" for more information on
   header matching. Use the shdr_dom() variant for response headers sent by the
   server.
 
-hdr_end <string>
-hdr_end(<header>[,<occ>]) <string>
+\subsubsection hdr_end <string>
+\subsubsection hdr_end(<header>[,<occ>]) <string>
   Returns true when one of the headers ends with one of the strings. See "hdr"
   for more information on header matching. Use the shdr_end() variant for
   response headers sent by the server.
 
-hdr_ip <ip_address>
-hdr_ip(<header>[,<occ>]) <address>
+\subsubsection hdr_ip <ip_address>
+\subsubsection hdr_ip(<header>[,<occ>]) <address>
   Returns true when one of the headers' values contains an IPv4 or IPv6 address
   matching <address>. This is mainly used with headers such as X-Forwarded-For
   or X-Client-IP. See "hdr" for more information on header matching. Use the
   shdr_ip() variant for response headers sent by the server.
 
-hdr_len <integer>
-hdr_len(<header>[,<occ>]) <integer>
+\subsubsection hdr_len <integer>
+\subsubsection hdr_len(<header>[,<occ>]) <integer>
   Returns true when at least one of the headers has a length which matches the
   values or ranges specified. This may be used to detect empty or too large
   headers. See "hdr" for more information on header matching. Use the
   shdr_len() variant for response headers sent by the server.
 
-hdr_reg <regex>
-hdr_reg(<header>[,<occ>]) <regex>
+\subsubsection hdr_reg <regex>
+\subsubsection hdr_reg(<header>[,<occ>]) <regex>
   Returns true it one of the headers matches one of the regular expressions. It
   can be used at any time, but it is important to remember that regex matching
   is slower than other methods. See also other "hdr_" criteria, as well as
   "hdr" for more information on header matching. Use the shdr_reg() variant for
   response headers sent by the server.
 
-hdr_sub <string>
-hdr_sub(<header>[,<occ>]) <string>
+\subsubsection hdr_sub <string>
+\subsubsection hdr_sub(<header>[,<occ>]) <string>
   Returns true when one of the headers contains one of the strings. See "hdr"
   for more information on header matching. Use the shdr_sub() variant for
   response headers sent by the server.
 
-hdr_val <integer>
-hdr_val(<header>[,<occ>]) <integer>
+\subsubsection hdr_val <integer>
+\subsubsection hdr_val(<header>[,<occ>]) <integer>
   Returns true when one of the headers starts with a number which matches the
   values or ranges specified. This may be used to limit content-length to
   acceptable values for example. See "hdr" for more information on header
   matching. Use the shdr_val() variant for response headers sent by the server.
 
-http_auth(<userlist>)
-http_auth_group(<userlist>) <group> [<group>]*
+\subsubsection http_auth(<userlist>)
+\subsubsection http_auth_group(<userlist>) <group> [<group>]*
   Returns true when authentication data received from the client matches
   username & password stored on the userlist. It is also possible to
   use http_auth_group to check if the user is assigned to at least one
@@ -915,171 +989,170 @@ http_auth_group(<userlist>) <group> [<group>]*
 
   Currently only http basic auth is supported.
 
-http_first_req
+\subsubsection http_first_req
   Returns true when the request being processed is the first one of the
   connection. This can be used to add or remove headers that may be missing
   from some requests when a request is not the first one, or even to perform
   some specific ACL checks only on the first request.
 
-method <string>
+\subsubsection method <string>
   Applies to the method in the HTTP request, eg: "GET". Some predefined ACL
   already check for most common methods.
 
-path <string>
+\subsubsection path <string>
   Returns true when the path part of the request, which starts at the first
   slash and ends before the question mark, equals one of the strings. It may be
   used to match known files, such as /favicon.ico.
 
-path_beg <string>
+\subsubsection path_beg <string>
   Returns true when the path begins with one of the strings. This can be used
   to send certain directory names to alternative backends.
 
-path_dir <string>
+\subsubsection path_dir <string>
   Returns true when one of the strings is found isolated or delimited with
   slashes in the path. This is used to perform filename or directory name
   matching without the risk of wrong match due to colliding prefixes. See also
   "url_dir" and "path_sub".
 
-path_dom <string>
+\subsubsection path_dom <string>
   Returns true when one of the strings is found isolated or delimited with dots
   in the path. This may be used to perform domain name matching in proxy
   requests. See also "path_sub" and "url_dom".
 
-path_end <string>
+\subsubsection path_end <string>
   Returns true when the path ends with one of the strings. This may be used to
   control file name extension.
 
-path_len <integer>
+\subsubsection path_len <integer>
   Returns true when the path length matches the values or ranges specified.
   This may be used to detect abusive requests for instance.
 
-path_reg <regex>
+\subsubsection path_reg <regex>
   Returns true when the path matches one of the regular expressions. It can be
   used any time, but it is important to remember that regex matching is slower
   than other methods. See also "url_reg" and all "path_" criteria.
 
-path_sub <string>
+\subsubsection path_sub <string>
   Returns true when the path contains one of the strings. It can be used to
   detect particular patterns in paths, such as "../" for example. See also
   "path_dir".
 
-payload(<offset>,<length>) <string>
+\subsubsection payload(<offset>,<length>) <string>
   Returns true if the block of <length> bytes, starting at byte <offset> in the
   request or response buffer (depending on the rule) exactly matches one of the
   strings.
 
-payload_lv(<offset1>,<length>[,<offset2>])
+\subsubsection payload_lv(<offset1>,<length>[,<offset2>])
   Returns true if the block whose size is specified at <offset1> for <length>
   bytes, and which starts at <offset2> if specified or just after the length in
   the request or response buffer (depending on the rule) exactly matches one of
   the strings. The <offset2> parameter also supports relative offsets if
   prepended with a '+' or '-' sign.
 
-req_ver <string>
+\subsubsection req_ver <string>
   Applies to the version string in the HTTP request, eg: "1.0". Some predefined
   ACL already check for versions 1.0 and 1.1.
 
-status <integer>
+\subsubsection status <integer>
   Applies to the HTTP status code in the HTTP response, eg: "302". It can be
   used to act on responses depending on status ranges, for instance, remove
   any Location header if the response is not a 3xx.
 
-url <string>
+\subsubsection url <string>
   Applies to the whole URL passed in the request. The only real use is to match
   "*", for which there already is a predefined ACL.
 
-url_beg <string>
+\subsubsection url_beg <string>
   Returns true when the URL begins with one of the strings. This can be used to
   check whether a URL begins with a slash or with a protocol scheme.
 
-url_dir <string>
+\subsubsection url_dir <string>
   Returns true when one of the strings is found isolated or delimited with
   slashes in the URL. This is used to perform filename or directory name
   matching without the risk of wrong match due to colliding prefixes. See also
   "path_dir" and "url_sub".
 
-url_dom <string>
+\subsubsection url_dom <string>
   Returns true when one of the strings is found isolated or delimited with dots
   in the URL. This is used to perform domain name matching without the risk of
   wrong match due to colliding prefixes. See also "url_sub".
 
-url_end <string>
+\subsubsection url_end <string>
   Returns true when the URL ends with one of the strings. It has very limited
   use. "path_end" should be used instead for filename matching.
 
-url_ip <address>
+\subsubsection url_ip <address>
   Applies to the IPv4 or IPv6 address specified in the absolute URI in an HTTP
   request. It can be used to prevent access to certain resources such as local
   network. It is useful with option "http_proxy".
 
-url_len <integer>
+\subsubsection url_len <integer>
   Returns true when the url length matches the values or ranges specified. This
   may be used to detect abusive requests for instance.
 
-url_port <integer>
+\subsubsection url_port <integer>
   Applies to the port specified in the absolute URI in an HTTP request. It can
   be used to prevent access to certain resources. It is useful with option
   "http_proxy". Note that if the port is not specified in the request, port 80
   is assumed.
 
-url_reg <regex>
+\subsubsection url_reg <regex>
   Returns true when the URL matches one of the regular expressions. It can be
   used any time, but it is important to remember that regex matching is slower
   than other methods. See also "path_reg" and all "url_" criteria.
 
-url_sub <string>
+\subsubsection url_sub <string>
   Returns true when the URL contains one of the strings. It can be used to
   detect particular patterns in query strings for example. See also "path_sub".
 
-urlp(<name>) <string>
+\subsubsection urlp(<name>) <string>
   Note: all "urlp*" matching criteria apply to the first occurrence of the
   parameter <name> in the query string. The parameter name is case-sensitive.
 
   The "urlp" matching criteria returns true if the designated URL parameter
   matches any of the strings. This can be used to check for exact values.
 
-urlp_beg(<name>) <string>
+\subsubsection urlp_beg(<name>) <string>
   Returns true when the URL parameter "<name>" begins with one of the strings.
   This can be used to check whether a URL begins with a slash or with a
   protocol scheme.
 
-urlp_dir(<name>) <string>
+\subsubsection urlp_dir(<name>) <string>
   Returns true when the URL parameter "<name>" contains one of the strings
   either isolated or delimited with slashes. This is used to perform filename
   or directory name matching in a specific URL parameter without the risk of
   wrong match due to colliding prefixes. See also "path_dir" and "urlp_sub".
 
-urlp_dom(<name>) <string>
+\subsubsection urlp_dom(<name>) <string>
   Returns true when one of the strings is found isolated or delimited with dots
   in the URL parameter "<name>". This is used to perform domain name matching
   in a specific URL parameter without the risk of wrong match due to colliding
   prefixes. See also "urlp_sub".
 
-urlp_end(<name>) <string>
+\subsubsection urlp_end(<name>) <string>
   Returns true when the URL parameter "<name>" ends with one of the strings.
 
-urlp_ip(<name>) <ip_address>
+\subsubsection urlp_ip(<name>) <ip_address>
   Returns true when the URL parameter "<name>" contains an IPv4 or IPv6 address
   which matches one of the specified addresses.
 
-urlp_len(<name>) <integer>
+\subsubsection urlp_len(<name>) <integer>
   Returns true when the URL parameter "<name>" has a length matching the values
   or ranges specified. This is used to detect abusive requests for instance.
 
-urlp_reg(<name>) <regex>
+\subsubsection urlp_reg(<name>) <regex>
   Returns true when the URL parameter "<name>" matches one of the regular
   expressions. It can be used any time, but it is important to remember that
   regex matching is slower than other methods. See also "path_reg" and all
   "urlp_" criteria.
 
-urlp_sub(<name>) <string>
+\subsubsection urlp_sub(<name>) <string>
   Returns true when the URL parameter "<name>" contains one of the strings. It
   can be used to detect particular patterns in query strings for example. See
   also "path_sub" and other "urlp_" criteria.
 
 
-7.6. Pre-defined ACLs
----------------------
+\section{Pre-defined ACLs}
 
 Some predefined ACLs are hard-coded so that they do not have to be declared in
 every frontend which needs them. They all have their names in upper case in
@@ -1109,8 +1182,7 @@ WAIT_END         wait_end                      wait for end of content analysis
 ---------------+-----------------------------+---------------------------------
 
 
-7.7. Using ACLs to form conditions
-----------------------------------
+\section{Using ACLs to form conditions}
 
 Some actions are only performed upon a valid condition. A condition is a
 combination of ACLs with operators. 3 operators are supported :
@@ -1182,8 +1254,7 @@ good use is the following :
 See section 4.2 for detailed help on the "block" and "use_backend" keywords.
 
 
-7.8. Pattern extraction
------------------------
+\section{Pattern extraction}
 
 The stickiness features relies on pattern extraction in the request and
 response. Sometimes the data needs to be converted first before being stored,

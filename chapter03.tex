@@ -57,6 +57,7 @@ The following keywords are supported in the "global" section:
 \section{Process management and security}
 
 \subsubsection[chroot]{chroot <jail dir>}
+  \index{chroot}
   Changes current directory to <jail dir> and performs a chroot() there before
   dropping privileges. This increases the security level in case an unknown
   vulnerability would be exploited, since it would make it very hard for the
@@ -65,21 +66,25 @@ The following keywords are supported in the "global" section:
   empty and unwritable to anyone.
   
 \subsubsection[daemon]{daemon}
+  \index{daemon}
   Makes the process fork into background. This is the recommended mode of
   operation. It is equivalent to the command line "-D" argument. It can be
   disabled by the command line "-db" argument.
   
 \subsubsection[gid]{gid <number>}
+  \index{gid}
   Changes the process' group ID to <number>. It is recommended that the group
   ID is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
   be started with a user belonging to this group, or with superuser privileges.
   See also "group" and "uid".
   
 \subsubsection[group]{group <group name>}
+  \index{group}
   Similar to "gid" but uses the GID of group name <group name> from /etc/group.
   See also "gid" and "user".
 
 \subsubsection[log]{log <address> <facility> [max level [min level]]}
+  \index{log}
   Adds a global syslog server. Up to two global servers can be defined. They
   will receive logs for startups and exits, as well as all logs from proxies
   configured with "log global".
@@ -100,7 +105,8 @@ The following keywords are supported in the "global" section:
           the chroot) and uid/gid (be sure the path is appropriately
           writeable).
   \end{itemize}
-  
+
+  \index{Log facility}  
   <facility> must be one of the 24 standard syslog facilities:
   
   \vspace{5mm}
@@ -120,6 +126,7 @@ The following keywords are supported in the "global" section:
   than this one will be capped to this level. This is used to avoid sending
   "emerg" messages on all terminals on some default syslog configurations.
   
+  \index{Log level}
   Eight levels are known:
   
   \vspace{3mm}
@@ -130,6 +137,7 @@ The following keywords are supported in the "global" section:
   }
   
 \subsubsection[log-send-hostname]{log-send-hostname [<string>]}
+  \index{log-send-hostname}
   Sets the hostname field in the syslog header. If optional "string" parameter
   is set the header is set to the string contents, otherwise uses the hostname
   of the system. Generally used if one is not relaying logs through an
@@ -137,12 +145,14 @@ The following keywords are supported in the "global" section:
   the logs.
 
 \subsubsection[log-tag]{log-tag <string>}
+  \index{log-tag}
   Sets the tag field in the syslog header to this string. It defaults to the
   program name as launched from the command line, which usually is "haproxy".
   Sometimes it can be useful to differentiate between multiple processes
   running on the same host.
 
 \subsubsection[nbproc]{nbproc <number>}
+  \index{nbproc}
   Creates <number> processes when going daemon. This requires the "daemon"
   mode. By default, only one process is created, which is the recommended mode
   of operation. For systems limited to small sets of file descriptors per
@@ -152,12 +162,13 @@ The following keywords are supported in the "global" section:
   See also "daemon".
 
 \subsubsection[pidfile]{pidfile <pidfile>}
+  \index{pidfile}
   Writes pids of all daemons into file <pidfile>. This option is equivalent to
   the "-p" command line argument. The file must be accessible to the user
   starting the process. See also "daemon".
 
 \subsubsection[stats socket]{stats socket <path> [{uid | user} <uid>] [{gid | group} <gid>] [mode <mode>] [level <level>]}
-
+  \index{stats socket}
   Creates a UNIX socket in stream mode at location <path>. Any previously
   existing socket will be backed up then replaced. Connections to this socket
   will return various statistics outputs and even allow some commands to be
@@ -188,27 +199,31 @@ The following keywords are supported in the "global" section:
   user the process is started with.
 
 \subsubsection[stats timeout]{stats timeout <timeout, in milliseconds>}
+  \index{stats timeout}
   The default timeout on the stats socket is set to 10 seconds. It is possible
   to change this value with "stats timeout". The value must be passed in
   milliseconds, or be suffixed by a time unit among { us, ms, s, m, h, d }.
 
 \subsubsection[stats maxconn]{stats maxconn <connections>}
+  \index{stats maxconn}
   By default, the stats socket is limited to 10 concurrent connections. It is
   possible to change this value with "stats maxconn".
 
 \subsubsection[uid]{uid <number>}
+  \index{uid}
   Changes the process' user ID to <number>. It is recommended that the user ID
   is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
   be started with superuser privileges in order to be able to switch to another
   one. See also "gid" and "user".
 
 \subsubsection[ulimit-n]{ulimit-n <number>}
+  \index{ulimit-n}
   Sets the maximum number of per-process file-descriptors to <number>. By
   default, it is automatically computed, so it is recommended not to use this
   option.
 
 \subsubsection[unix-bind]{unix-bind [ prefix <prefix> ] [ mode <mode> ] [ user <user> ] [ uid <uid> ] [ group <group> ] [ gid <gid> ]}
-
+  \index{unix-bind}
   Fixes common settings to UNIX listening sockets declared in "bind" statements.
   This is mainly used to simplify declaration of those UNIX sockets and reduce
   the risk of errors, since those settings are most commonly required but are
@@ -221,10 +236,12 @@ The following keywords are supported in the "global" section:
   "unix-bind" settings may be seen as process-wide default settings.
 
 \subsubsection[user]{user <user name>}
+  \index{user}
   Similar to "uid" but uses the UID of user name <user name> from /etc/passwd.
   See also "uid" and "group".
 
 \subsubsection[node]{node <name>}
+  \index{node}
   Only letters, digits, hyphen and underscore are allowed, like in DNS names.
 
   This statement is useful in HA configurations where two or more processes or
@@ -233,6 +250,7 @@ The following keywords are supported in the "global" section:
   traffic.
 
 \subsubsection[description]{description <text>}
+  \index{description}
   Add a text that describes the instance.
 
   Please note that it is required to escape certain characters (\# for example)
@@ -242,12 +260,14 @@ The following keywords are supported in the "global" section:
 \section{Performance tuning}
 
 \subsubsection[maxconn]{maxconn <number>}
+  \index{maxconn}
   Sets the maximum per-process number of concurrent connections to <number>. It
   is equivalent to the command-line argument "-n". Proxies will stop accepting
   connections when this limit is reached. The "ulimit-n" parameter is
   automatically adjusted according to this value. See also "ulimit-n".
 
 \subsubsection[maxconnrate]{maxconnrate <number>}
+  \index{maxconnrate}
   Sets the maximum per-process number of connections per second to <number>.
   Proxies will stop accepting connections when this limit is reached. It can be
   used to limit the global capacity regardless of each frontend capacity. It is
@@ -258,6 +278,7 @@ The following keywords are supported in the "global" section:
   fairness.
 
 \subsubsection[maxpipes]{maxpipes <number>}
+  \index{maxpipes}
   Sets the maximum per-process number of pipes to <number>. Currently, pipes
   are only used by kernel-based tcp splicing. Since a pipe contains two file
   descriptors, the "ulimit-n" value will be increased accordingly. The default
@@ -266,16 +287,19 @@ The following keywords are supported in the "global" section:
   to standard copy, so setting this value too low may only impact performance.
 
 \subsubsection[noepoll]{noepoll}
+  \index{noepoll}
   Disables the use of the "epoll" event polling system on Linux. It is
   equivalent to the command-line argument "-de". The next polling system
   used will generally be "poll". See also "nosepoll", and "nopoll".
 
 \subsubsection[nokqueue]{nokqueue}
+  \index{nokqueue}
   Disables the use of the "kqueue" event polling system on BSD. It is
   equivalent to the command-line argument "-dk". The next polling system
   used will generally be "poll". See also "nopoll".
 
 \subsubsection[nopoll]{nopoll}
+  \index{nopoll}
   Disables the use of the "poll" event polling system. It is equivalent to the
   command-line argument "-dp". The next polling system used will be "select".
   It should never be needed to disable "poll" since it's available on all
@@ -283,11 +307,13 @@ The following keywords are supported in the "global" section:
   "nokqueue".
 
 \subsubsection[nosepoll]{nosepoll}
+  \index{nosepoll}
   Disables the use of the "speculative epoll" event polling system on Linux. It
   is equivalent to the command-line argument "-ds". The next polling system
   used will generally be "epoll". See also "nosepoll", and "nopoll".
 
 \subsubsection[nosplice]{nosplice}
+  \index{nosplice}
   Disables the use of kernel tcp splicing between sockets on Linux. It is
   equivalent to the command line argument "-dS".  Data will then be copied
   using conventional and more portable recv/send calls. Kernel tcp splicing is
@@ -298,13 +324,15 @@ The following keywords are supported in the "global" section:
   "option splice-response".
 
 \subsubsection[spread-checks]{spread-checks <0..50, in percent>}
+  \index{spread-checks}
   Sometimes it is desirable to avoid sending health checks to servers at exact
   intervals, for instance when many logical servers are located on the same
   physical server. With the help of this parameter, it becomes possible to add
-  some randomness in the check interval between 0 and +/- 50%. A value between
+  some randomness in the check interval between 0 and +/- 50\%. A value between
   2 and 5 seems to show good results. The default value remains at 0.
 
 \subsubsection[tune.bufsize]{tune.bufsize <number>}
+  \index{tune.bufsize}
   Sets the buffer size to this size (in bytes). Lower values allow more
   sessions to coexist in the same amount of RAM, and higher values allow some
   applications with very large cookies to work. The default value is 16384 and
@@ -315,6 +343,7 @@ The following keywords are supported in the "global" section:
   parameter should be decreased by the same factor as this one is increased.
 
 \subsubsection[tune.chksize]{tune.chksize <number>}
+  \index{tune.chksize}
   Sets the check buffer size to this size (in bytes). Higher values may help
   find string or regex patterns in very large pages, though doing so may imply
   more memory and CPU usage. The default value is 16384 and can be changed at
@@ -322,6 +351,7 @@ The following keywords are supported in the "global" section:
   checks whenever possible.
 
 \subsubsection[tune.http.maxhdr]{tune.http.maxhdr <number>}
+  \index{tune.http.maxhdr}
   Sets the maximum number of headers in a request. When a request comes with a
   number of headers greater than this value (including the first line), it is
   rejected with a "400 Bad Request" status code. Similarly, too large responses
@@ -333,6 +363,7 @@ The following keywords are supported in the "global" section:
   limit too high.
 
 \subsubsection[tune.maxaccept]{tune.maxaccept <number>}
+  \index{tune.maxaccept}
   Sets the maximum number of consecutive accepts that a process may perform on
   a single wake up. High values give higher priority to high connection rates,
   while lower values give higher priority to already established connections.
@@ -343,6 +374,7 @@ The following keywords are supported in the "global" section:
   the limitation. It should normally not be needed to tweak this value.
 
 \subsubsection[tune.maxpollevents]{tune.maxpollevents <number>}
+  \index{tune.maxpollevents}
   Sets the maximum amount of events that can be processed at once in a call to
   the polling system. The default value is adapted to the operating system. It
   has been noticed that reducing it below 200 tends to slightly decrease
@@ -350,6 +382,7 @@ The following keywords are supported in the "global" section:
   tends to trade latency for slightly increased bandwidth.
 
 \subsubsection[tune.maxrewrite]{tune.maxrewrite <number>}
+  \index{tune.maxrewrite}
   Sets the reserved buffer space to this size in bytes. The reserved space is
   used for header rewriting or appending. The first reads on sockets will never
   fill more than bufsize-maxrewrite. Historically it has defaulted to half of
@@ -362,6 +395,7 @@ The following keywords are supported in the "global" section:
   bufsize.
 
 \subsubsection[tune.pipesize]{tune.pipesize <number>}
+  \index{tune.pipesize}
   Sets the kernel pipe buffer size to this size (in bytes). By default, pipes
   are the default size for the system. But sometimes when using TCP splicing,
   it can improve performance to increase pipe sizes, especially if it is
@@ -371,6 +405,8 @@ The following keywords are supported in the "global" section:
 
 \subsubsection[tune.rcvbuf.client]{tune.rcvbuf.client <number>}
 \subsubsection[tune.rcvbuf.server]{tune.rcvbuf.server <number>}
+  \index{tune.rcvbuf.client}
+  \index{tune.rcvbuf.server}
   Forces the kernel socket receive buffer size on the client or the server side
   to the specified value in bytes. This value applies to all TCP/HTTP frontends
   and backends. It should normally never be set, and the default size (0) lets
@@ -381,6 +417,8 @@ The following keywords are supported in the "global" section:
 
 \subsubsection[tune.sndbuf.client]{tune.sndbuf.client <number>}
 \subsubsection[tune.sndbuf.server]{tune.sndbuf.client <number>}
+  \index{tune.sndbuf.client}
+  \index{tune.sndbuf.server}
   Forces the kernel socket send buffer size on the client or the server side to
   the specified value in bytes. This value applies to all TCP/HTTP frontends
   and backends. It should normally never be set, and the default size (0) lets
@@ -395,15 +433,16 @@ The following keywords are supported in the "global" section:
 \section{Debugging}
 
 \subsubsection[debug]{debug}
+  \index{debug}
   Enables debug mode which dumps to stdout all exchanges, and disables forking
   into background. It is the equivalent of the command-line argument "-d". It
   should never be used in a production configuration since it may prevent full
   system startup.
 
 \subsubsection[quiet]{quiet}
+  \index{quiet}
   Do not display any message during startup. It is equivalent to the command-
   line argument "-q".
-
 
 \section{Userlists}
 It is possible to control access to frontend/backend/listen sections or to
@@ -411,16 +450,19 @@ http stats by allowing only authenticated and authorized users. To do this,
 it is required to create at least one userlist and to define users.
 
 \subsubsection[userlist]{userlist <listname>}
+  \index{userlist}
   Creates new userlist with name <listname>. Many independent userlists can be
   used to store authentication \& authorization data for independent customers.
 
 \subsubsection[group]{group <groupname> [users <user>,<user>,(...)]}
+  \index{group}
   Adds group <groupname> to the current userlist. It is also possible to
   attach users to this group by using a comma separated list of names
   proceeded by "users" keyword.
 
 \subsubsection[user]{user <username> [password | insecure-password <password>]
   [groups <group>, (...)]}
+  \index{user}
   Adds user <username> to the current userlist. Both secure (encrypted) and
   insecure (unencrypted) passwords can be used. Encrypted passwords are
   evaluated using the crypt(3) function so depending of the system's
@@ -449,7 +491,6 @@ it is required to create at least one userlist and to define users.
 
   Please note that both lists are functionally identical.
 
-
 \section{Peers}
 
 It is possible to synchronize server entries in stick tables between several
@@ -465,10 +506,12 @@ during a reload, it typically takes a fraction of a second even for large
 tables.
 
 \subsubsection[peers]{peers <peersect>}
+  \index{peers}
   Creates a new peer list with name <peersect>. It is an independant section,
   which is referenced by one or more stick-tables.
 
 \subsubsection[peer]{peer <peername> <ip>:<port>}
+  \index{peer}
   Defines a peer inside a peers section.
   If <peername> is set to the local peer name (by default hostname, or forced
   using "-L" command line option), haproxy will listen for incoming remote peer

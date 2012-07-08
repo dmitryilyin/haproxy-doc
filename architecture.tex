@@ -125,15 +125,15 @@ load across the new boxes.
    and a cookie will be reassigned.
 \end{itemize}
 
-\newpage
 \subsubsection{Flows}
 
 \begin{figure}[!hb]
 \centering
+\small
 
 \begin{tikzpicture}[
 very thick,
-yscale=1.25,
+scale=1.05,
 xscale=1.5,
 ]
 
@@ -387,7 +387,7 @@ option.
 \item[-] if a request does not contain a cookie, it will be forwarded to a valid
    server
 \item[-] in return, if a JESSIONID cookie is seen, the server name will be prefixed
-   into it, followed by a delimitor ('\~{}')
+   into it, followed by a delimitor (\~{})
 \item[-] when the client comes again with the cookie "JSESSIONID=A\~{}xxx", LB1 will
    know that it must be forwarded to server A. The server name will then be
    extracted from cookie before it is sent to the server.
@@ -1575,10 +1575,10 @@ node distance=0.5cm,
 \draw (s1l1) -- (s1-7);
 \draw (s1l2) -- (s1-9);
 
-\node[point,below of=s1l1,yshift=-1cm](s1-12);
-\node[point,below of=s1l2,yshift=-1cm](s1-13);
-\node[point,left of=s1-12,xshift=-1.5cm](s1-11);
-\node[point,left of=s1-11,xshift=-1.5cm](s1-10);
+\node[point,below of=s1l1,yshift=-1cm](s1-12){};
+\node[point,below of=s1l2,yshift=-1cm](s1-13){};
+\node[point,left of=s1-12,xshift=-1.5cm](s1-11){};
+\node[point,left of=s1-11,xshift=-1.5cm](s1-10){};
 
 \draw (s1l1)  -- (s1-12);
 \draw (s1l2)  -- (s1-13);
@@ -1662,10 +1662,10 @@ node distance=0.5cm,
 \draw (s2l1) -- (s2-7);
 \draw (s2l2) -- (s2-9);
 
-\node[point,below of=s2l1,yshift=-1cm](s2-12);
-\node[point,below of=s2l2,yshift=-1cm](s2-13);
-\node[point,left of=s2-12,xshift=-1.5cm](s2-11);
-\node[point,left of=s2-11,xshift=-1.5cm](s2-10);
+\node[point,below of=s2l1,yshift=-1cm](s2-12){};
+\node[point,below of=s2l2,yshift=-1cm](s2-13){};
+\node[point,left of=s2-12,xshift=-1.5cm](s2-11){};
+\node[point,left of=s2-11,xshift=-1.5cm](s2-10){};
 
 \draw (s2l1)  -- (s2-12);
 \draw (s2l2)  -- (s2-13);

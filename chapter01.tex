@@ -46,11 +46,13 @@ node distance=3cm,
 \label{fig:http_close}
 \end{figure}
 
+\index{HTTP close}
 In this mode, called the "HTTP close" mode, there are as many connection
 establishments as there are HTTP transactions. Since the connection is closed
 by the server after the response, the client does not need to know the content
 length.
 
+\index{HTTP keep-alive}
 Due to the transactional nature of the protocol, it was possible to improve it
 to avoid closing a connection between two subsequent transactions. In this mode
 however, it is mandatory that the server indicates the content length for each
@@ -90,6 +92,7 @@ power required on the server side. It is generally better than the close mode,
 but not always because the clients often limit their concurrent connections to
 a smaller value.
 
+\index{HTTP pipelining}
 A last improvement in the communications is the pipelining mode. It still uses
 keep-alive, but the client does not wait for the first response to send the
 second request. This is useful for fetching large number of images composing a
@@ -171,12 +174,14 @@ The URI itself can have several forms:
 
 \begin{description}
 \item[A "relative URI"]
+    \index{Relative URI}
     It is a complete URL without the host part. This is generally what is
     received by servers, reverse proxies and transparent proxies.
     
     \verb|/serv/login.php?lang=en&profile=2|
 
 \item[An "absolute URI", also called a "URL"]
+    \index{Absolute URI}
     It is composed of a "scheme" (the protocol name followed by '://'), a host
     name or address, optionally a colon (':') followed by a port number, then
     a relative URI beginning at the first slash ('/') after the address part.
@@ -267,6 +272,7 @@ Line 1 is the "response line". It is always composed of 3 fields:
 \end{enumerate}
 
 The status code is always 3-digit. The first digit indicates a general status:
+\index{HTTP response code}
 \begin{description}
 \item[1xx] informational message to be skipped (eg: 100, 101)
 \item[2xx] OK, content is following   (eg: 200, 206)

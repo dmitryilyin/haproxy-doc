@@ -7,4 +7,6 @@
 *.ps
 *.dvi
 *.toc
+*.ilg
+*.ind
 .texpadtmp
