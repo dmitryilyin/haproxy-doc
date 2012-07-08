@@ -97,7 +97,7 @@ load across the new boxes.
   \end{tikzpicture}
 \end{figure}
 
-\paragraph{Config on haproxy (LB1)}
+\subsubsection{Config on haproxy (LB1)}
 \begin{verbatim}
     listen webfarm 192.168.1.1:80
        mode http
@@ -110,7 +110,7 @@ load across the new boxes.
        server webD 192.168.1.14:80 cookie D check      
 \end{verbatim}
 
-\paragraph{Description}
+\subsubsection{Description}
 
 \begin{itemize}
 \item[-] LB1 will receive clients requests.
@@ -125,30 +125,59 @@ load across the new boxes.
    and a cookie will be reassigned.
 \end{itemize}
 
-\paragraph{Flows}
+\newpage
+\subsubsection{Flows}
 
-\begin{verbatim}
-(client)                           (haproxy)                         (server A)
-  >-- GET /URI1 HTTP/1.0 ------------> |
-               ( no cookie, haproxy forwards in load-balancing mode. )
-                                       | >-- GET /URI1 HTTP/1.0 ---------->
-                                       | <-- HTTP/1.0 200 OK -------------<
-               ( the proxy now adds the server cookie in return )
-  <-- HTTP/1.0 200 OK ---------------< |
-      Set-Cookie: SERVERID=A           |
-  >-- GET /URI2 HTTP/1.0 ------------> |
-      Cookie: SERVERID=A               |
-      ( the proxy sees the cookie. it forwards to server A and deletes it )
-                                       | >-- GET /URI2 HTTP/1.0 ---------->
-                                       | <-- HTTP/1.0 200 OK -------------<
-   ( the proxy does not add the cookie in return because the client knows it )
-  <-- HTTP/1.0 200 OK ---------------< |
-  >-- GET /URI3 HTTP/1.0 ------------> |
-      Cookie: SERVERID=A               |
-                                    ( ... )
-\end{verbatim}
+\begin{figure}[!hb]
+\centering
 
-\paragraph{Limits}
+\begin{tikzpicture}[
+very thick,
+yscale=1.25,
+xscale=1.5,
+]
+
+\node[flowheader](clients)  at (0,0)  {Clients};
+\node[flowheader](haproxy)  at (5,0)  {HAProxy};
+\node[flowheader](server-a) at (10,0) {Server A};
+
+\draw (clients)  -- ++(0,-14);
+\draw (haproxy)  -- ++(0,-14);
+\draw (server-a) -- ++(0,-14);
+
+%1
+\flow{r}{1}{0}{5}{GET /URI1 HTTP/1.0}{};
+%2
+\node[marker] at (5,-2) {No cookie, haproxy forwards in load-balancing mode.};
+%3
+\flow{r}{3}{5}{10}{GET /URI1 HTTP/1.0}{};
+%4
+\flow{l}{4}{10}{5}{HTTP/1.0 200 OK}{};
+%5
+\node[marker] at (5,-5) {The proxy now adds the server cookie in return.};
+%6
+\flow{l}{6}{5}{0}{HTTP/1.0 200 OK}{Set-Cookie: SERVERID=A};
+%7
+\flow{r}{7}{0}{5}{GET /URI2 HTTP/1.0}{Cookie: SERVERID=A};
+%8
+\node[marker] at (5,-8) {The proxy sees the cookie. It forwards to server A and deletes it};
+%9
+\flow{r}{9}{5}{10}{GET /URI2 HTTP/1.0}{};
+%10
+\flow{l}{10}{10}{5}{HTTP/1.0 200 OK}{};
+%11
+\node[marker] at (5,-11) {The proxy does not add the cookie in return because the client knows it};
+%12
+\flow{l}{12}{5}{0}{HTTP/1.0 200 OK}{};
+%13
+\flow{r}{13}{0}{5}{GET /URI3 HTTP/1.0}{Cookie: SERVERID=A};
+%14
+\node[marker] at (5,-14) {\ldots};
+
+\end{tikzpicture}
+\end{figure}
+
+\subsubsection{Limits}
 
 \begin{itemize}
 \item[-] if clients use keep-alive (HTTP/1.1), only the first response will have
@@ -189,7 +218,7 @@ load across the new boxes.
    \end{verbatim}
 \end{itemize}
 
-\paragraph{Hints}
+\subsubsection{Hints}
 
 Sometimes on the internet, you will find a few percent of the clients which
 disable cookies on their browser. Obviously they have troubles everywhere on
@@ -298,7 +327,7 @@ proxy to bind to the shared IP on Linux 2.4, you must enable it in /proc:
   \end{tikzpicture}
 \end{figure}
 
-\paragraph{Config on both proxies (LB1 and LB2)}
+\subsubsection{Config on both proxies (LB1 and LB2)}
      
 \begin{verbatim}
     listen webfarm 192.168.1.1:80
@@ -314,7 +343,7 @@ proxy to bind to the shared IP on Linux 2.4, you must enable it in /proc:
        server webD 192.168.1.14:80 cookie D check
 \end{verbatim}
 
-\paragraph{Notes}
+\subsubsection{Notes}
 
 The proxy will modify EVERY cookie sent by the client and the server,
 so it is important that it can access to ALL cookies in ALL requests for
@@ -323,7 +352,7 @@ each session. This implies that there is no keep-alive (HTTP/1.1), thus the
 use keep-alive (eg: Apache 1.3 in reverse-proxy mode), you can remove this
 option.
 
-\paragraph{Configuration for keepalived on LB1/LB2}
+\subsubsection{Configuration for keepalived on LB1/LB2}
 
 \begin{verbatim}
 
@@ -347,7 +376,7 @@ option.
     }
 \end{verbatim}
 
-\paragraph{Description}
+\subsubsection{Description}
 
 \begin{itemize}
 \item[-] LB1 is VRRP master (keepalived), LB2 is backup. Both monitor the haproxy
@@ -358,48 +387,80 @@ option.
 \item[-] if a request does not contain a cookie, it will be forwarded to a valid
    server
 \item[-] in return, if a JESSIONID cookie is seen, the server name will be prefixed
-   into it, followed by a delimitor ('~')
-\item[-] when the client comes again with the cookie "JSESSIONID=A~xxx", LB1 will
+   into it, followed by a delimitor ('\~{}')
+\item[-] when the client comes again with the cookie "JSESSIONID=A\~{}xxx", LB1 will
    know that it must be forwarded to server A. The server name will then be
    extracted from cookie before it is sent to the server.
 \item[-] if server "webA" dies, the requests will be sent to another valid server
    and a cookie will be reassigned.
 \end{itemize}
 
-\paragraph{Flows}
+\newpage
+\subsubsection{Flows}
 
-\begin{verbatim}
-(client)                           (haproxy)                         (server A)
-  >-- GET /URI1 HTTP/1.0 ------------> |
-               ( no cookie, haproxy forwards in load-balancing mode. )
-                                       | >-- GET /URI1 HTTP/1.0 ---------->
-                                       |     X-Forwarded-For: 10.1.2.3
-                                       | <-- HTTP/1.0 200 OK -------------<
-                        ( no cookie, nothing changed )
-  <-- HTTP/1.0 200 OK ---------------< |
-  >-- GET /URI2 HTTP/1.0 ------------> |
-    ( no cookie, haproxy forwards in lb mode, possibly to another server. )
-                                       | >-- GET /URI2 HTTP/1.0 ---------->
-                                       |     X-Forwarded-For: 10.1.2.3
-                                       | <-- HTTP/1.0 200 OK -------------<
-                                       |     Set-Cookie: JSESSIONID=123
-    ( the cookie is identified, it will be prefixed with the server name )
-  <-- HTTP/1.0 200 OK ---------------< |
-      Set-Cookie: JSESSIONID=A~123     |
-  >-- GET /URI3 HTTP/1.0 ------------> |
-      Cookie: JSESSIONID=A~123         |
-       ( the proxy sees the cookie, removes the server name and forwards
-          to server A which sees the same cookie as it previously sent )
-                                       | >-- GET /URI3 HTTP/1.0 ---------->
-                                       |     Cookie: JSESSIONID=123
-                                       |     X-Forwarded-For: 10.1.2.3
-                                       | <-- HTTP/1.0 200 OK -------------<
-                        ( no cookie, nothing changed )
-  <-- HTTP/1.0 200 OK ---------------< |
-                                    ( ... )
-\end{verbatim}
+\begin{figure}[!h]
+\centering
+\footnotesize
 
-\paragraph{Hints}
+\begin{tikzpicture}[
+very thick,
+scale=1.05,
+xscale=1.5,
+]
+
+\node[flowheader](clients)  at (0,0)  {Clients};
+\node[flowheader](haproxy)  at (5,0)  {HAProxy};
+\node[flowheader](server-a) at (10,0) {Server A};
+
+\draw (clients)  -- ++(0,-20);
+\draw (haproxy)  -- ++(0,-20);
+\draw (server-a) -- ++(0,-20);
+
+%1
+\flow{r}{1}{0}{5}{GET /URI1 HTTP/1.0}{};
+%2
+\node[marker] at (5,-2) {No cookie, haproxy forwards in load-balancing mode.};
+%3
+\flow{r}{3}{5}{10}{GET /URI1 HTTP/1.0}{X-Forwarded-For: 10.1.2.3};
+%4
+\flow{l}{4}{10}{5}{HTTP/1.0 200 OK}{};
+%5
+\node[marker] at (5,-5) {No cookie, nothing changed.};
+%6
+\flow{l}{6}{5}{0}{HTTP/1.0 200 OK}{};
+%7
+\flow{r}{7}{0}{5}{GET /URI2 HTTP/1.0}{};
+%8
+\node[marker] at (5,-8) {No cookie, haproxy forwards in lb mode, \\ possibly to another server.};
+%9
+\flow{r}{9}{5}{10}{GET /URI2 HTTP/1.0}{X-Forwarded-For: 10.1.2.3};
+%10
+\flow{l}{10}{10}{5}{HTTP/1.0 200 OK}{Set-Cookie: JSESSIONID=123};
+%11
+\node[marker] at (5,-11) {The cookie is identified, \\ it will be prefixed with the server name};
+%12
+\flow{l}{12}{5}{0}{HTTP/1.0 200 OK}{Set-Cookie: JSESSIONID=A\~{}123};
+%13
+\flow{r}{13}{0}{5}{GET /URI3 HTTP/1.0}{Cookie: JSESSIONID=A\~{}123};
+%14
+\node[marker] at (5,-14) {The proxy sees the cookie, removes the server name and forwards \\ to server A which sees the same cookie as it previously sent.};
+%15
+\flow{r}{15}{5}{10}{GET /URI3 HTTP/1.0}{Cookie: JSESSIONID=123};
+\node[below] at (b15.south) {\texttt{X-Forwarded-For: 10.1.2.3}};
+%16
+%17
+\flow{l}{17}{10}{5}{HTTP/1.0 200 OK}{};
+%18
+\node[marker] at (5,-18) {No cookie, nothing changed.};
+%19
+\flow{l}{19}{5}{0}{HTTP/1.0 200 OK}{};
+%20
+\node[marker] at (5,-20) {\ldots};
+
+\end{tikzpicture}
+\end{figure}
+
+\subsubsection{Hints}
 
 Sometimes, there will be some powerful servers in the farm, and some smaller
 ones. In this situation, it may be desirable to tell haproxy to respect the
@@ -492,7 +553,7 @@ which will also check that the services run fine on both proxies:
   \end{tikzpicture}
 \end{figure}
 
-\paragraph{Config on both proxies (LB1 and LB2)}
+\subsubsection{Config on both proxies (LB1 and LB2)}
 
 \begin{verbatim}
     listen webfarm 0.0.0.0:80
@@ -514,7 +575,7 @@ The "dontlognull" option is used to prevent the proxy from logging the health
 checks from the Alteon. If a session exchanges no data, then it will not be
 logged.
  
-\paragraph{Config on the Alteon}
+\subsubsection{Config on the Alteon}
 
 \begin{verbatim}
     /c/slb/real  11
@@ -538,7 +599,7 @@ logged.
            group 10
 \end{verbatim}
 
-\paragraph{Notes}
+\subsubsection{Notes}
 
 The health-check on the Alteon is set to "tcp" to prevent the proxy from
 forwarding the connections. It can also be set to "http", but for this the
@@ -609,7 +670,7 @@ node distance=1.5cm,
 \end{tikzpicture}
 \end{figure}
 
-\paragraph{Config on both proxies (LB1 and LB2)}
+\subsubsection{Config on both proxies (LB1 and LB2)}
 
 \begin{verbatim}    
     listen tse-proxy
@@ -625,7 +686,7 @@ The "monitor-net" option instructs the proxies that any connection coming from
 closed immediately. The Alteon load-balancers will then see the proxies alive
 without perturbating the service.
 
-\paragraph{Config on the Alteon}
+\subsubsection{Config on the Alteon}
 
 \begin{verbatim}
     /c/l3/if 1
@@ -657,7 +718,7 @@ without perturbating the service.
            group 10
 \end{verbatim}
 
-\paragraph{Special handling of SSL}
+\subsubsection{Special handling of SSL}
 
 Sometimes, you want to send health-checks to remote systems, even in TCP mode,
 in order to be able to failover to a backup server in case the first one is
@@ -779,7 +840,7 @@ measures must be taken to ensure that inserted cookies will not be cached.
   \end{tikzpicture}
 \end{figure}
 
-\paragraph{Config on haproxy (LB1)}
+\subsubsection{Config on haproxy (LB1)}
 
 \begin{verbatim}     
     listen 127.0.0.1:8000
@@ -793,7 +854,7 @@ measures must be taken to ensure that inserted cookies will not be cached.
        server webD 192.168.1.14:80 cookie D check
 \end{verbatim}
 
-\paragraph{Description}
+\subsubsection{Description}
 
 \begin{itemize}
 \item[-] apache on LB1 will receive clients requests on port 443
@@ -810,7 +871,7 @@ measures must be taken to ensure that inserted cookies will not be cached.
    and a cookie will be reassigned.
 \end{itemize}
 
-\paragraph{Notes}
+\subsubsection{Notes}
 
 \begin{itemize}
 \item[-] if the cookie works in "prefix" mode, there is no need to add the "nocache"
@@ -823,29 +884,59 @@ measures must be taken to ensure that inserted cookies will not be cached.
    it on haproxy if you need the application to know about the client's IP.
 \end{itemize}
 
-\paragraph{Flows}
+\newpage
+\subsubsection{Flows}
 
-\begin{verbatim}
-(apache)                           (haproxy)                         (server A)
-  >-- GET /URI1 HTTP/1.0 ------------> |
-               ( no cookie, haproxy forwards in load-balancing mode. )
-                                       | >-- GET /URI1 HTTP/1.0 ---------->
-                                       | <-- HTTP/1.0 200 OK -------------<
-               ( the proxy now adds the server cookie in return )
-  <-- HTTP/1.0 200 OK ---------------< |
-      Set-Cookie: SERVERID=A           |
-      Cache-Control: private           |
-  >-- GET /URI2 HTTP/1.0 ------------> |
-      Cookie: SERVERID=A               |
-      ( the proxy sees the cookie. it forwards to server A and deletes it )
-                                       | >-- GET /URI2 HTTP/1.0 ---------->
-                                       | <-- HTTP/1.0 200 OK -------------<
-   ( the proxy does not add the cookie in return because the client knows it )
-  <-- HTTP/1.0 200 OK ---------------< |
-  >-- GET /URI3 HTTP/1.0 ------------> |
-      Cookie: SERVERID=A               |
-                                    ( ... )
-\end{verbatim}
+\begin{figure}[!h]
+\centering
+
+\begin{tikzpicture}[
+very thick,
+scale=1.25,
+xscale=1.25,
+]
+
+\node[flowheader](clients)  at (0,0)  {Clients};
+\node[flowheader](haproxy)  at (5,0)  {HAProxy};
+\node[flowheader](server-a) at (10,0) {Server A};
+
+\draw (clients)  -- ++(0,-15);
+\draw (haproxy)  -- ++(0,-15);
+\draw (server-a) -- ++(0,-15);
+
+%1
+\flow{r}{1}{0}{5}{GET /URI1 HTTP/1.0}{};
+%2
+\node[marker] at (5,-2) {No cookie, haproxy forwards in load-balancing mode.};
+%3
+\flow{r}{3}{5}{10}{GET /URI1 HTTP/1.0}{};
+%4
+\flow{l}{4}{10}{5}{HTTP/1.0 200 OK}{};
+%5
+\node[marker] at (5,-5) {The proxy now adds the server cookie in return.};
+%6
+\flow{l}{6}{5}{0}{HTTP/1.0 200 OK}{Set-Cookie: SERVERID=A};
+%7
+\node[below] at (b6.south) {\texttt{Cache-Control: private}};
+%8
+\flow{r}{8}{0}{5}{GET /URI2 HTTP/1.0}{Cookie: SERVERID=A};
+%9
+\node[marker] at (5,-9) {The proxy sees the cookie. it forwards to server A and deletes it.};
+%10
+\flow{r}{10}{5}{10}{GET /URI2 HTTP/1.0}{};
+%11
+\flow{l}{11}{10}{5}{HTTP/1.0 200 OK}{};
+%12
+\node[marker] at (5,-12) {The proxy does not add the cookie in return because the client knows it.};
+%13
+\flow{l}{13}{5}{0}{HTTP/1.0 200 OK}{};
+%14
+\flow{r}{14}{0}{5}{GET /URI3 HTTP/1.0}{Cookie: SERVERID=A};
+%15
+\node[marker] at (5,-15) {\ldots};
+
+\end{tikzpicture}
+\end{figure}
 
 \subsection{Alternate solution using Stunnel}
 
@@ -911,7 +1002,7 @@ haproxy that connections from local host already have a valid header.
   \end{tikzpicture}
 \end{figure}
 
-\paragraph{Config on stunnel (LB1)}
+\subsubsection{Config on stunnel (LB1)}
 
 \begin{verbatim}
     cert=/etc/stunnel/stunnel.pem
@@ -927,7 +1018,7 @@ haproxy that connections from local host already have a valid header.
     xforwardedfor=yes
 \end{verbatim}
 
-\paragraph{Config on haproxy (LB1)}
+\subsubsection{Config on haproxy (LB1)}
 
 \begin{verbatim}
     listen 192.168.1.1:80
@@ -942,7 +1033,7 @@ haproxy that connections from local host already have a valid header.
        server webD 192.168.1.14:80 cookie D check
 \end{verbatim}
 
-\paragraph{Description}
+\subsubsection{Description}
 
 \begin{itemize}
 \item[-] stunnel on LB1 will receive clients requests on port 443
@@ -986,7 +1077,7 @@ stop the server when it does not receive anymore connections.
        contimeout 5000
 \end{verbatim}
 
-\paragraph{Description}
+\subsubsection{Description}
 
 \begin{itemize}
 \item[-] every 2 seconds, haproxy will try to access the file "/running" on the
@@ -1001,7 +1092,7 @@ stop the server when it does not receive anymore connections.
    will rebalance the client to another server ("redispatch")
 \end{itemize}
 
-\paragraph{Usage on the web servers}
+\subsubsection{Usage on the web servers}
 
 \begin{itemize}
 \item[-] to start the server
@@ -1019,7 +1110,7 @@ stop the server when it does not receive anymore connections.
 \end{verbatim}
 \end{itemize}
 
-\paragraph{Limits}
+\subsubsection{Limits}
 
 If the server is totally powered down, the proxy will still try to reach it
 for those clients who still have a cookie referencing it, and the connection
@@ -1053,7 +1144,7 @@ the same cookie as a standard server.
        server bkpD 192.168.1.14:80 cookie D check port 80 inter 2000 backup
 \end{verbatim}
 
-\paragraph{Description}
+\subsubsection{Description}
 
 Four servers webA..D are checked on their port 81 every 2 seconds. The same
 servers named bkpA..D are checked on the port 80, and share the exact same
@@ -1107,7 +1198,7 @@ server because of the "redispatch" option.
 This method has an advantage: you never touch the proxy when doing server
 maintenance. The people managing the servers can make them disappear smoothly.
 
-\subsubsection{Variations for operating systems without any firewall software}
+\subsection{Variations for operating systems without any firewall software}
 
 The downside is that you need a redirection solution on the server just for
 the health-checks. If the server OS does not support any firewall software,
@@ -1140,7 +1231,7 @@ this redirection can also be handled by a simple haproxy in tcp mode:
 
 The port 81 will stop responding and the load-balancer will notice the failure.
 
-\subsubsection{Centralizing the server management}
+\subsection{Centralizing the server management}
 
 If one finds it preferable to manage the servers from the load-balancer itself,
 the port redirector can be installed on the load-balancer itself. See the
@@ -1164,8 +1255,7 @@ which is available for download here:
 
    \verb|http://w.ods.org/tools/haproxy/contrib/|
 
-
-\subsubsection{Notes}
+\subsection{Notes}
 
 \begin{itemize}
 \item[-] Never, ever, start a fake service on port 81 for the health-checks, because
@@ -1635,7 +1725,7 @@ node distance=0.5cm,
 The offices check the local site's SD proxy every 30 seconds, and the
 remote one every 60 seconds.
 
-\paragraph{Configuration for Office Proxy OP1}
+\subsubsection{Configuration for Office Proxy OP1}
 
 \begin{verbatim}
     listen 192.168.1.1:80
@@ -1648,7 +1738,7 @@ remote one every 60 seconds.
        server SD2 10.2.1.1:80 cookie SITE2 check inter 60000 backup
 \end{verbatim}
 
-\paragraph{Configuration for Office Proxy OP2}
+\subsubsection{Configuration for Office Proxy OP2}
 
 \begin{verbatim}
     listen 192.168.2.1:80
@@ -1661,7 +1751,7 @@ remote one every 60 seconds.
        server SD2 10.2.1.1:80 cookie SITE2 check inter 60000 backup
 \end{verbatim}
 
-\paragraph{Configuration for Office Proxy OP3}
+\subsubsection{Configuration for Office Proxy OP3}
 
 \begin{verbatim}
     listen 192.168.3.1:80
@@ -1697,7 +1787,7 @@ port 80 but which allows them to tell the SD that they are going down soon
 and that the SD must not use them anymore.
 
 
-\paragraph{Configuration for SD1}
+\subsubsection{Configuration for SD1}
 
 \begin{verbatim}
     listen 10.1.1.1:80
@@ -1713,7 +1803,7 @@ and that the SD must not use them anymore.
        server S2L2 10.2.1.12:80 cookie SITE2 check port 81 inter 8000 backup
 \end{verbatim}
 
-\paragraph{Configuration for SD2}
+\subsubsection{Configuration for SD2}
 
 \begin{verbatim}
     listen 10.2.1.1:80
@@ -1753,7 +1843,7 @@ These proxies will also be the only ones to disable HTTP keep-alive in the
 chain, because it is enough to do it at one place, and it's necessary to do
 it with 'prefix' cookies.
 
-\paragraph{Configuration for S1L1/S1L2}
+\subsubsection{Configuration for S1L1/S1L2}
 
 \begin{verbatim}
     listen 10.1.1.11:80 # 10.1.1.12:80 for S1L2
@@ -1779,7 +1869,7 @@ it with 'prefix' cookies.
        dispatch 10.1.1.11:80  # 10.1.1.12:80 for S1L2
 \end{verbatim}
 
-\paragraph{Configuration for S2L1/S2L2}
+\subsubsection{Configuration for S2L1/S2L2}
 
 \begin{verbatim}
     listen 10.2.1.11:80 # 10.2.1.12:80 for S2L2
@@ -1971,7 +2061,7 @@ very fast response times.
   \end{tikzpicture}
 \end{figure}
 
-\paragraph{Config on haproxy (LB1)}
+\subsubsection{Config on haproxy (LB1)}
 
 \begin{verbatim}       
     listen appfarm 192.168.1.1:80
@@ -1988,7 +2078,7 @@ very fast response times.
        contimeout 60000
 \end{verbatim}
 
-\paragraph{Description}
+\subsubsection{Description}
 
 The proxy listens on IP 192.168.1.1, port 80, and expects HTTP requests. It
 can accept up to 10000 concurrent connections on this socket. It follows the
@@ -2020,7 +2110,7 @@ client side AND the request is still waiting in the queue, then it is highly
 likely that the user has stopped, so we remove the request from the queue
 before it will get served.
 
-\paragraph{Managing unfair response times}
+\subsubsection{Managing unfair response times}
 
 Sometimes, the application server will be very slow for some requests (eg:
 login page) and faster for other requests. This may cause excessive queueing

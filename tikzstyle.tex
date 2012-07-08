@@ -50,7 +50,6 @@ aspect=0.5,
 yshift=-2mm,
 ]
 
-
 \tikzstyle{ou} = [
 circle,
 fill=blue!20,
@@ -61,3 +60,53 @@ top color=white,
 bottom color=blue!50!black!20,
 drop shadow,
 ]
+
+\tikzstyle{flowheader} = [
+rectangle,
+draw,
+top color=white,
+bottom color=green!50,
+minimum size=1cm,
+drop shadow,
+]
+
+\tikzstyle{marker} = [
+rounded rectangle,
+draw,
+top color=white,
+bottom color=blue!20,
+align=center,
+drop shadow,
+inner sep=2mm,
+minimum size=1cm,
+]
+
+\tikzstyle{flowstart} = [
+rectangle,
+draw,
+inner sep=0,
+minimum size=3mm,
+fill=blue!50,
+]
+
+\tikzstyle{flowend-r} = [
+flowstart,
+isosceles triangle,
+fill=red!50,
+]
+
+\tikzstyle{flowend-l} = [
+flowstart,
+isosceles triangle,
+shape border rotate=180,
+fill=red!50,
+]
+
+\newcommand{\flow}[6]
+{
+\node[flowstart] (s#2) at (#3,-#2){};
+\node[flowend-#1](e#2) at (#4,-#2){};
+\path (s#2) edge node(m#2){} (e#2){};
+\node[above,align=left](a#2) at  (m#2){\texttt{#5}};
+\node[below,align=left](b#2) at  (m#2){\texttt{#6}}; 
+}

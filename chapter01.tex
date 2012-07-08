@@ -12,7 +12,7 @@ The HTTP protocol is transaction-driven. This means that each request will lead
 to one and only one response. Traditionally, a TCP connection is established
 from the client to the server, a request is sent by the client on the
 connection, the server responds and the connection is closed. A new request
-will involve a new connection as shown on Figure ~\ref{fig:http_close}.
+will involve a new connection as shown on Figure~\ref{fig:http_close}.
 
 \begin{figure}[!h]
 \centering
@@ -56,7 +56,7 @@ to avoid closing a connection between two subsequent transactions. In this mode
 however, it is mandatory that the server indicates the content length for each
 response so that the client does not wait indefinitely. For this, a special
 header is used: "Content-length". This mode is called the "keep-alive" mode
-and is shown on Figure shown on Figure ~\ref{fig:http_keep_alive}.
+and is shown on Figure shown on Figure~\ref{fig:http_keep_alive}.
 
 
 \begin{figure}[!h]
@@ -66,17 +66,16 @@ and is shown on Figure shown on Figure ~\ref{fig:http_keep_alive}.
   node distance=4cm,
 ]
                     
-\node[conclo,diamond]        (con)   {CON};
+\node[conclo,diamond]         (con)   {CON};
 \node[reqresp,right of=con]   (req1)  {REQ1};
 \node[reqresp,right of=req1]  (resp1) {RESP1};
 \node[reqresp,below of=req1]  (req2)  {REQ2};
 \node[reqresp,right of=req2]  (resp2) {RESP2}; 
-\node[conclo,right of=resp2] (clo)   {CLO};
+\node[conclo,right of=resp2]  (clo)   {CLO};
 	
 \path[->] (con)   edge node[above] {Start}  (req1);
 \path[->] (req1)  edge node[above] {\ldots} (resp1);
-\path[->] (resp1) edge node[midway,sloped,above]
-{Next request} (req2);
+\path[->] (resp1) edge node[midway,sloped,above] {Next request} (req2);
 \path[->] (req2)  edge node[above] {\ldots} (resp2);
 \path[->] (resp2) edge node[above] {End}    (clo);
 	
@@ -94,14 +93,14 @@ a smaller value.
 A last improvement in the communications is the pipelining mode. It still uses
 keep-alive, but the client does not wait for the first response to send the
 second request. This is useful for fetching large number of images composing a
-page. This mode is shown on Figure ~\ref{fig:http_pipelining}.
+page. This mode is shown on Figure~\ref{fig:http_pipelining}.
 
 \begin{figure}[!h]
-  \centering
-  \begin{tikzpicture} [
-    thick,
-    node distance=3cm,
-  ]
+\centering
+\begin{tikzpicture} [
+thick,
+node distance=3cm,
+]
                     
 \node[conclo]                               (con)   {CON};
 \node[reqresp,right of=con]                 (req1)  {REQ1};
@@ -110,11 +109,11 @@ page. This mode is shown on Figure ~\ref{fig:http_pipelining}.
 \node[reqresp,right of=resp1]               (resp2) {RESP2};
 \node[conclo,right of=resp2]                (clo)   {CLO};
 	
-\path[->] (con)   edge node[above] {Start} (req1);
-\path[->] (req1)  edge (req2);
+\path[->] (con)   edge node[above] {Start}  (req1);
+\path[->] (req1)  edge                      (req2);
 \path[->] (req2)  edge node[above] {\ldots} (resp1);
-\path[->] (resp1) edge (resp2);
-\path[->] (resp2) edge node[above] {End} (clo);
+\path[->] (resp1) edge                      (resp2);
+\path[->] (resp2) edge node[above] {End}    (clo);
 
 \end{tikzpicture}
 
