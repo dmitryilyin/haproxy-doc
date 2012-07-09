@@ -25,8 +25,8 @@ and may be adjusted with optional flags [flags]. Some criteria also support
 an operator which may be specified before the set of values. The values are
 of the type supported by the criterion, and are separated by spaces.
 
-ACL names must be formed from upper and lower case letters, digits, '-' (dash),
-'\_' (underscore) , '.' (dot) and ':' (colon). ACL names are case-sensitive,
+ACL names must be formed from upper and lower case letters, digits, '\verb|-|' (dash),
+'\verb|_|' (underscore) , '\verb|.|' (dot) and '\verb|:|' (colon). ACL names are case-sensitive,
 which means that "my\_acl" and "My\_Acl" are two different ACLs.
 
 There is no enforced limit to the number of ACLs. The unused ones do not affect
@@ -122,22 +122,22 @@ This one matches SSL versions between 3.0 and 3.1 (inclusive):
 
 \index{Matching strings}
 String matching applies to verbatim strings as they are passed, with the
-exception of the backslash ("\textbackslash") which makes it possible to escape some
+exception of the backslash ('\verb|\|') which makes it possible to escape some
 characters such as the space. If the "-i" flag is passed before the first
 string, then the matching will be performed ignoring the case. In order
-to match the string "-i", either set it second, or pass the "{-}{-}" flag
-before the first string. Same applies of course to match the string "{-}{-}".
+to match the string "-i", either set it second, or pass the "\verb|--|" flag
+before the first string. Same applies of course to match the string "\verb|--|".
 
 \section{Matching regular expressions (regexes)}
 
 \index{Matching regular expressions}
 Just like with string matching, regex matching applies to verbatim strings as
-they are passed, with the exception of the backslash ("\textbackslash") which makes it
+they are passed, with the exception of the backslash ('\verb|\|') which makes it
 possible to escape some characters such as the space. If the "-i" flag is
 passed before the first regex, then the matching will be performed ignoring
 the case. In order to match the string "-i", either set it second, or pass
-the "{-}{-}" flag before the first string. Same principle applies of course to
-match the string "{-}{-}".
+the "\verb|--|" flag before the first string. Same principle applies of course to
+match the string "\verb|--|".
 
 \section{Matching IPv4 and IPv6 addresses}
 
@@ -147,7 +147,7 @@ netmask appended, in which case the IPv4 address matches whenever it is
 within the network. Plain addresses may also be replaced with a resolvable
 host name, but this practice is generally discouraged as it makes it more
 difficult to read and debug configurations. If hostnames are used, you should
-at least ensure that they are present in /etc/hosts so that the configuration
+at least ensure that they are present in \texttt{/etc/hosts} so that the configuration
 does not depend on any random DNS match at the moment the configuration is
 parsed.
 

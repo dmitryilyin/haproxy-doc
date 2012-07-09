@@ -26,7 +26,7 @@ parts combined in one section. It is generally useful for TCP-only traffic.
 
 \index{proxy}
 All proxy names must be formed from upper and lower case letters, digits,
-'-' (dash), '\_' (underscore) , '.' (dot) and ':' (colon). ACL names are
+'/verb|-|' (dash), '\verb|_|' (underscore) , '\verb|.|' (dot) and '\verb|:|' (colon). ACL names are
 case-sensitive, which means that "www" and "WWW" are two different proxies.
 
 Historically, all proxy names could overlap, it just caused troubles in the
@@ -278,7 +278,7 @@ This section provides a description of each keyword and its usage.
                   indicates that the algorithm should only consider that many
                   characters at the beginning of the URI to compute the hash.
                   Note that having "len" set to 1 rarely makes sense since most
-                  URIs start with a leading "/".
+                  URIs start with a leading "\verb|/|".
 
                   The "depth" parameter indicates the maximum directory depth
                   to be used to compute the hash. One level is counted for each
@@ -309,7 +309,7 @@ This section provides a description of each keyword and its usage.
                   scanned. Parameter values separated by a chunk boundary, may
                   be randomly balanced if at all.
 
-                  If the parameter is found followed by an equal sign ('=') and
+                  If the parameter is found followed by an equal sign ('\verb|=|') and
                   a value, then the value is hashed and divided by the total
                   weight of the running servers. The result designates which
                   server will receive the request.
@@ -451,7 +451,7 @@ This section provides a description of each keyword and its usage.
                   proxy will accept connections for the IP address specified
                   above. The port is mandatory for TCP listeners. Note that in
                   the case of an IPv6 address, the port is always the number
-                  after the last colon (':'). A range can either be:
+                  after the last colon ('\verb|:|'). A range can either be:
                   
                   \begin{itemize}
                   \item[-] a numerical port (ex: '80')
@@ -470,7 +470,7 @@ This section provides a description of each keyword and its usage.
                   privileges to start the program, which are independant of
                   the 'uid' parameter.
 
-  \item[<path>]        is a UNIX socket path beginning with a slash ('/'). This is
+  \item[<path>]        is a UNIX socket path beginning with a slash ('\verb|/|'). This is
                   alternative to the TCP listening port. Haproxy will then
                   receive UNIX connections on the socket located at this place.
                   The path must begin with a slash and by default is absolute.
@@ -681,7 +681,7 @@ This section provides a description of each keyword and its usage.
   \begin{description} 
   \item[<name>]    is the beginning of the name of the cookie to capture. In order
               to match the exact name, simply suffix the name with an equal
-              sign ('='). The full name will appear in the logs, which is
+              sign ('\verb|=|'). The full name will appear in the logs, which is
               useful with application servers which adjust both the cookie name
               and value (eg: ASPSESSIONXXXXX).
 
@@ -735,8 +735,8 @@ This section provides a description of each keyword and its usage.
   \end{description}
 
   Only the first value of the last occurrence of the header is captured. The
-  value will be added to the logs between braces ('\{\}'). If multiple headers
-  are captured, they will be delimited by a vertical bar ('|') and will appear
+  value will be added to the logs between braces ('\verb|{}|'). If multiple headers
+  are captured, they will be delimited by a vertical bar ('\verb:|:') and will appear
   in the same order they were declared in the configuration. Non-existent
   headers will be logged just as an empty string. Common uses for request
   header captures include the "Host" field in virtual hosting environments, the
@@ -784,9 +784,9 @@ This section provides a description of each keyword and its usage.
   \end{description}
 
   Only the first value of the last occurrence of the header is captured. The
-  result will be added to the logs between braces ('\{\}') after the captured
+  result will be added to the logs between braces ('\verb|{}|') after the captured
   request headers. If multiple headers are captured, they will be delimited by
-  a vertical bar ('|') and will appear in the same order they were declared in
+  a vertical bar ('\verb:|:') and will appear in the same order they were declared in
   the configuration. Non-existent headers will be logged just as an empty
   string. Common uses for response header captures include the "Content-length"
   header which indicates how many bytes are expected to be returned, the
@@ -1442,13 +1442,13 @@ This section provides a description of each keyword and its usage.
   \item[<match>]   is a keyword indicating how to look for a specific pattern in the
               response. The keyword may be one of "status", "rstatus",
               "string", or "rstring". The keyword may be preceded by an
-              exclamation mark ("!") to negate the match. Spaces are allowed
+              exclamation mark ('\verb|!|') to negate the match. Spaces are allowed
               between the exclamation mark and the keyword. See below for more
               details on the supported keywords.
 
   \item[<pattern>] is the pattern to look for. It may be a string or a regular
               expression. If the pattern contains spaces, they must be escaped
-              with the usual backslash ('\textbackslash').
+              with the usual backslash ('\verb|\|').
   \end{description}
 
   By default, "option httpchk" considers that response statuses 2xx and 3xx
@@ -1543,19 +1543,19 @@ This section provides a description of each keyword and its usage.
   
   \begin{itemize}
   \item[-] a variable "name", containing the name of the backend followed by a slash
-      ("/") then the name of the server. This can be used when a server is
+      (\verb|/|) then the name of the server. This can be used when a server is
       checked in multiple backends.
 
   \item[-] a variable "node" containing the name of the haproxy node, as set in the
       global "node" variable, otherwise the system's hostname if unspecified.
 
-  \item[-] a variable "weight" indicating the weight of the server, a slash ("/")
+  \item[-] a variable "weight" indicating the weight of the server, a slash (\verb|/|)
       and the total weight of the farm (just counting usable servers). This
       helps to know if other servers are available to handle the load when this
       one fails.
 
   \item[-] a variable "scur" indicating the current number of concurrent connections
-      on the server, followed by a slash ("/") then the total number of
+      on the server, followed by a slash (\verb|/|) then the total number of
       connections on all servers of the same backend.
 
   \item[-] a variable "qcur" indicating the current number of requests in the
@@ -1698,10 +1698,10 @@ This section provides a description of each keyword and its usage.
 \item[<address>]  indicates where to send the logs. It takes the same format as
                for the "global" section's logs, and can be one of:
                \begin{itemize}
-               \item[-] An IPv4 address optionally followed by a colon (':') and a UDP
+               \item[-] An IPv4 address optionally followed by a colon ('\verb|:|') and a UDP
                  port. If no port is specified, 514 is used by default (the
                  standard syslog port).
-               \item[-] An IPv6 address followed by a colon (':') and optionally a UDP
+               \item[-] An IPv6 address followed by a colon ('\verb|:|') and optionally a UDP
                  port. If no port is specified, 514 is used by default (the
                  standard syslog port).
                \item[-] A filesystem path to a UNIX domain socket, keeping in mind
@@ -1711,6 +1711,7 @@ This section provides a description of each keyword and its usage.
                  \end{itemize}
 
 \item[<facility>] must be one of the 24 standard syslog facilities:
+
 \index{Log facility}
   \vspace{5mm}
   \textbf{
@@ -1888,7 +1889,7 @@ This section provides a description of each keyword and its usage.
 \begin{description}
 \item[ <source>]  is the source IPv4 address or network which will only be able to
               get monitor responses to any request. It can be either an IPv4
-              address, a host name, or an address followed by a slash ('/')
+              address, a host name, or an address followed by a slash ('\verb|/|')
               followed by a mask.
 \end{description}
 
@@ -2025,8 +2026,8 @@ This section provides a description of each keyword and its usage.
   it is possible to relax HAProxy's header name parser to accept any character
   even if that does not make sense, by specifying this option. Similarly, the
   list of characters allowed to appear in a URI is well defined by RFC3986, and
-  chars 0-31, 32 (space), 34 (\verb|'"'|), 60 (\verb|<|), 62 (\verb|>|), 92 (\verb|'\'|), 94 (\verb|'^'|), 96
-  (\verb|'`'|), 123 (\verb|'{'|), 124 (\verb:'|':), 125 (\verb|'}'|), 127 (delete) and anything above are
+  chars 0-31, 32 (space), 34 ('\verb|"|'), 60 ('\verb|<|'), 62 ('\verb|>|'), 92 ('\verb|\|'), 94 ('\verb|^|'), 96
+  ('\verb|`|'), 123 ('\verb|{|'), 124 ('\verb:|:'), 125 ('\verb|}|'), 127 (delete) and anything above are
   not allowed at all. Haproxy always blocks a number of them (0..32, 127). The
   remaining ones are blocked by default unless this option is enabled.
 
@@ -2217,7 +2218,7 @@ This section provides a description of each keyword and its usage.
   with A/V streaming, a graph generated from haproxy counters looks like
   a hedgehog. With this option enabled counters get incremented continuously,
   during a whole session. Recounting touches a hotpath directly so
-  it is not enabled by default, as it has small performance impact (~0.5\%).
+  it is not enabled by default, as it has small performance impact (\~{}0.5\%).
 
 \subsubsection{option dontlog-normal}
 \subsubsection{no option dontlog-normal}
@@ -2528,7 +2529,7 @@ This section provides a description of each keyword and its usage.
 
   By setting this option in a frontend, haproxy can automatically switch to use
   that non-standard header if it sees proxied requests. A proxied request is
-  defined here as one where the URI begins with neither a '/' nor a '*'. The
+  defined here as one where the URI begins with neither a '\verb|/|' nor a '\verb|*|'. The
   choice of header only affects requests passing through proxies making use of
   one of the "httpclose", "forceclose" and "http-server-close" options. Note
   that this option can only be specified in a frontend and will affect the
@@ -2564,7 +2565,7 @@ This section provides a description of each keyword and its usage.
               may be used, though it is not recommended to invent non-standard
               ones.
 
-\item[<uri>]     is the URI referenced in the HTTP requests. It defaults to " / "
+\item[<uri>]     is the URI referenced in the HTTP requests. It defaults to "\verb|/|"
               which is accessible by default on almost any server, but may be
               changed to any other URI. Query strings are permitted.
 
@@ -2572,7 +2573,7 @@ This section provides a description of each keyword and its usage.
               but some servers might behave incorrectly in HTTP 1.0, so turning
               it to HTTP/1.1 may sometimes help. Note that the Host field is
               mandatory in HTTP/1.1, and as a trick, it is possible to pass it
-              after "\textbackslash{}r\textbackslash{}n" following the version string.
+              after "\verb|\r\n|" following the version string.
 \end{description}
 
   By default, server health checks only consist in trying to establish a TCP
@@ -2690,7 +2691,7 @@ This section provides a description of each keyword and its usage.
   basic proxy requests without caching nor any fancy feature. In this case,
   it may be worth setting up an HAProxy instance with the "option http\_proxy"
   set. In this mode, no server is declared, and the connection is forwarded to
-  the IP address and port found in the URL after the "http://" scheme.
+  the IP address and port found in the URL after the "\verb|http://|" scheme.
 
   No host address resolution is performed, so this only works when pure IP
   addresses are passed. Since this option's usage perimeter is rather limited,
@@ -2763,8 +2764,9 @@ This section provides a description of each keyword and its usage.
   LDAPv3 anonymous simple bind message is sent to the server, and the response
   is analyzed to find an LDAPv3 bind response message.
 
-  The server is considered valid only when the LDAP response contains success
-  resultCode (http://tools.ietf.org/html/rfc4511#section-4.1.9).
+  The server is considered valid only when the LDAP response contains success resultCode.
+  
+  (http://tools.ietf.org/html/rfc4511#section-4.1.9).
 
   Logging of bind requests is server dependent see your documentation how to
   configure it.

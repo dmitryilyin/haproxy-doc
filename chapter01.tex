@@ -165,7 +165,7 @@ Line 1 is the "request line". It is always composed of 3 fields:
 
 All of them are delimited by what the standard calls LWS (linear white spaces),
 which are commonly spaces, but can also be tabs or line feeds/carriage returns
-followed by spaces/tabs. The method itself cannot contain any colon (':') and
+followed by spaces/tabs. The method itself cannot contain any colon ('\verb|:|') and
 is limited to alphabetic letters. All those various combinations make it
 desirable that HAProxy performs the splitting itself rather than leaving it to
 the user to write a complex or inaccurate regular expression.
@@ -182,9 +182,9 @@ The URI itself can have several forms:
 
 \item[An "absolute URI", also called a "URL"]
 \index{Absolute URI}
-    It is composed of a "scheme" (the protocol name followed by '://'), a host
-    name or address, optionally a colon (':') followed by a port number, then
-    a relative URI beginning at the first slash ('/') after the address part.
+    It is composed of a "scheme" (the protocol name followed by '\verb|://|'), a host
+    name or address, optionally a colon ('\verb|:|') followed by a port number, then
+    a relative URI beginning at the first slash ('\verb|/|') after the address part.
     This is generally what proxies receive, but a server supporting HTTP/1.1
     must accept this form too.
     
@@ -211,7 +211,7 @@ specific to the language, framework or application in use.
 
 \subsection{The request headers}
 The headers start at the second line. They are composed of a name at the
-beginning of the line, immediately followed by a colon (':'). Traditionally,
+beginning of the line, immediately followed by a colon ('\verb|:|'). Traditionally,
 an LWS is added after the colon but that's not required. Then come the values.
 Multiple identical headers may be folded into one single line, delimiting the
 values with commas, provided that their order is respected. This is commonly

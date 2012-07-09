@@ -325,7 +325,7 @@ source <addr>[:<pl>[-<ph>]] [interface <name>] ...
 
   Additionally, the "source" statement on a server line allows one to specify a
   source port range by indicating the lower and higher bounds delimited by a
-  dash ('-'). Some operating systems might require a valid IP address when a
+  dash ('\verb|-|'). Some operating systems might require a valid IP address when a
   source port range is specified. It is permitted to have the same IP/range for
   several servers. Doing so makes it possible to bypass the maximum of 64k
   total concurrent connections. The limit will then reach 64k connections per

@@ -47,7 +47,7 @@ in section 4.2:
 With all these keywords, the same conventions are used. The <search> parameter
 is a POSIX extended regular expression (regex) which supports grouping through
 parenthesis (without the backslash). Spaces and other delimiters must be
-prefixed with a backslash ('\textbackslash') to avoid confusion with a field delimiter.
+prefixed with a backslash ('\verb|\|') to avoid confusion with a field delimiter.
 Other characters may be prefixed with a backslash to change their meaning:
 
 \vspace{3mm}
@@ -75,7 +75,7 @@ Other characters may be prefixed with a backslash to change their meaning:
 The <replace> parameter contains the string to be used to replace the largest
 portion of text matching the regex. It can make use of the special characters
 above, and can reference a substring which is delimited by parenthesis in the
-regex, by writing a backslash ('\textbackslash') immediately followed by one digit from 0 to
+regex, by writing a backslash  ('\verb|\|') immediately followed by one digit from 0 to
 9 indicating the group position (0 designating the entire line). This practice
 is very common to users of the "sed" program.
 

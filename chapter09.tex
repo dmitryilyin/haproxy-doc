@@ -221,7 +221,7 @@ own stats.
   the one that appears in the configuration file. Both are normally equal
   unless the current weight has been changed. Both the backend and the server
   may be specified either by their name or by their numeric ID, prefixed with a
-  sharp ('\#').
+  sharp ('\verb|#|').
 
 \subsubsection[help]{help}
   Print the list of known keywords and their basic usage. The same help screen
@@ -232,7 +232,7 @@ own stats.
   mode. In interactive mode, the connection is not closed after a command
   completes. Instead, the prompt will appear again, indicating the user that
   the interpreter is waiting for a new command. The prompt consists in a right
-  angle bracket followed by a space "> ". This mode is particularly convenient
+  angle bracket followed by a space '\verb|> |'. This mode is particularly convenient
   when one wants to periodically check information such as stats or errors.
   It is also a good idea to enter interactive mode before issuing a "help"
   command.
@@ -247,7 +247,7 @@ own stats.
   pending, they will immediately be accepted. If it is lowered to a value below
   the current number of connections, new connections acceptation will be
   delayed until the threshold is reached. The frontend might be specified by
-  either its name or its numeric ID prefixed with a sharp ('\#').
+  either its name or its numeric ID prefixed with a sharp ('\verb|#|').
 
 \subsubsection[set maxconn global]{set maxconn global <maxconn>}
   Dynamically change the global maxconn setting within the range defined by the
@@ -270,7 +270,7 @@ own stats.
 
 \subsubsection[set weight]{set weight <backend>/<server> <weight>[\%]}
   Change a server's weight to the value passed in argument. If the value ends
-  with the '\%' sign, then the new weight will be relative to the initially
+  with the ('\verb|%|') sign, then the new weight will be relative to the initially
   configured weight. Relative weights are only permitted between 0 and 100\%,
   and absolute weights are permitted between 0 and 256. Servers which are part
   of a farm running a static load-balancing algorithm have stricter limitations
@@ -282,7 +282,7 @@ own stats.
   again after the update by setting it back to 100\%. This command is restricted
   and can only be issued on sockets configured for level "admin". Both the
   backend and the server may be specified either by their name or by their
-  numeric ID, prefixed with a sharp ('\#').
+  numeric ID, prefixed with a sharp ('\verb|#|').
 
 \subsubsection[show errors]{show errors [<iid>]}
   Dump last known request and response errors collected by frontends and
@@ -300,11 +300,10 @@ own stats.
   are reported too.
 
   All characters are returned, and non-printable characters are encoded. The
-  most common ones (\textbackslash t = 9, \textbackslash n = 10, \textbackslash
-  r = 13 and \textbackslash e = 27) are encoded as one
+  most common ones (\verb|\t = 9|, \verb|\n = 10|, \verb|\r = 13| and \verb|\e = 27|) are encoded as one
   letter following a backslash. The backslash itself is encoded as
-  '\textbackslash \textbackslash' to
-  avoid confusion. Other non-printable characters are encoded '\textbackslash xNN' where
+  '\verb|\\|' to
+  avoid confusion. Other non-printable characters are encoded '\verb|\xNN|' where
   NN is the two-digits hexadecimal representation of the character's ASCII
   code.
 
@@ -312,8 +311,8 @@ own stats.
   for the beginning of the buffer. At most one input line is printed per line,
   and large lines will be broken into multiple consecutive output lines so that
   the output never goes beyond 79 characters wide. It is easy to detect if a
-  line was broken, because it will not end with '\textbackslash n' and the next line's offset
-  will be followed by a '+' sign, indicating it is a continuation of previous
+  line was broken, because it will not end with '\verb|\n|' and the next line's offset
+  will be followed by a '\verb|+|' sign, indicating it is a continuation of previous
   line.
 
   Example:
@@ -338,7 +337,7 @@ own stats.
     ID 1. The request was on session 54 initiated by source 127.0.0.1 and
     received by frontend fe-eth0 whose ID is 1. The total response length was
     213 bytes when the error was detected, and the error was at byte 23. This
-    is the slash ('/') in header name "header/bizarre", which is not a valid
+    is the slash ('\verb|/|') in header name "header/bizarre", which is not a valid
     HTTP character for a header name.
 
 \subsubsection[show info]{show info}

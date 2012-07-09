@@ -387,7 +387,7 @@ option.
 \item[-] if a request does not contain a cookie, it will be forwarded to a valid
    server
 \item[-] in return, if a JESSIONID cookie is seen, the server name will be prefixed
-   into it, followed by a delimitor (\~{})
+   into it, followed by a delimitor (\verb|~|)
 \item[-] when the client comes again with the cookie "JSESSIONID=A\~{}xxx", LB1 will
    know that it must be forwarded to server A. The server name will then be
    extracted from cookie before it is sent to the server.
@@ -1968,7 +1968,7 @@ rather high. People developing web sites relying on such frameworks very often
 look for a load balancer which is able to distribute the load in the most
 evenly fashion and which will be nice with the servers.
 
-There is a powerful feature in haproxy which achieves exactly this : request
+There is a powerful feature in haproxy which achieves exactly this: request
 queueing associated with concurrent connections limit.
 
 Let's say you have an application server which supports at most 20 concurrent
