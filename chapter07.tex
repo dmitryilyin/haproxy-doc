@@ -181,18 +181,18 @@ analysis of the request or response contents. Those generally include TCP/IP
 addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection{always\_false}
-  \index{always\_false}
+\index{always\_false}
   This one never matches. All values and flags are ignored. It may be used as
   a temporary replacement for another one when adjusting configurations.
 
 \subsubsection{always\_true}
-  \index{always\_true}
+\index{always\_true}
   This one always matches. All values and flags are ignored. It may be used as
   a temporary replacement for another one when adjusting configurations.
 
 \subsubsection[avg\_queue]{avg\_queue <integer>}
 \subsubsection*{avg\_queue(<backend>) <integer>}
-  \index{avg\_queue}
+\index{avg\_queue}
   Returns the total number of queued connections of the designated backend
   divided by the number of active servers. This is very similar to "queue"
   except that the size of the farm is considered, in order to give a more
@@ -207,7 +207,7 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection[be\_conn]{be\_conn <integer>}
 \subsubsection*{be\_conn(<backend>) <integer>}
-  \index{be\_conn}
+\index{be\_conn}
   Applies to the number of currently established connections on the backend,
   possibly including the connection being evaluated. If no backend name is
   specified, the current one is used. But it is also possible to check another
@@ -215,13 +215,13 @@ addresses and ports, as well as internal values independent on the stream.
   See also the "fe\_conn", "queue" and "be\_sess\_rate" criteria.
 
 \subsubsection[be\_id]{be\_id <integer>}
-  \index{be\_id}
+\index{be\_id}
   Applies to the backend's id. Can be used in frontends to check from which
   backend it was called.
 
 \subsubsection[be\_sess\_rate]{be\_sess\_rate <integer>}
 \subsubsection*{be\_sess\_rate(<backend>) <integer>}
-  \index{be\_sess\_rate}
+\index{be\_sess\_rate}
   Returns true when the sessions creation rate on the backend matches the
   specified values or ranges, in number of new sessions per second. This is
   used to switch to an alternate backend when an expensive or fragile one
@@ -239,7 +239,7 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection[connslots]{connslots <integer>}
 \subsubsection*{connslots(<backend>) <integer>}
-  \index{connslots}
+\index{connslots}
   The basic idea here is to be able to measure the number of connection "slots"
   still available (connection + queue), so that anything beyond that (intended
   usage; see "use\_backend" keyword) can be redirected to a different backend.
@@ -261,12 +261,12 @@ addresses and ports, as well as internal values independent on the stream.
   will be -1.
 
 \subsubsection[dst]{dst <ip\_address>}
-  \index{dst}
+\index{dst}
   Applies to the local IPv4 or IPv6 address the client connected to. It can be
   used to switch to a different backend for some alternative addresses.
 
 \subsubsection[dst\_conn]{dst\_conn <integer>}
-  \index{dst\_conn}
+\index{dst\_conn}
   Applies to the number of currently established connections on the same socket
   including the one being evaluated. It can be used to either return a sorry
   page before hard-blocking, or to use a specific backend to drain new requests
@@ -275,13 +275,13 @@ addresses and ports, as well as internal values independent on the stream.
   "fe\_conn" and "be\_conn" criteria.
 
 \subsubsection[dst\_port]{dst\_port <integer>}
-  \index{dst\_port}
+\index{dst\_port}
   Applies to the local port the client connected to. It can be used to switch
   to a different backend for some alternative ports.
 
 \subsubsection[fe_conn]{fe\_conn <integer>}
 \subsubsection*{fe\_conn(<frontend>) <integer>}
-  \index{fe\_conn}
+\index{fe\_conn}
   Applies to the number of currently established connections on the frontend,
   possibly including the connection being evaluated. If no frontend name is
   specified, the current one is used. But it is also possible to check another
@@ -291,13 +291,13 @@ addresses and ports, as well as internal values independent on the stream.
   criteria.
 
 \subsubsection[fe\_id]{fe\_id <integer>}
-  \index{fe\_id}
+\index{fe\_id}
   Applies to the frontend's id. Can be used in backends to check from which
   frontend it was called.
 
 \subsubsection[fe\_sess\_rate]{fe\_sess\_rate <integer>}
 \subsubsection*{fe\_sess\_rate(<frontend>) <integer>}
-  \index{fe\_sess\_rate}
+\index{fe\_sess\_rate}
   Returns true when the session creation rate on the current or the named
   frontend matches the specified values or ranges, expressed in new sessions
   per second. This is used to limit the connection rate to acceptable ranges in
@@ -323,7 +323,7 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection[nbsrv]{nbsrv <integer>}
 \subsubsection*{nbsrv(<backend>) <integer>}
-  \index{nbsrv}
+\index{nbsrv}
   Returns true when the number of usable servers of either the current backend
   or the named backend matches the values or ranges specified. This is used to
   switch to an alternate backend when the number of servers is too low to
@@ -332,7 +332,7 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection[queue]{queue <integer>}
 \subsubsection*{queue(<backend>) <integer>}
-  \index{queue}
+\index{queue}
   Returns the total number of queued connections of the designated backend,
   including all the connections in server queues. If no backend name is
   specified, the current one is used, but it is also possible to check another
@@ -343,24 +343,24 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection{sc1\_bytes\_in\_rate}
 \subsubsection{sc2\_bytes\_in\_rate}
-  \index{sc1\_bytes\_in\_rate}
-  \index{sc2\_bytes\_in\_rate}
+\index{sc1\_bytes\_in\_rate}
+\index{sc2\_bytes\_in\_rate}
   Returns the average client-to-server bytes rate from the currently tracked
   counters, measured in amount of bytes over the period configured in the
   table. See also src\_bytes\_in\_rate.
 
 \subsubsection{sc1\_bytes\_out\_rate}
 \subsubsection{sc2\_bytes\_out\_rate}
-  \index{sc1\_bytes\_out\_rate}
-  \index{sc2\_bytes\_out\_rate}
+\index{sc1\_bytes\_out\_rate}
+\index{sc2\_bytes\_out\_rate}
   Returns the average server-to-client bytes rate from the currently tracked
   counters, measured in amount of bytes over the period configured in the
   table. See also src\_bytes\_out\_rate.
 
 \subsubsection{sc1\_clr\_gpc0}
 \subsubsection{sc2\_clr\_gpc0}
-  \index{sc1\_clr\_gpc0}
-  \index{sc2\_clr\_gpc0}
+\index{sc1\_clr\_gpc0}
+\index{sc2\_clr\_gpc0}
   Clears the first General Purpose Counter associated to the currently tracked
   counters, and returns its previous value. Before the first invocation, the
   stored value is zero, so first invocation will always return zero. The test
@@ -380,46 +380,46 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection{sc1\_conn\_cnt}
 \subsubsection{sc2\_conn\_cnt}
-  \index{sc1\_conn\_cnt}
-  \index{sc2\_conn\_cnt}
+\index{sc1\_conn\_cnt}
+\index{sc2\_conn\_cnt}
   Returns the cumulated number of incoming connections from currently tracked
   counters. See also src\_conn\_cnt.
 
 \subsubsection{sc1\_conn\_cur}
 \subsubsection{sc2\_conn\_cur}
-  \index{sc1\_conn\_cur}
-  \index{sc2\_conn\_cur}
+\index{sc1\_conn\_cur}
+\index{sc2\_conn\_cur}
   Returns the current amount of concurrent connections tracking the same
   tracked counters. This number is automatically incremented when tracking
   begins and decremented when tracking stops. See also src\_conn\_cur.
 
 \subsubsection{sc1\_conn\_rate}
 \subsubsection{sc2\_conn\_rate}
-  \index{sc1\_conn\_rate}
-  \index{sc2\_conn\_rate}
+\index{sc1\_conn\_rate}
+\index{sc2\_conn\_rate}
   Returns the average connection rate from the currently tracked counters,
   measured in amount of connections over the period configured in the table.
   See also src\_conn\_rate.
 
 \subsubsection{sc1\_get\_gpc0}
 \subsubsection{sc2\_get\_gpc0}
-  \index{sc1\_get\_gpc0}
-  \index{sc2\_get\_gpc0}
+\index{sc1\_get\_gpc0}
+\index{sc2\_get\_gpc0}
   Returns the value of the first General Purpose Counter associated to the
   currently tracked counters. See also src\_get\_gpc0 and sc1/sc2\_inc\_gpc0.
 
 \subsubsection{sc1\_http\_err\_cnt}
 \subsubsection{sc2\_http\_err\_cnt}
-  \index{sc1\_http\_err\_cnt}
-  \index{sc2\_http\_err\_cnt}
+\index{sc1\_http\_err\_cnt}
+\index{sc2\_http\_err\_cnt}
   Returns the cumulated number of HTTP errors from the currently tracked
   counters. This includes the both request errors and 4xx error responses.
   See also src\_http\_err\_cnt.
 
 \subsubsection{sc1\_http\_err\_rate}
 \subsubsection{sc2\_http\_err\_rate}
-  \index{sc1\_http\_err\_rate}
-  \index{sc2\_http\_err\_rate}
+\index{sc1\_http\_err\_rate}
+\index{sc2\_http\_err\_rate}
   Returns the average rate of HTTP errors from the currently tracked counters,
   measured in amount of errors over the period configured in the table. This
   includes the both request errors and 4xx error responses. See also
@@ -427,16 +427,16 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection{sc1\_http\_req\_cnt}
 \subsubsection{sc2\_http\_req\_cnt}
-  \index{sc1\_http\_req\_cnt}
-  \index{sc2\_http\_req\_cnt}
+\index{sc1\_http\_req\_cnt}
+\index{sc2\_http\_req\_cnt}
   Returns the cumulated number of HTTP requests from the currently tracked
   counters. This includes every started request, valid or not. See also
   src\_http\_req\_cnt.
 
 \subsubsection{sc1\_http\_req\_rate}
 \subsubsection{sc2\_http\_req\_rate}
-  \index{sc1\_http\_req\_rate}
-  \index{sc2\_http\_req\_rate}
+\index{sc1\_http\_req\_rate}
+\index{sc2\_http\_req\_rate}
   Returns the average rate of HTTP requests from the currently tracked
   counters, measured in amount of requests over the period configured in
   the table. This includes every started request, valid or not. See also
@@ -444,8 +444,8 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection{sc1\_inc\_gpc0}
 \subsubsection{sc2\_inc\_gpc0}
-  \index{sc1\_inc\_gpc0}
-  \index{sc2\_inc\_gpc0}
+\index{sc1\_inc\_gpc0}
+\index{sc2\_inc\_gpc0}
   Increments the first General Purpose Counter associated to the currently
   tracked counters, and returns its value. Before the first invocation, the
   stored value is zero, so first invocation will increase it to 1 and will
@@ -460,8 +460,8 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection{sc1\_kbytes\_in}
 \subsubsection{sc2\_kbytes\_in}
-  \index{sc1\_kbytes\_in}
-  \index{sc2\_kbytes\_in}
+\index{sc1\_kbytes\_in}
+\index{sc2\_kbytes\_in}
   Returns the amount of client-to-server data from the currently tracked
   counters, measured in kilobytes over the period configured in the table. The
   test is currently performed on 32-bit integers, which limits values to 4
@@ -469,8 +469,8 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection{sc1\_kbytes\_out}
 \subsubsection{sc2\_kbytes\_out}
-  \index{sc1\_kbytes\_out}
-  \index{sc2\_kbytes\_out}
+\index{sc1\_kbytes\_out}
+\index{sc2\_kbytes\_out}
   Returns the amount of server-to-client data from the currently tracked
   counters, measured in kilobytes over the period configured in the table. The
   test is currently performed on 32-bit integers, which limits values to 4
@@ -478,8 +478,8 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection{sc1\_sess\_cnt}
 \subsubsection{sc2\_sess\_cnt}
-  \index{sc1\_sess\_cnt}
-  \index{sc2\_sess\_cnt}
+\index{sc1\_sess\_cnt}
+\index{sc2\_sess\_cnt}
   Returns the cumulated number of incoming connections that were transformed
   into sessions, which means that they were accepted by a "tcp-request
   connection" rule, from the currently tracked counters. A backend may count
@@ -489,8 +489,8 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection{sc1\_sess\_rate}
 \subsubsection{sc2\_sess\_rate}
-  \index{sc1\_sess\_rate}
-  \index{sc2\_sess\_rate}
+\index{sc1\_sess\_rate}
+\index{sc2\_sess\_rate}
   Returns the average session rate from the currently tracked counters,
   measured in amount of sessions over the period configured in the table. A
   session is a connection that got past the early "tcp-request connection"
@@ -499,18 +499,18 @@ addresses and ports, as well as internal values independent on the stream.
   performed over the connection with the client. See also src\_sess\_rate.
 
 \subsubsection[so\_id]{so\_id <integer>}
-  \index{so\_id}
+\index{so\_id}
   Applies to the socket's id. Useful in frontends with many bind keywords.
 
 \subsubsection[src]{src <ip\_address>}
-  \index{src}
+\index{src}
   Applies to the client's IPv4 or IPv6 address. It is usually used to limit
   access to certain resources such as statistics. Note that it is the TCP-level
   source address which is used, and not the address of a client behind a proxy.
 
 \subsubsection[src\_bytes\_in\_rate]{src\_bytes\_in\_rate <integer>}
 \subsubsection*{src\_bytes\_in\_rate(<table>) <integer>}
-  \index{src\_bytes\_in\_rate}
+\index{src\_bytes\_in\_rate}
   Returns the average bytes rate from the connection's source IPv4 address in
   the current proxy's stick-table or in the designated stick-table, measured in
   amount of bytes over the period configured in the table. If the address is
@@ -518,7 +518,7 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection[src\_bytes\_out\_rate]{src\_bytes\_out\_rate <integer>}
 \subsubsection*{src\_bytes\_out\_rate(<table>) <integer>}
-  \index{src\_bytes\_out\_rate}
+\index{src\_bytes\_out\_rate}
   Returns the average bytes rate to the connection's source IPv4 address in the
   current proxy's stick-table or in the designated stick-table, measured in
   amount of bytes over the period configured in the table. If the address is
@@ -526,7 +526,7 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection[src\_clr\_gpc0]{src\_clr\_gpc0 <integer>}
 \subsubsection{src\_clr\_gpc0(<table>) <integer>}
-  \index{src\_clr\_gpc0}
+\index{src\_clr\_gpc0}
   Clears the first General Purpose Counter associated to the connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table, and returns its previous value. If the address is not found, an
@@ -546,7 +546,7 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection[src\_conn\_cnt]{src\_conn\_cnt <integer>}
 \subsubsection{src\_conn\_cnt(<table>) <integer>}
-  \index{src\_conn\_cnt}
+\index{src\_conn\_cnt}
   Returns the cumulated number of connections initiated from the current
   connection's source IPv4 address in the current proxy's stick-table or in
   the designated stick-table. If the address is not found, zero is returned.
@@ -554,7 +554,7 @@ addresses and ports, as well as internal values independent on the stream.
 
 \subsubsection[src\_conn\_cur]{src\_conn\_cur <integer>}
 \subsubsection{src\_conn\_cur(<table>) <integer>}
-  \index{src\_conn\_cur}
+\index{src\_conn\_cur}
   Returns the current amount of concurrent connections initiated from the
   current connection's source IPv4 address in the current proxy's stick-table
   or in the designated stick-table. If the address is not found, zero is
