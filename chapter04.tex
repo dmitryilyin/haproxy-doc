@@ -3173,9 +3173,7 @@ This section provides a description of each keyword and its usage.
 
 \dflb{yes}{yes}{yes}{no}
 
-  Arguments : none
-
-\endinput
+  Arguments: none
 
 \subsubsection{option splice-auto}
 \subsubsection{no option splice-auto}
@@ -3550,8 +3548,8 @@ This section provides a description of each keyword and its usage.
             server srv2 1.1.1.2:3389
   \end{verbatim}
 
-  See also: "balance rdp-cookie", "tcp-request", the "req_rdp_cookie" ACL and
-  the rdp_cookie pattern fetch function.
+  See also: "balance rdp-cookie", "tcp-request", the "req\_rdp\_cookie" ACL and
+  the rdp\_cookie pattern fetch function.
 
 \subsubsection[rate-limit sessions]{rate-limit sessions <rate>}
 
@@ -3684,14 +3682,17 @@ This section provides a description of each keyword and its usage.
 
   See section 7 about ACL usage.
 
-\endinput
+\subsubsection[redisp]{redisp (deprecated)}
+\subsubsection[redispatch]{redispatch (deprecated)}
 
-redisp (deprecated)
-redispatch (deprecated)
+\index{redisp}
+\index{redispatch}
+
   Enable or disable session redistribution in case of connection failure
-  May be used in sections:    defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments: none
 
   In HTTP mode, if a server designated by a cookie is down, clients may
   definitely stick to it because they cannot flush the cookie, so they will not
@@ -3707,20 +3708,26 @@ redispatch (deprecated)
   This form is deprecated, do not use it in any new configuration, use the new
   "option redispatch" instead.
 
-  See also : "option redispatch"
+  See also: "option redispatch"
 
+\subsubsection[reqadd]{reqadd  <string> [ \{if | unless\} <cond> ]}
 
-reqadd  <string> [{if | unless} <cond>]
+\index{reqadd}
+
   Add a header at the end of the HTTP request
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <string>  is the complete line to be added. Any space or known delimiter
-              must be escaped using a backslash ('\'). Please refer to section
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+  
+\begin{description}
+\item[<string>] is the complete line to be added. Any space or known delimiter
+              must be escaped using a backslash ('\verb|\|'). Please refer to section
               6 about HTTP header manipulation for more information.
 
-    <cond>    is an optional matching condition built from ACLs. It makes it
+\item[<cond>] is an optional matching condition built from ACLs. It makes it
               possible to ignore this rule when other conditions are not met.
+\end{description}
 
   A new line consisting in <string> followed by a line feed will be added after
   the last header of an HTTP request.
@@ -3730,29 +3737,38 @@ reqadd  <string> [{if | unless} <cond>]
   responses.
 
   Example : add "X-Proto: SSL" to requests coming via port 81
+\begin{verbatim}
      acl is-ssl  dst_port       81
      reqadd      X-Proto:\ SSL  if is-ssl
+\end{verbatim}
 
   See also: "rspadd", section 6 about HTTP header manipulation, and section 7
             about ACLs.
 
+\subsubsection[reqallow]{reqallow  <search> [ \{if | unless\} <cond> ]}
+\subsubsection[reqiallow]{reqiallow <search> [ \{if | unless\} <cond> ] (ignore case)}
 
-reqallow  <search> [{if | unless} <cond>]
-reqiallow <search> [{if | unless} <cond>] (ignore case)
+\index{reqallow}
+\index{reqiallow}
+
   Definitely allow an HTTP request if a line matches a regular expression
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <search>  is the regular expression applied to HTTP headers and to the
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+
+\begin{description}
+\item[<search>] is the regular expression applied to HTTP headers and to the
               request line. This is an extended regular expression. Parenthesis
               grouping is supported and no preliminary backslash is required.
               Any space or known delimiter must be escaped using a backslash
-              ('\'). The pattern applies to a full line at a time. The
+              ('\verb|\|'). The pattern applies to a full line at a time. The
               "reqallow" keyword strictly matches case while "reqiallow"
               ignores case.
 
-    <cond>    is an optional matching condition built from ACLs. It makes it
+\item[<cond>] is an optional matching condition built from ACLs. It makes it
               possible to ignore this rule when other conditions are not met.
+\end{description}
 
   A request containing any line which matches extended regular expression
   <search> will mark the request as allowed, even if any later test would
@@ -3763,30 +3779,38 @@ reqiallow <search> [{if | unless} <cond>] (ignore case)
   It is easier, faster and more powerful to use ACLs to write access policies.
   Reqdeny, reqallow and reqpass should be avoided in new designs.
 
-  Example :
-     # allow www.* but refuse *.local
+  Example: allow www.* but refuse *.local
+\begin{verbatim}
      reqiallow ^Host:\ www\.
      reqideny  ^Host:\ .*\.local
+\end{verbatim}
 
   See also: "reqdeny", "block", section 6 about HTTP header manipulation, and
             section 7 about ACLs.
 
+\subsubsection[reqdel]{reqdel  <search> [ \{if | unless\} <cond>]}
+\subsubsection[reqidel]{reqidel <search> [ \{if | unless\} <cond>]  (ignore case)}
 
-reqdel  <search> [{if | unless} <cond>]
-reqidel <search> [{if | unless} <cond>]  (ignore case)
+\index{reqdel}
+\index{reqidel}
+
   Delete all headers matching a regular expression in an HTTP request
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <search>  is the regular expression applied to HTTP headers and to the
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+
+\begin{description}
+\item[<search>]  is the regular expression applied to HTTP headers and to the
               request line. This is an extended regular expression. Parenthesis
               grouping is supported and no preliminary backslash is required.
               Any space or known delimiter must be escaped using a backslash
-              ('\'). The pattern applies to a full line at a time. The "reqdel"
+              ('\verb|\|'). The pattern applies to a full line at a time. The "reqdel"
               keyword strictly matches case while "reqidel" ignores case.
 
-    <cond>    is an optional matching condition built from ACLs. It makes it
+\item[<cond>] is an optional matching condition built from ACLs. It makes it
               possible to ignore this rule when other conditions are not met.
+\end{description}
 
   Any header line matching extended regular expression <search> in the request
   will be completely deleted. Most common use of this is to remove unwanted
@@ -3797,31 +3821,38 @@ reqidel <search> [{if | unless} <cond>]  (ignore case)
   and not to traffic generated by HAProxy, such as health-checks or error
   responses. Keep in mind that header names are not case-sensitive.
 
-  Example :
-     # remove X-Forwarded-For header and SERVER cookie
+  Example: remove X-Forwarded-For header and SERVER cookie
+\begin{verbatim}
      reqidel ^X-Forwarded-For:.*
      reqidel ^Cookie:.*SERVER=
+\end{verbatim}
 
   See also: "reqadd", "reqrep", "rspdel", section 6 about HTTP header
             manipulation, and section 7 about ACLs.
 
+\subsubsection[reqdeny]{reqdeny  <search> [ \{if | unless\} <cond> ]}
+\subsubsection[reqideny]{reqideny <search> [ \{if | unless\} <cond> ]  (ignore case)}
 
-reqdeny  <search> [{if | unless} <cond>]
-reqideny <search> [{if | unless} <cond>]  (ignore case)
+\index{reqdeny}
+\index{reqideny}
+
   Deny an HTTP request if a line matches a regular expression
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <search>  is the regular expression applied to HTTP headers and to the
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+\begin{description}
+\item[<search>]  is the regular expression applied to HTTP headers and to the
               request line. This is an extended regular expression. Parenthesis
               grouping is supported and no preliminary backslash is required.
               Any space or known delimiter must be escaped using a backslash
-              ('\'). The pattern applies to a full line at a time. The
+              ('\verb|\|'). The pattern applies to a full line at a time. The
               "reqdeny" keyword strictly matches case while "reqideny" ignores
               case.
 
-    <cond>    is an optional matching condition built from ACLs. It makes it
+\item[<cond>] is an optional matching condition built from ACLs. It makes it
               possible to ignore this rule when other conditions are not met.
+\end{description}
 
   A request containing any line which matches extended regular expression
   <search> will mark the request as denied, even if any later test would
@@ -3836,14 +3867,17 @@ reqideny <search> [{if | unless} <cond>]  (ignore case)
   It is easier, faster and more powerful to use ACLs to write access policies.
   Reqdeny, reqallow and reqpass should be avoided in new designs.
 
-  Example :
-     # refuse *.local, then allow www.*
+  Example: refuse *.local, then allow www.*
+  
+\begin{verbatim}
      reqideny  ^Host:\ .*\.local
      reqiallow ^Host:\ www\.
+\end{verbatim}
 
   See also: "reqallow", "rspdeny", "block", section 6 about HTTP header
             manipulation, and section 7 about ACLs.
 
+\endinput
 
 reqpass  <search> [{if | unless} <cond>]
 reqipass <search> [{if | unless} <cond>]  (ignore case)
