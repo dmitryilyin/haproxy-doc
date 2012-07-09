@@ -24,6 +24,7 @@ to forward incoming connections.
 parts combined in one section. It is generally useful for TCP-only traffic.
 \end{description}
 
+\index{proxy}
 All proxy names must be formed from upper and lower case letters, digits,
 '-' (dash), '\_' (underscore) , '.' (dot) and ':' (colon). ACL names are
 case-sensitive, which means that "www" and "WWW" are two different proxies.
@@ -34,7 +35,7 @@ proxies with overlapping capabilities (frontend/backend) have different names.
 However, it is still permitted that a frontend and a backend share the same
 name, as this configuration seems to be commonly encountered.
 
-Right now, two major proxy modes are supported : "tcp", also known as layer 4,
+Right now, two major proxy modes are supported: "tcp", also known as layer 4,
 and "http", also known as layer 7. In layer 4 mode, HAProxy simply forwards
 bidirectional traffic between two sides. In layer 7 mode, HAProxy analyzes the
 protocol, and can interact with it by allowing, blocking, switching, adding,
@@ -53,7 +54,9 @@ with "default" in order to restore default settings regardless of what has been
 specified in a previous "defaults" section.
 
 \begin{longtable}{|lr|c|c|c|c|}
-\hline\head{Keyword}&\head{Mark}&\head{Defaults}&\head{Frontend}&\head{Listen}&\head{Backend}\\\hline
+\hline
+\head{Keyword}&\head{Mark}&\head{Defaults}&\head{Frontend}&\head{Listen}&\head{Backend}\\
+\hline
 \input{keyword_matrix}
 \end{longtable}
 
@@ -61,9 +64,8 @@ specified in a previous "defaults" section.
 
 This section provides a description of each keyword and its usage.
 
-\subsubsection[acl]{
-acl <aclname> <criterion> [flags] [operator] <value> ...
-}
+\subsubsection[acl]{acl <aclname> <criterion> [flags] [operator] <value> ...}
+  \index{acl}
   Declare or complete an access list.
   
   \dflb{no}{yes}{yes}{yes}
@@ -77,11 +79,8 @@ acl <aclname> <criterion> [flags] [operator] <value> ...
 
   See section 7 about ACL usage.
 
-\subsubsection[appsession]{
-appsession <cookie> len <length> timeout <holdtime>
-           [request-learn] [prefix] [mode <path-parameters|query-string>]
-}
-
+\subsubsection[appsession]{appsession <cookie> len <length> timeout <holdtime> [request-learn] [prefix] [mode <path-parameters|query-string>]}
+  \index{appsession}
   Define session stickiness on an existing application cookie.
   
   \dflb{no}{no}{yes}{yes}
@@ -153,9 +152,9 @@ appsession <cookie> len <length> timeout <holdtime>
 
   See also : "cookie", "capture cookie", "balance", "stick", "stick-table",
              "ignore-persist", "nbproc" and "bind-process".
-\subsubsection[backlog]{
-backlog <conns>
-}
+
+\subsubsection[backlog]{backlog <conns>}
+  \index{backlog}
   Give hints to the system about the approximate listen backlog desired size
  
   \dflb{yes}{yes}{yes}{no}
@@ -183,13 +182,9 @@ backlog <conns>
 
   See also : "maxconn" and the target operating system's tuning guide.
 
-\subsubsection[balance] {
-balance <algorithm> [ <arguments> ]
-}
-\subsubsection*{
-balance url\_param <param> [check\_post [<max\_wait>]]
-}
-
+\subsubsection[balance] {balance <algorithm> [ <arguments> ]}
+\subsubsection*{balance url\_param <param> [check\_post [<max\_wait>]]}
+  \index{balance}
   Define the load balancing algorithm to be used in a backend.
 
   \dflb{yes}{no}{yes}{yes}
@@ -423,7 +418,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
       type message bodies.
   \end{itemize}
 
-  See also : "dispatch", "cookie", "appsession", "transparent", "hash-type" and
+  See also: "dispatch", "cookie", "appsession", "transparent", "hash-type" and
              "http\_proxy".
 
 \subsubsection[bind]{bind [<address>]:<port\_range> [, ...]}
@@ -439,6 +434,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
 \subsubsection*{bind /<path> [, ...] [ user <user> | uid <uid> ]}
 \subsubsection*{bind /<path> [, ...] [ group <user> | gid <gid> ]}
 
+  \index{bind}
   Define one or several listening addresses and/or ports in a frontend.
     
   \dflb{no}{yes}{yes}{no}
@@ -598,6 +594,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
              documentation.
 
 \subsubsection[bind-process]{bind-process [ all | odd | even | <number 1-32> ] ...}
+  \index{bind-process}
   Limit visibility of an instance to a certain set of processes numbers.
   
   \dflb{yes}{yes}{yes}{yes}
@@ -653,6 +650,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also: "nbproc" in global section.
 
 \subsubsection[block]{block { if | unless } <condition>}
+  \index{block}
   Block a layer 7 request if/unless a condition is matched
 
   \dflb{no}{yes}{yes}{yes}
@@ -713,10 +711,12 @@ balance url\_param <param> [check\_post [<max\_wait>]]
 
   \verb|capture cookie ASPSESSION len 32|
 
-  See also : "capture request header", "capture response header" as well as
+  See also: "capture request header", "capture response header" as well as
             section 8 about logging.
 
 \subsubsection[capture request header]{capture request header <name> len <length>}
+  \index{capture request header}
+  
   Capture and log the first occurrence of the specified request header.
 
   \dflb{no}{yes}{yes}{no}
@@ -761,10 +761,11 @@ balance url\_param <param> [check\_post [<max\_wait>]]
         capture request header Referrer len 15
   \end{verbatim}
 
-  See also : "capture cookie", "capture response header" as well as section 8
+  See also: "capture cookie", "capture response header" as well as section 8
              about logging.
 
 \subsubsection[capture response header]{capture response header <name> len <length>}
+  \index{capture response header}
   Capture and log the first occurrence of the specified response header.
   
   \dflb{no}{yes}{yes}{no}
@@ -806,6 +807,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
              about logging.
 
 \subsubsection[clitimeout]{clitimeout <timeout> (deprecated)}
+  \index{clitimeout}
   Set the maximum inactivity time on the client side.
   
   \dflb{yes}{yes}{yes}{no}
@@ -843,6 +845,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
              "srvtimeout".
 
 \subsubsection[contimeout]{contimeout <timeout> (deprecated)}
+  \index{contimeout}
   Set the maximum time to wait for a connection attempt to a server to succeed.
   \dflb{yes}{no}{yes}{yes}
 
@@ -877,6 +880,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
 
 
 \subsubsection[cookie]{cookie <name> [ rewrite | insert | prefix ] [ indirect ]  [ nocache ] [ postonly ] [ preserve ] [ httponly ] [ secure ] [ domain <domain> ]* [ maxidle <idle> ] [ maxlife <life> ]}
+  \index{cookie}
   Enable cookie-based persistence in a backend.
   
   \dflb{yes}{no}{yes}{yes}
@@ -1048,6 +1052,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
              and "ignore-persist".
 
 \subsubsection[default-server]{default-server [param*]}
+  \index{default-server}
   Change default options for a server in a backend
   
   \dflb{yes}{no}{yes}{yes}
@@ -1068,6 +1073,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also: "server" and section 5 about server options
 
 \subsubsection[default\_backend]{default\_backend <backend>}
+  \index{default\_backend}
   Specify the backend to use when no "use\_backend" rule has been matched.
   
   \dflb{yes}{yes}{yes}{no}
@@ -1092,6 +1098,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also: "use\_backend", "reqsetbe", "reqisetbe"
 
 \subsubsection[disabled]{disabled}
+  \index{disabled}
   Disable a proxy, frontend or backend.
   
   \dflb{yes}{yes}{yes}{yes}
@@ -1109,6 +1116,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also: "enabled"
 
 \subsubsection[dispatch]{dispatch <address>:<port>}
+  \index{dispatch}
   Set a default server address
   
   \dflb{no}{no}{yes}{yes}
@@ -1133,6 +1141,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also: "server"
 
 \subsubsection[enabled]{enabled}
+  \index{enabled}
   Enable a proxy, frontend or backend.
   
   \dflb{yes}{yes}{yes}{yes}
@@ -1145,6 +1154,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also: "disabled"
 
 \subsubsection[errorfile]{errorfile <code> <file>}
+  \index{errorfile}
   Return a file contents instead of errors generated by HAProxy
   
   \dflb{yes}{yes}{yes}{yes}
@@ -1196,6 +1206,8 @@ balance url\_param <param> [check\_post [<max\_wait>]]
 
 \subsubsection[errorloc]{errorloc <code> <url>}
 \subsubsection[errorloc302]{errorloc302 <code> <url>}
+  \index{errorloc}
+  \index{errorloc302}
   Return an HTTP redirection to a URL instead of errors generated by HAProxy
   
   \dflb{yes}{yes}{yes}{yes}
@@ -1229,6 +1241,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also: "errorfile", "errorloc303"
 
 \subsubsection[errorloc303]{errorloc303 <code> <url>}
+  \index{errorloc303}
   Return an HTTP redirection to a URL instead of errors generated by HAProxy
   
   \dflb{yes}{yes}{yes}{yes}
@@ -1260,6 +1273,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also: "errorfile", "errorloc", "errorloc302"
 
 \subsubsection[force-persist]{force-persist { if | unless } <condition>}
+  \index{force-persist}
   Declare a condition to force persistence on down servers
   
   \dflb{no}{yes}{yes}{yes}
@@ -1288,6 +1302,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
              and section 7 about ACL usage.
 
 \subsubsection[fullconn]{fullconn <conns>}
+  \index{fullconn}
   Specify at what backend load the servers will reach their maxconn
   
   \dflb{yes}{no}{yes}{yes}
@@ -1313,6 +1328,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   backend. That way it's safe to leave it unset.
 
   Example:
+  
   \begin{verbatim}
      # The servers will accept between 100 and 1000 concurrent connections each
      # and the maximum of 1000 will be reached when the backend reaches 10000
@@ -1326,6 +1342,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also: "maxconn", "server"
 
 \subsubsection[grace]{grace <time>}
+  \index{grace}
   Maintain a proxy operational for some time after a soft stop
   
   \dflb{yes}{yes}{yes}{yes}
@@ -1347,6 +1364,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   simplify it.
 
 \subsubsection[hash-type]{hash-type <method>}
+  \index{hash-type}
   Specify a method to use for mapping hashes to servers
   
   \dflb{yes}{no}{yes}{yes}
@@ -1392,6 +1410,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also: "balance", "server"
 
 \subsubsection[http-check disable-on-404]{http-check disable-on-404}
+  \index{http-check disable-on-404}
   Enable a maintenance mode upon HTTP/404 response to health-checks
   
   \dflb{yes}{no}{yes}{yes}
@@ -1413,6 +1432,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also : "option httpchk", "http-check expect"
 
 \subsubsection[http-check expect]{http-check expect [!] <match> <pattern>}
+  \index{http-check expect}
   Make HTTP health checks consider response contents or specific status codes
   
   \dflb{yes}{no}{yes}{yes}
@@ -1502,6 +1522,7 @@ balance url\_param <param> [check\_post [<max\_wait>]]
   See also: "option httpchk", "http-check disable-on-404"
 
 \subsubsection[http-check send-state]{http-check send-state}
+  \index{http-check send-state}
   Enable emission of a state header with HTTP health checks
   
   \dflb{yes}{no}{yes}{yes}
@@ -1549,14 +1570,11 @@ balance url\_param <param> [check\_post [<max\_wait>]]
 
   See also: "option httpchk", "http-check disable-on-404"
 
-\endinput
-
-http-request { allow | deny | auth [realm <realm>] }
-             [ { if | unless } <condition> ]
+\subsubsection[http-request]{http-request \{ allow | deny | auth [realm <realm>] \} [ \{ if | unless \} <condition> ]}
+  \index{http-request}
   Access control for Layer 7 requests
 
-  May be used in sections:   defaults | frontend | listen | backend
-                                no    |    yes   |   yes  |   yes
+  \dflb{no}{yes}{yes}{yes}                       
 
   These set of options allow to fine control access to a
   frontend/listen/backend. Each option may be followed by if/unless and acl.
@@ -1569,6 +1587,7 @@ http-request { allow | deny | auth [realm <realm>] }
   instance.
 
   Example:
+  \begin{verbatim}
         acl nagios src 192.168.129.3
         acl local_net src 192.168.0.0/16
         acl auth_ok http_auth(L1)
@@ -1577,24 +1596,29 @@ http-request { allow | deny | auth [realm <realm>] }
         http-request allow if local_net auth_ok
         http-request auth realm Gimme if local_net auth_ok
         http-request deny
+    \end{verbatim}
 
   Example:
+\begin{verbatim}
         acl auth_ok http_auth_group(L1) G1
 
         http-request auth unless auth_ok
+\end{verbatim}
 
   See also : "stats http-request", section 3.4 about userlists and section 7
              about ACL usage.
 
-http-send-name-header [<header>]
+\subsubsection[http-send-name-header]{http-send-name-header [<header>]}
+  \index{http-send-name-header}
   Add the server name to a request. Use the header string given by <header>
 
-  May be used in sections:   defaults | frontend | listen | backend
-                               yes    |    no    |   yes  |   yes
+  \dflb{yes}{no}{yes}{yes}
 
-  Arguments :
-
-    <header>  The header string to use to send the server name
+  Arguments:
+  
+\begin{description}
+\item[ <header>]  The header string to use to send the server name
+\end{description}
 
   The "http-send-name-header" statement causes the name of the target
   server to be added to the headers of an HTTP request.  The name
@@ -1602,21 +1626,26 @@ http-send-name-header [<header>]
 
   See also : "server"
 
-id <value>
+\subsubsection[id]{id <value>}
+  \index{id}
   Set a persistent ID to a proxy.
-  May be used in sections :   defaults | frontend | listen | backend
-                                  no   |    yes   |   yes  |   yes
-  Arguments : none
+  
+  \dflb{no}{yes}{yes}{yes}
+  
+  Arguments:
+\begin{description}
+\item[<id>] ID of proxy 
+\end{description}
 
   Set a persistent ID for the proxy. This ID must be unique and positive.
   An unused ID will automatically be assigned if unset. The first assigned
   value will be 1. This ID is currently only returned in statistics.
 
-
-ignore-persist { if | unless } <condition>
+\subsubsection[ignore-persist]{ignore-persist \{ if | unless \} <condition>}
+  \index{ignore-persist}
   Declare a condition to ignore persistence
-  May be used in sections:    defaults | frontend | listen | backend
-                                  no   |    yes   |   yes  |   yes
+
+  \dflb{no}{yes}{yes}{yes}
 
   By default, when cookie persistence is enabled, every requests containing
   the cookie are unconditionally persistent (assuming the target server is up
@@ -1634,61 +1663,83 @@ ignore-persist { if | unless } <condition>
   The persistence is ignored when an "if" condition is met, or unless an
   "unless" condition is met.
 
-  See also : "force-persist", "cookie", and section 7 about ACL usage.
+  See also: "force-persist", "cookie", and section 7 about ACL usage.
 
+\subsubsection[log global]{log global}
+\subsubsection[log]{log <address> <facility> [<level> [<minlevel>]]}
+\subsubsection[no log]{no log}
 
-log global
-log <address> <facility> [<level> [<minlevel>]]
-no log
+\index{log global}
+\index{log}
+\index{no log}
+
   Enable per-instance logging of events and traffic.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
+  
+  \dflb{yes}{yes}{yes}{yes}
 
-  Prefix :
-    no         should be used when the logger list must be flushed. For example,
+  Prefix:
+  
+\begin{description}
+\item[no] should be used when the logger list must be flushed. For example,
                if you don't want to inherit from the default logger list. This
                prefix does not allow arguments.
+\end{description}
 
-  Arguments :
-    global     should be used when the instance's logging parameters are the
+  Arguments:
+
+\begin{description}
+\item[global] should be used when the instance's logging parameters are the
                same as the global ones. This is the most common usage. "global"
                replaces <address>, <facility> and <level> with those of the log
                entries found in the "global" section. Only one "log global"
                statement may be used per instance, and this form takes no other
                parameter.
 
-    <address>  indicates where to send the logs. It takes the same format as
-               for the "global" section's logs, and can be one of :
-
-               - An IPv4 address optionally followed by a colon (':') and a UDP
+\item[<address>]  indicates where to send the logs. It takes the same format as
+               for the "global" section's logs, and can be one of:
+               \begin{itemize}
+               \item[-] An IPv4 address optionally followed by a colon (':') and a UDP
                  port. If no port is specified, 514 is used by default (the
                  standard syslog port).
-
-               - An IPv6 address followed by a colon (':') and optionally a UDP
+               \item[-] An IPv6 address followed by a colon (':') and optionally a UDP
                  port. If no port is specified, 514 is used by default (the
                  standard syslog port).
-
-               - A filesystem path to a UNIX domain socket, keeping in mind
+               \item[-] A filesystem path to a UNIX domain socket, keeping in mind
                  considerations for chroot (be sure the path is accessible
                  inside the chroot) and uid/gid (be sure the path is
                  appropriately writeable).
+                 \end{itemize}
 
-    <facility> must be one of the 24 standard syslog facilities :
+\item[<facility>] must be one of the 24 standard syslog facilities:
+  \index{Log facility}
+  \vspace{5mm}
+  \textbf{
+  \begin{tabular}{llllllll}
+    kern   & user   & mail   & daemon & auth   & syslog & lpr    & news \\
+    uucp   & cron   & auth2  & ftp    & ntp    & audit  & alert  & cron2 \\
+    local0 & local1 & local2 & local3 & local4 & local5 & local6 & local7
+  \end{tabular}
+  }
+  \vspace{5mm}
 
-                 kern   user   mail   daemon auth   syslog lpr    news
-                 uucp   cron   auth2  ftp    ntp    audit  alert  cron2
-                 local0 local1 local2 local3 local4 local5 local6 local7
-
-    <level>    is optional and can be specified to filter outgoing messages. By
+\item[<level>]    is optional and can be specified to filter outgoing messages. By
                default, all messages are sent. If a level is specified, only
                messages with a severity at least as important as this level
                will be sent. An optional minimum level can be specified. If it
                is set, logs emitted with a more severe level than this one will
                be capped to this level. This is used to avoid sending "emerg"
                messages on all terminals on some default syslog configurations.
-               Eight levels are known :
+               \index{Log level}
+               Eight levels are known:
+               
+  \vspace{3mm}
+  \textbf {
+  \begin{tabular}{llllllll}
+          emerg & alert & crit & err & warning & notice & info & debug
+  \end{tabular}
+  }
 
-                 emerg  alert  crit   err    warning notice info  debug
+\end{description}
 
   It is important to keep in mind that it is the frontend which decides what to
   log from a connection, and that in case of content switching, the log entries
@@ -1699,29 +1750,37 @@ no log
   "warning" will be used for termination signals and definitive service
   termination, and "alert" will be used for when a server goes down.
 
-  Note : According to RFC3164, messages are truncated to 1024 bytes before
+  \emph{Note:} According to RFC3164, messages are truncated to 1024 bytes before
          being emitted.
 
-  Example :
+  Example:
+
+\begin{verbatim}
     log global
     log 127.0.0.1:514 local0 notice         # only send important events
     log 127.0.0.1:514 local0 notice notice  # same but limit output level
+\end{verbatim}
 
-log-format <string>
+\subsubsection[log-format]{log-format <string>}
+   \index{log-format}
    Allows you to custom a log line.
 
-   See also : Custom Log Format (8.2.4)
+   See also: Custom Log Format (8.2.4)
 
-
-maxconn <conns>
+\subsubsection[maxconn]{maxconn <conns>}
+  \index{maxconn}
   Fix the maximum number of concurrent connections on a frontend
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments :
-    <conns>   is the maximum number of concurrent connections the frontend will
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments:
+\begin{description}
+\item[<conns>]   is the maximum number of concurrent connections the frontend will
               accept to serve. Excess connections will be queued by the system
               in the socket's listen queue and will be served once a connection
               closes.
+
+\end{description}
 
   If the system supports it, it can be useful on big sites to raise this limit
   very high so that haproxy manages connection queues, instead of leaving the
@@ -1736,58 +1795,66 @@ maxconn <conns>
   are not sized to accept such loads, and for this reason it is generally wise
   to assign them some reasonable connection limits.
 
-  See also : "server", global section's "maxconn", "fullconn"
+  See also: "server", global section's "maxconn", "fullconn"
 
-
-mode { tcp|http|health }
+\subsubsection[mode]{mode \{ tcp | http | health \}}
+  \index{mode}
   Set the running mode or protocol of the instance
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
+
+\dflb{yes}{yes}{yes}{yes}
+
   Arguments :
-    tcp       The instance will work in pure TCP mode. A full-duplex connection
+\begin{description}
+\item[tcp]       The instance will work in pure TCP mode. A full-duplex connection
               will be established between clients and servers, and no layer 7
               examination will be performed. This is the default mode. It
               should be used for SSL, SSH, SMTP, ...
 
-    http      The instance will work in HTTP mode. The client request will be
+\item[http]      The instance will work in HTTP mode. The client request will be
               analyzed in depth before connecting to any server. Any request
               which is not RFC-compliant will be rejected. Layer 7 filtering,
               processing and switching will be possible. This is the mode which
               brings HAProxy most of its value.
 
-    health    The instance will work in "health" mode. It will just reply "OK"
+\item[health]    The instance will work in "health" mode. It will just reply "OK"
               to incoming connections and close the connection. Nothing will be
               logged. This mode is used to reply to external components health
               checks. This mode is deprecated and should not be used anymore as
               it is possible to do the same and even better by combining TCP or
               HTTP modes with the "monitor" keyword.
+\end{description}
 
   When doing content switching, it is mandatory that the frontend and the
   backend are in the same mode (generally HTTP), otherwise the configuration
   will be refused.
 
-  Example :
+  Example:
+\begin{verbatim}
      defaults http_instances
          mode http
+\end{verbatim}
 
-  See also : "monitor", "monitor-net"
+  See also: "monitor", "monitor-net"
 
-
-monitor fail { if | unless } <condition>
+\subsubsection[monitor fail]{monitor fail \{ if | unless \} <condition>}
+  \index{monitor fail}
   Add a condition to report a failure to a monitor HTTP request.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   no
-  Arguments :
-    if <cond>     the monitor request will fail if the condition is satisfied,
+
+\dflb{no}{yes}{yes}{no}
+
+  Arguments:
+\begin{description}
+\item[if <cond>]     the monitor request will fail if the condition is satisfied,
                   and will succeed otherwise. The condition should describe a
                   combined test which must induce a failure if all conditions
                   are met, for instance a low number of servers both in a
                   backend and its backup.
 
-    unless <cond> the monitor request will succeed only if the condition is
+\item[unless <cond>] the monitor request will succeed only if the condition is
                   satisfied, and will fail otherwise. Such a condition may be
                   based on a test on the presence of a minimum number of active
                   servers in a list of backends.
+\end{description}
 
   This statement adds a condition which can force the response to a monitor
   request to report a failure. By default, when an external component queries
@@ -1800,25 +1867,30 @@ monitor fail { if | unless } <condition>
   messages may be tweaked using "errorfile" or "errorloc" if needed.
 
   Example:
-     frontend www
+ \begin{verbatim}
+    frontend www
         mode http
         acl site_dead nbsrv(dynamic) lt 2
         acl site_dead nbsrv(static)  lt 2
         monitor-uri   /site_alive
         monitor fail  if site_dead
+\end{verbatim}
 
-  See also : "monitor-net", "monitor-uri", "errorfile", "errorloc"
+  See also: "monitor-net", "monitor-uri", "errorfile", "errorloc"
 
-
-monitor-net <source>
+\subsubsection[monitor-net]{monitor-net <source>}
+\index{monitor-net}
   Declare a source network which is limited to monitor requests
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments :
-    <source>  is the source IPv4 address or network which will only be able to
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments:
+\begin{description}
+\item[ <source>]  is the source IPv4 address or network which will only be able to
               get monitor responses to any request. It can be either an IPv4
               address, a host name, or an address followed by a slash ('/')
               followed by a mask.
+\end{description}
 
   In TCP mode, any connection coming from a source matching <source> will cause
   the connection to be immediately closed without any log. This allows another
@@ -1840,21 +1912,26 @@ monitor-net <source>
   Last, please note that only one "monitor-net" statement can be specified in
   a frontend. If more than one is found, only the last one will be considered.
 
-  Example :
+  Example:
+\begin{verbatim}
     # addresses .252 and .253 are just probing us.
     frontend www
         monitor-net 192.168.0.252/31
+\end{verbatim}
 
   See also : "monitor fail", "monitor-uri"
 
-
-monitor-uri <uri>
+\subsubsection[monitor-uri]{monitor-uri <uri>}
+\index{monitor-uri}
   Intercept a URI used by external components' monitor requests
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments :
-    <uri>     is the exact URI which we want to intercept to return HAProxy's
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments:
+\begin{description}
+\item[<uri>]     is the exact URI which we want to intercept to return HAProxy's
               health status instead of forwarding the request.
+\end{description}
 
   When an HTTP request referencing <uri> will be received on a frontend,
   HAProxy will not forward it nor log it, but instead will return either
@@ -1873,20 +1950,25 @@ monitor-uri <uri>
   can be imagined (most often the number of available servers in a backend).
 
   Example :
+\begin{verbatim}
     # Use /haproxy_test to report haproxy's status
     frontend www
         mode http
         monitor-uri /haproxy_test
+\end{verbatim}
 
-  See also : "monitor fail", "monitor-net"
+  See also: "monitor fail", "monitor-net"
 
-
-option abortonclose
-no option abortonclose
+\subsubsection{option abortonclose}
+\subsubsection{no option abortonclose}
+  \index{option abortonclose}
+  \index{option abortonclose}
+  
   Enable or disable early dropping of aborted requests pending in queues.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |     no   |   yes  |   yes
-  Arguments : none
+
+   \dflb{yes}{no}{yes}{yes}
+   
+  Arguments: none
 
   In presence of very high loads, the servers will take some time to respond.
   The per-instance connection queue will inflate, and the response time will
@@ -1923,19 +2005,21 @@ no option abortonclose
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also : "timeout queue" and server's "maxconn" and "maxqueue" parameters
+  See also: "timeout queue" and server's "maxconn" and "maxqueue" parameters
 
-
-option accept-invalid-http-request
-no option accept-invalid-http-request
+\subsubsection{option accept-invalid-http-request}
+\subsubsection{no option accept-invalid-http-request}
+  \index{option accept-invalid-http-request}
+  \index{no option accept-invalid-http-request}
   Enable or disable relaxing of HTTP request parsing
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments: none
 
   By default, HAProxy complies with RFC2616 in terms of message parsing. This
   means that invalid characters in header names are not permitted and cause an
-  error to be returned to the client. This is the desired behaviour as such
+  error to be returned to the client. This is the desired behavior as such
   forbidden characters are essentially used to build attacks exploiting server
   weaknesses, and bypass security filtering. Sometimes, a buggy browser or
   server will emit invalid header names for whatever reason (configuration,
@@ -1943,8 +2027,8 @@ no option accept-invalid-http-request
   it is possible to relax HAProxy's header name parser to accept any character
   even if that does not make sense, by specifying this option. Similarly, the
   list of characters allowed to appear in a URI is well defined by RFC3986, and
-  chars 0-31, 32 (space), 34 ('"'), 60 ('<'), 62 ('>'), 92 ('\'), 94 ('^'), 96
-  ('`'), 123 ('{'), 124 ('|'), 125 ('}'), 127 (delete) and anything above are
+  chars 0-31, 32 (space), 34 (\verb|'"'|), 60 (\verb|<|), 62 (\verb|>|), 92 (\verb|'\'|), 94 (\verb|'^'|), 96
+  (\verb|'`'|), 123 (\verb|'{'|), 124 (\verb:'|':), 125 (\verb|'}'|), 127 (delete) and anything above are
   not allowed at all. Haproxy always blocks a number of them (0..32, 127). The
   remaining ones are blocked by default unless this option is enabled.
 
@@ -1961,20 +2045,24 @@ no option accept-invalid-http-request
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also : "option accept-invalid-http-response" and "show errors" on the
+  See also: "option accept-invalid-http-response" and "show errors" on the
              stats socket.
 
+\subsubsection{option accept-invalid-http-response}
+\subsubsection{no option accept-invalid-http-response}
 
-option accept-invalid-http-response
-no option accept-invalid-http-response
+\index{option accept-invalid-http-response}
+\index{no option accept-invalid-http-response}
+  
   Enable or disable relaxing of HTTP response parsing
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |     no   |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments: none
 
   By default, HAProxy complies with RFC2616 in terms of message parsing. This
   means that invalid characters in header names are not permitted and cause an
-  error to be returned to the client. This is the desired behaviour as such
+  error to be returned to the client. This is the desired behavior as such
   forbidden characters are essentially used to build attacks exploiting server
   weaknesses, and bypass security filtering. Sometimes, a buggy browser or
   server will emit invalid header names for whatever reason (configuration,
@@ -1994,16 +2082,20 @@ no option accept-invalid-http-response
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also : "option accept-invalid-http-request" and "show errors" on the
+  See also: "option accept-invalid-http-request" and "show errors" on the
              stats socket.
 
+\subsubsection{option allbackups}
+\subsubsection{no option allbackups}
 
-option allbackups
-no option allbackups
+\index{option allbackups}
+\index{no option allbackups}
+
   Use either all backup servers at a time or only the first one
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |     no   |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments: none
 
   By default, the first operational backup server gets all traffic when normal
   servers are all down. Sometimes, it may be preferred to use multiple backups
@@ -2019,12 +2111,16 @@ no option allbackups
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
+\subsubsection{option checkcache}
+\subsubsection{no option checkcache}
 
-option checkcache
-no option checkcache
+\index{option checkcache}
+\index{no option checkcache}
+
   Analyze all server responses and block requests with cacheable cookies
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |     no   |   yes  |   yes
+
+\dflb{yes}{no}{yes}{yes}
+
   Arguments : none
 
   Some high-level frameworks set application cookies everywhere and do not
@@ -2039,21 +2135,24 @@ no option checkcache
   carefully checks "Cache-control", "Pragma" and "Set-cookie" headers in server
   response to check if there's a risk of caching a cookie on a client-side
   proxy. When this option is enabled, the only responses which can be delivered
-  to the client are :
-    - all those without "Set-Cookie" header ;
-    - all those with a return code other than 200, 203, 206, 300, 301, 410,
+  to the client are:
+
+\begin{itemize}
+\item[-] all those without "Set-Cookie" header ;
+\item[-] all those with a return code other than 200, 203, 206, 300, 301, 410,
       provided that the server has not set a "Cache-control: public" header ;
-    - all those that come from a POST request, provided that the server has not
+\item[-] all those that come from a POST request, provided that the server has not
       set a 'Cache-Control: public' header ;
-    - those with a 'Pragma: no-cache' header
-    - those with a 'Cache-control: private' header
-    - those with a 'Cache-control: no-store' header
-    - those with a 'Cache-control: max-age=0' header
-    - those with a 'Cache-control: s-maxage=0' header
-    - those with a 'Cache-control: no-cache' header
-    - those with a 'Cache-control: no-cache="set-cookie"' header
-    - those with a 'Cache-control: no-cache="set-cookie,' header
+\item[-] those with a 'Pragma: no-cache' header
+\item[-] those with a 'Cache-control: private' header
+\item[-] those with a 'Cache-control: no-store' header
+\item[-] those with a 'Cache-control: max-age=0' header
+\item[-] those with a 'Cache-control: s-maxage=0' header
+\item[-] those with a 'Cache-control: no-cache' header
+\item[-] those with a 'Cache-control: no-cache="set-cookie"' header
+\item[-] those with a 'Cache-control: no-cache="set-cookie,' header
       (allowing other fields after set-cookie)
+\end{itemize}
 
   If a response doesn't respect these requirements, then it will be blocked
   just as if it was from an "rspdeny" filter, with an "HTTP 502 bad gateway".
@@ -2064,18 +2163,22 @@ no option checkcache
   Due to the high impact on the application, the application should be tested
   in depth with the option enabled before going to production. It is also a
   good practice to always activate it during tests, even if it is not used in
-  production, as it will report potentially dangerous application behaviours.
+  production, as it will report potentially dangerous application behaviors.
 
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
+\subsubsection{option clitcpka}
+\subsubsection{no option clitcpka}
 
-option clitcpka
-no option clitcpka
+\index{option clitcpka}
+\index{no option clitcpka}
+
   Enable or disable the sending of TCP keepalive packets on the client side
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{no}
+                                 
+  Arguments: none
 
   When there is a firewall or any session-aware component between a client and
   a server, and when the protocol involves very long sessions with long idle
@@ -2102,14 +2205,17 @@ no option clitcpka
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also : "option srvtcpka", "option tcpka"
+  See also: "option srvtcpka", "option tcpka"
 
+\subsubsection{option contstats}
 
-option contstats
+\index{option contstats}
+
   Enable continuous traffic statistics updates
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments: none
 
   By default, counters used for statistics calculation are incremented
   only when a session finishes. It works quite well when serving small
@@ -2117,15 +2223,19 @@ option contstats
   with A/V streaming, a graph generated from haproxy counters looks like
   a hedgehog. With this option enabled counters get incremented continuously,
   during a whole session. Recounting touches a hotpath directly so
-  it is not enabled by default, as it has small performance impact (~0.5%).
+  it is not enabled by default, as it has small performance impact (~0.5\%).
 
+\subsubsection{option dontlog-normal}
+\subsubsection{no option dontlog-normal}
 
-option dontlog-normal
-no option dontlog-normal
+\index{option dontlog-normal}
+\index{no option dontlog-normal}
+
   Enable or disable logging of normal, successful connections
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments: none
 
   There are large sites dealing with several thousand connections per second
   and for which logging is a major pain. Some of them are even forced to turn
@@ -2139,16 +2249,20 @@ no option dontlog-normal
   complex issues is in the normal logs which will not be logged here. If you
   need to separate logs, see the "log-separate-errors" option instead.
 
-  See also : "log", "dontlognull", "log-separate-errors" and section 8 about
+  See also: "log", "dontlognull", "log-separate-errors" and section 8 about
              logging.
 
+\subsubsection{option dontlognull}
+\subsubsection{no option dontlognull}
 
-option dontlognull
-no option dontlognull
+\index{option dontlognull}
+\index{no option dontlognull}
+
   Enable or disable logging of null connections
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments: none
 
   In certain environments, there are components which will regularly connect to
   various systems to ensure that they are still alive. It can be the case from
@@ -2165,15 +2279,19 @@ no option dontlognull
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also : "log", "monitor-net", "monitor-uri" and section 8 about logging.
+  See also: "log", "monitor-net", "monitor-uri" and section 8 about logging.
 
+\subsubsection{option forceclose}
+\subsubsection{no option forceclose}
 
-option forceclose
-no option forceclose
+\index{option forceclose}
+\index{no option forceclose}
+
   Enable or disable active connection closing after response is transferred.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments: none
 
   Some HTTP servers do not necessarily close the connections when they receive
   the "Connection: close" set by "option httpclose", and if the client does not
@@ -2195,18 +2313,24 @@ no option forceclose
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also : "option httpclose" and "option http-pretend-keepalive"
+  See also: "option httpclose" and "option http-pretend-keepalive"
 
 
-option forwardfor [ except <network> ] [ header <name> ] [ if-none ]
+\subsubsection[option forwardfor]{option forwardfor [ except <network> ] [ header <name> ] [ if-none ]}
+
+\index{option forwardfor}
+
   Enable insertion of the X-Forwarded-For header to requests sent to servers
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments :
-    <network> is an optional argument used to disable this option for sources
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments:
+\begin{description}
+\item[<network>] is an optional argument used to disable this option for sources
               matching <network>
-    <name>    an optional argument to specify a different "X-Forwarded-For"
+\item[<name>]    an optional argument to specify a different "X-Forwarded-For"
               header name.
+\end{description}
 
   Since HAProxy works in reverse-proxy mode, the servers see its IP address as
   their client address. This is sometimes annoying when the client's IP address
@@ -2252,7 +2376,8 @@ option forwardfor [ except <network> ] [ header <name> ] [ if-none ]
   In order to fix this, ensure that any of the "httpclose", "forceclose" or
   "http-server-close" options is set when using this option.
 
-  Examples :
+  Examples:
+\begin{verbatim}
     # Public HTTP address also used by stunnel on the same machine
     frontend www
         mode http
@@ -2262,17 +2387,22 @@ option forwardfor [ except <network> ] [ header <name> ] [ if-none ]
     backend www
         mode http
         option forwardfor header X-Client
+\end{verbatim}
 
-  See also : "option httpclose", "option http-server-close",
+  See also: "option httpclose", "option http-server-close",
              "option forceclose"
 
+\subsubsection{option http-no-delay}
+\subsubsection{no option http-no-delay}
 
-option http-no-delay
-no option http-no-delay
+\index{option http-no-delay}
+\index{no option http-no-delay}
+
   Instruct the system to favor low interactive delays over performance in HTTP
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments: none
 
   In HTTP, each payload is unidirectional and has no notion of interactivity.
   Any agent is expected to queue data somewhat for a reasonably low delay.
@@ -2298,13 +2428,17 @@ no option http-no-delay
   usage and CPU usage, which may significantly lower performance in high
   latency environments.
 
+\subsubsection{option http-pretend-keepalive}
+\subsubsection{no option http-pretend-keepalive}
 
-option http-pretend-keepalive
-no option http-pretend-keepalive
+\index{option http-pretend-keepalive}
+\index{no option http-pretend-keepalive}
+
   Define whether haproxy will announce keepalive to the server or not
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments: none
 
   When running with "option http-server-close" or "option forceclose", haproxy
   adds a "Connection: close" header to the request forwarded to the server.
@@ -2332,7 +2466,7 @@ no option http-pretend-keepalive
 
   This option may be set both in a frontend and in a backend. It is enabled if
   at least one of the frontend or backend holding a connection has it enabled.
-  This option may be compbined with "option httpclose", which will cause
+  This option may be combined with "option httpclose", which will cause
   keepalive to be announced to the server and close to be announced to the
   client. This practice is discouraged though.
 
@@ -2341,13 +2475,17 @@ no option http-pretend-keepalive
 
   See also : "option forceclose" and "option http-server-close"
 
+\subsubsection{option http-server-close}
+\subsubsection{no option http-server-close}
 
-option http-server-close
-no option http-server-close
+\index{option http-server-close}
+\index{no option http-server-close}
+
   Enable or disable HTTP connection closing on the server side
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments: none
 
   By default, when a client communicates with a server, HAProxy will only
   analyze, log, and process the first request of each connection. Setting
@@ -2378,16 +2516,20 @@ no option http-server-close
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also : "option forceclose", "option http-pretend-keepalive",
+  See also: "option forceclose", "option http-pretend-keepalive",
              "option httpclose" and "1.1. The HTTP transaction model".
 
+\subsubsection{option http-use-proxy-header}
+\subsubsection{no option http-use-proxy-header}
 
-option http-use-proxy-header
-no option http-use-proxy-header
+\index{option http-use-proxy-header}
+\index{no option http-use-proxy-header}
+
   Make use of non-standard Proxy-Connection header instead of Connection
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments: none
 
   While RFC2616 explicitly states that HTTP/1.1 agents must use the
   Connection header to indicate their wish of persistent or non-persistent
@@ -2412,33 +2554,39 @@ no option http-use-proxy-header
 
   This option should normally never be used, except in front of a proxy.
 
-  See also : "option httpclose", "option forceclose" and "option
+  See also: "option httpclose", "option forceclose" and "option
              http-server-close".
 
 
-option httpchk
-option httpchk <uri>
-option httpchk <method> <uri>
-option httpchk <method> <uri> <version>
+\subsubsection{option httpchk}
+\subsubsection*{option httpchk <uri>}
+\subsubsection*{option httpchk <method> <uri>}
+\subsubsection*{option httpchk <method> <uri> <version>}
+
+\index{option httpchk}
+
   Enable HTTP protocol to check on the servers health
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <method>  is the optional HTTP method used with the requests. When not set,
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+\begin{description}
+\item[<method>]  is the optional HTTP method used with the requests. When not set,
               the "OPTIONS" method is used, as it generally requires low server
               processing and is easy to filter out from the logs. Any method
               may be used, though it is not recommended to invent non-standard
               ones.
 
-    <uri>     is the URI referenced in the HTTP requests. It defaults to " / "
+\item[<uri>]     is the URI referenced in the HTTP requests. It defaults to " / "
               which is accessible by default on almost any server, but may be
               changed to any other URI. Query strings are permitted.
 
-    <version> is the optional HTTP version string. It defaults to "HTTP/1.0"
+\item[<version>] is the optional HTTP version string. It defaults to "HTTP/1.0"
               but some servers might behave incorrectly in HTTP 1.0, so turning
               it to HTTP/1.1 may sometimes help. Note that the Host field is
               mandatory in HTTP/1.1, and as a trick, it is possible to pass it
-              after "\r\n" following the version string.
+              after "\textbackslash{}r\textbackslash{}n" following the version string.
+\end{description}
 
   By default, server health checks only consist in trying to establish a TCP
   connection. When "option httpchk" is specified, a complete HTTP request is
@@ -2453,24 +2601,30 @@ option httpchk <method> <uri> <version>
   to some dedicated ports using the inetd daemon.
 
   Examples :
+\begin{verbatim}
       # Relay HTTPS traffic to Apache instance and check service availability
       # using HTTP request "OPTIONS * HTTP/1.1" on port 80.
       backend https_relay
           mode tcp
           option httpchk OPTIONS * HTTP/1.1\r\nHost:\ www
           server apache1 192.168.1.1:443 check port 80
+\end{verbatim}
 
-  See also : "option ssl-hello-chk", "option smtpchk", "option mysql-check",
+  See also: "option ssl-hello-chk", "option smtpchk", "option mysql-check",
              "option pgsql-check", "http-check" and the "check", "port" and
              "inter" server options.
 
+\subsubsection{option httpclose}
+\subsubsection{no option httpclose}
 
-option httpclose
-no option httpclose
+\index{option httpclose}
+\index{no option httpclose}
+
   Enable or disable passive HTTP connection closing
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments: none
 
   By default, when a client communicates with a server, HAProxy will only
   analyze, log, and process the first request of each connection. If "option
@@ -2500,17 +2654,23 @@ no option httpclose
   See also : "option forceclose", "option http-server-close" and
              "1.1. The HTTP transaction model".
 
+\subsubsection[option httplog]{option httplog [ clf ]}
 
-option httplog [ clf ]
+\index{option httplog}
+
   Enable logging of HTTP request, session state and timers
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments :
-    clf       if the "clf" argument is added, then the output format will be
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments:
+  
+\begin{description}
+\item[clf]       if the "clf" argument is added, then the output format will be
               the CLF format instead of HAProxy's default HTTP format. You can
               use this when you need to feed HAProxy's logs through a specific
               log analyser which only support the CLF format and which is not
               extensible.
+\end{description}
 
   By default, the log output format is very poor, as it only contains the
   source and destination addresses, and the instance name. By specifying
@@ -2527,19 +2687,23 @@ option httplog [ clf ]
   only "option httplog" will automatically clear the 'clf' mode if it was set
   by default.
 
-  See also :  section 8 about logging.
+  See also:  section 8 about logging.
 
+\subsubsection{option http\_proxy}
+\subsubsection{no option http\_proxy}
 
-option http_proxy
-no option http_proxy
+\index{option http\_proxy}
+\index{no option http\_proxy}
+
   Enable or disable plain HTTP proxy mode
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{yes}
+                                 
+  Arguments: none
 
   It sometimes happens that people need a pure HTTP proxy which understands
   basic proxy requests without caching nor any fancy feature. In this case,
-  it may be worth setting up an HAProxy instance with the "option http_proxy"
+  it may be worth setting up an HAProxy instance with the "option http\_proxy"
   set. In this mode, no server is declared, and the connection is forwarded to
   the IP address and port found in the URL after the "http://" scheme.
 
@@ -2553,28 +2717,34 @@ no option http_proxy
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  Example :
+  Example:
+\begin{verbatim}
     # this backend understands HTTP proxy requests and forwards them directly.
     backend direct_forward
         option httpclose
         option http_proxy
+\end{verbatim}
 
-  See also : "option httpclose"
+  See also: "option httpclose"
 
+\subsubsection{option independant-streams}
+\subsubsection{no option independant-streams}
 
-option independant-streams
-no option independant-streams
+\index{option independant-streams}
+\index{no option independant-streams}
+
   Enable or disable independant timeout processing for both directions
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |  yes
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments: none
 
   By default, when data is sent over a socket, both the write timeout and the
   read timeout for that socket are refreshed, because we consider that there is
   activity on that socket, and we have no other means of guessing if we should
   receive data or not.
 
-  While this default behaviour is desirable for almost all applications, there
+  While this default behavior is desirable for almost all applications, there
   exists a situation where it is desirable to disable it, and only refresh the
   read timeout if there are incoming data. This happens on sessions with large
   timeouts and low amounts of exchanged data such as telnet session. If the
@@ -2592,14 +2762,17 @@ no option independant-streams
   data sent to the server. Doing so will typically break large HTTP posts from
   slow lines, so use it with caution.
 
-  See also : "timeout client", "timeout server" and "timeout tunnel"
+  See also: "timeout client", "timeout server" and "timeout tunnel"
 
+\subsubsection{option ldap-check}
 
-option ldap-check
+\index{option ldap-check}
+
   Use LDAPv3 health checks for server testing
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments: none
 
   It is possible to test that the server correctly talks LDAPv3 instead of just
   testing that it accepts the TCP connection. When this option is set, an
@@ -2612,17 +2785,24 @@ option ldap-check
   Logging of bind requests is server dependent see your documentation how to
   configure it.
 
-  Example :
+  Example:
+\begin{verbatim}
         option ldap-check
+\end{verbatim}
 
-  See also : "option httpchk"
+  See also: "option httpchk"
 
 
-option log-health-checks
-no option log-health-checks
+\subsubsection{option log-health-checks}
+\subsubsection{no option log-health-checks}
+
+\index{option log-health-checks}
+\index{no option log-health-checks}
+
   Enable or disable logging of health checks
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |  yes
+
+\dflb{yes}{no}{yes}{yes}
+
   Arguments : none
 
   Enable health checks logging so it possible to check for example what
@@ -2635,13 +2815,17 @@ no option log-health-checks
 
   See also: "log" and section 8 about logging.
 
+\subsubsection{option log-separate-errors}
+\subsubsection{no option log-separate-errors}
 
-option log-separate-errors
-no option log-separate-errors
+\index{option log-separate-errors}
+\index{no option log-separate-errors}
+
   Change log level for non-completely successful connections
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments: none
 
   Sometimes looking for errors in logs is not easy. This option makes haproxy
   raise the level of logs containing potentially interesting information such
@@ -2655,16 +2839,20 @@ no option log-separate-errors
   second may log normal traffic to a rotating buffer and only archive smaller
   error logs.
 
-  See also : "log", "dontlognull", "dontlog-normal" and section 8 about
+  See also: "log", "dontlognull", "dontlog-normal" and section 8 about
              logging.
 
+\subsubsection{option logasap}
+\subsubsection{no option logasap}
 
-option logasap
-no option logasap
+\index{option logasap}
+\index{no option logasap}
+
   Enable or disable early logging of HTTP requests
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments: none
 
   By default, HTTP requests are logged upon termination so that the total
   transfer time and the number of bytes appear in the logs. When large objects
@@ -2677,7 +2865,8 @@ no option logasap
   "Content-Length" response header so that the logs at least indicate how many
   bytes are expected to be transferred.
 
-  Examples :
+  Examples:
+\begin{verbatim}
       listen http_proxy 0.0.0.0:80
           mode http
           option httplog
@@ -2688,37 +2877,44 @@ no option logasap
           haproxy[14389]: 10.0.1.2:33317 [06/Feb/2009:12:14:14.655] http-in \
           static/srv1 9/10/7/14/+30 200 +243 - - ---- 3/1/1/1/0 1/0 \
           "GET /image.iso HTTP/1.0"
+\end{verbatim}
 
   See also : "option httplog", "capture response header", and section 8 about
              logging.
 
+\subsubsection[option mysql-check]{option mysql-check [ user <username> ]}
+\index{option mysql-check}
 
-option mysql-check [ user <username> ]
   Use MySQL health checks for server testing
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <username> This is the username which will be used when connecting to MySQL
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+\begin{description}
+\item[<username>] This is the username which will be used when connecting to MySQL
                server.
+\end{description}
 
   If you specify a username, the check consists of sending two MySQL packet,
   one Client Authentication packet, and one QUIT packet, to correctly close
   MySQL session. We then parse the MySQL Handshake Initialisation packet and/or
   Error packet. It is a basic but useful test which does not produce error nor
   aborted connect on the server. However, it requires adding an authorization
-  in the MySQL table, like this :
+  in the MySQL table, like this:
 
+\begin{verbatim}
       USE mysql;
       INSERT INTO user (Host,User) values ('<ip_of_haproxy>','<username>');
       FLUSH PRIVILEGES;
+\end{verbatim}
 
   If you don't specify a username (it is deprecated and not recommended), the
-  check only consists in parsing the Mysql Handshake Initialisation packet or
+  check only consists in parsing the Mysql Handshake Initialization packet or
   Error packet, we don't send anything in this mode. It was reported that it
   can generate lockout if check is too frequent and/or if there is not enough
-  traffic. In fact, you need in this case to check MySQL "max_connect_errors"
+  traffic. In fact, you need in this case to check MySQL "max\_connect\_errors"
   value as if a connection is established successfully within fewer than MySQL
-  "max_connect_errors" attempts after a previous connection was interrupted,
+  "max\_connect\_errors" attempts after a previous connection was interrupted,
   the error count for the host is cleared to zero. If HAProxy's server get
   blocked, the "FLUSH HOSTS" statement is the only way to unblock it.
 
@@ -2736,13 +2932,19 @@ option mysql-check [ user <username> ]
 
   See also: "option httpchk"
 
-option pgsql-check [ user <username> ]
+\subsubsection[option pgsql-check]{option pgsql-check [ user <username> ]}
+
+\index{option pgsql-check}
+
   Use PostgreSQL health checks for server testing
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <username> This is the username which will be used when connecting to
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+\begin{description}
+\item[<username>] This is the username which will be used when connecting to
                PostgreSQL server.
+\end{description}
 
   The check sends a PostgreSQL StartupMessage and waits for either
   Authentication request or ErrorResponse message. It is a basic but useful
@@ -2751,16 +2953,21 @@ option pgsql-check [ user <username> ]
 
   See also: "option httpchk"
 
-option nolinger
-no option nolinger
+\subsubsection{option nolinger}
+\subsubsection{no option nolinger}
+
+\index{option nolinger}
+\index{no option nolinger}
+
   Enable or disable immediate session resource cleaning after close
-  May be used in sections:    defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments: none
 
   When clients or servers abort connections in a dirty way (eg: they are
   physically disconnected), the session timeouts triggers and the session is
-  closed. But it will remain in FIN_WAIT1 state for some time in the system,
+  closed. But it will remain in FIN\_WAIT1 state for some time in the system,
   using some resources and possibly limiting the ability to establish newer
   connections.
 
@@ -2772,8 +2979,8 @@ no option nolinger
   this too.
 
   For this reason, it is not recommended to use this option when not absolutely
-  needed. You know that you need it when you have thousands of FIN_WAIT1
-  sessions on your system (TIME_WAIT ones do not count).
+  needed. You know that you need it when you have thousands of FIN\_WAIT1
+  sessions on your system (TIME\_WAIT ones do not count).
 
   This option may be used both on frontends and backends, depending on the side
   where it is required. Use it on the frontend for clients, and on the backend
@@ -2782,20 +2989,25 @@ no option nolinger
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
+\subsubsection[option originalto]{option originalto [ except <network> ] [ header <name> ]}
 
-option originalto [ except <network> ] [ header <name> ]
+\index{option originalto}
+
   Enable insertion of the X-Original-To header to requests sent to servers
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments :
-    <network> is an optional argument used to disable this option for sources
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments:
+\begin{description}
+\item[<network>] is an optional argument used to disable this option for sources
               matching <network>
-    <name>    an optional argument to specify a different "X-Original-To"
+\item[<name>] an optional argument to specify a different "X-Original-To"
               header name.
+\end{description}
 
   Since HAProxy can work in transparent mode, every request from a client can
   be redirected to the proxy and HAProxy itself can proxy every request to a
-  complex SQUID environment and the destination host from SO_ORIGINAL_DST will
+  complex SQUID environment and the destination host from SO\_ORIGINAL\_DST will
   be lost. This is annoying when you want access rules based on destination ip
   addresses. To solve this problem, a new HTTP header "X-Original-To" may be
   added by HAProxy to all requests sent to the server. This header contains a
@@ -2830,6 +3042,7 @@ option originalto [ except <network> ] [ header <name> ]
   "http-server-close" options is set when using this option.
 
   Examples :
+\begin{verbatim}
     # Original Destination address
     frontend www
         mode http
@@ -2839,17 +3052,22 @@ option originalto [ except <network> ] [ header <name> ]
     backend www
         mode http
         option originalto header X-Client-Dst
+\end{verbatim}
 
-  See also : "option httpclose", "option http-server-close",
+  See also: "option httpclose", "option http-server-close",
              "option forceclose"
 
+\subsubsection{option persist}
+\subsubsection{no option persist}
 
-option persist
-no option persist
+\index{option persist}
+\index{no option persist}
+
   Enable or disable forced persistence on down servers
-  May be used in sections:    defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments: none
 
   When an HTTP request reaches a backend with a cookie which references a dead
   server, by default it is redispatched to another server. It is possible to
@@ -2865,15 +3083,19 @@ no option persist
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also : "option redispatch", "retries", "force-persist"
+  See also: "option redispatch", "retries", "force-persist"
 
+\subsubsection{option redispatch}
+\subsubsection{no option redispatch}
 
-option redispatch
-no option redispatch
+\index{option redispatch}
+\index{no option redispatch}
+
   Enable or disable session redistribution in case of connection failure
-  May be used in sections:    defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments: none
 
   In HTTP mode, if a server designated by a cookie is down, clients may
   definitely stick to it because they cannot flush the cookie, so they will not
@@ -2892,39 +3114,50 @@ no option redispatch
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also : "redispatch", "retries", "force-persist"
+  See also: "redispatch", "retries", "force-persist"
 
+\subsubsection{option redis-check}
 
-option redis-check
+\index{option redis-check}
+
   Use redis health checks for server testing
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments: none
 
   It is possible to test that the server correctly talks REDIS protocol instead
   of just testing that it accepts the TCP connection. When this option is set,
   a PING redis command is sent to the server, and the response is analyzed to
   find the "+PONG" response message.
 
-  Example :
+  Example:
+\begin{verbatim}
         option redis-check
+\end{verbatim}
 
-  See also : "option httpchk"
+  See also: "option httpchk"
 
+\subsubsection{option smtpchk}
+\subsubsection*{option smtpchk <hello> <domain>}
 
-option smtpchk
-option smtpchk <hello> <domain>
+\index{option smtpchk}
+
   Use SMTP health checks for server testing
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <hello>   is an optional argument. It is the "hello" command to use. It can
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  
+\begin{description}
+\item[<hello>]   is an optional argument. It is the "hello" command to use. It can
               be either "HELO" (for SMTP) or "EHLO" (for ESTMP). All other
               values will be turned into the default command ("HELO").
 
-    <domain>  is the domain name to present to the server. It may only be
+\item[<domain>] is the domain name to present to the server. It may only be
               specified (and is mandatory) if the hello command has been
               specified. By default, "localhost" is used.
+\end{description}
 
   When "option smtpchk" is set, the health checks will consist in TCP
   connections followed by an SMTP command. By default, this command is
@@ -2935,7 +3168,7 @@ option smtpchk <hello> <domain>
 
   This test is meant to be used with SMTP servers or relays. Depending on the
   request, it is possible that some servers do not log each connection attempt,
-  so you may want to experiment to improve the behaviour. Using telnet on port
+  so you may want to experiment to improve the behavior. Using telnet on port
   25 is often easier than adjusting the configuration.
 
   Most often, an incoming SMTP server needs to see the client's IP address for
@@ -2944,21 +3177,26 @@ option smtpchk <hello> <domain>
   connecting to the server using the "usesrc" argument of the "source" keyword,
   which requires the cttproxy feature to be compiled in.
 
-  Example :
+  Example:
+\begin{verbatim}
         option smtpchk HELO mydomain.org
+\end{verbatim}
 
-  See also : "option httpchk", "source"
+  See also: "option httpchk", "source"
 
+\subsubsection{option socket-stats}
+\subsubsection{no option socket-stats}
 
-option socket-stats
-no option socket-stats
+\index{option socket-stats}
+\index{no option socket-stats}
 
-  Enable or disable collecting & providing separate statistics for each socket.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
+  Enable or disable collecting \& providing separate statistics for each socket.
+
+\dflb{yes}{yes}{yes}{no}
 
   Arguments : none
 
+\endinput
 
 option splice-auto
 no option splice-auto
