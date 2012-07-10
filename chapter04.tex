@@ -3676,7 +3676,7 @@ This section provides a description of each keyword and its usage.
 
   Example: send redirects for request for articles without a '\verb|/|'.
   \begin{verbatim}
-        acl missing_slash path_reg ^/article/[^/]*$
+%out        acl missing_slash path_reg ^/article/[^/]*$
         redirect code 301 prefix / drop-query append-slash if missing_slash
   \end{verbatim}
 
@@ -3877,24 +3877,29 @@ This section provides a description of each keyword and its usage.
   See also: "reqallow", "rspdeny", "block", section 6 about HTTP header
             manipulation, and section 7 about ACLs.
 
-\endinput
+\subsubsection[reqpass]{reqpass  <search> [ \{if | unless\} <cond>] }
+\subsubsection[reqipass]{reqipass <search> [ \{if | unless\} <cond>]  (ignore case) }
 
-reqpass  <search> [{if | unless} <cond>]
-reqipass <search> [{if | unless} <cond>]  (ignore case)
+\index{reqpass}
+\index{reqipass}
+
   Ignore any HTTP request line matching a regular expression in next rules
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <search>  is the regular expression applied to HTTP headers and to the
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<search>] is the regular expression applied to HTTP headers and to the
               request line. This is an extended regular expression. Parenthesis
               grouping is supported and no preliminary backslash is required.
               Any space or known delimiter must be escaped using a backslash
-              ('\'). The pattern applies to a full line at a time. The
+              ('\verb|\|'). The pattern applies to a full line at a time. The
               "reqpass" keyword strictly matches case while "reqipass" ignores
               case.
 
-    <cond>    is an optional matching condition built from ACLs. It makes it
+  \item[<cond>] is an optional matching condition built from ACLs. It makes it
               possible to ignore this rule when other conditions are not met.
+  \end{description}
 
   A request containing any line which matches extended regular expression
   <search> will skip next rules, without assigning any deny or allow verdict.
@@ -3904,37 +3909,44 @@ reqipass <search> [{if | unless} <cond>]  (ignore case)
   It is easier, faster and more powerful to use ACLs to write access policies.
   Reqdeny, reqallow and reqpass should be avoided in new designs.
 
-  Example :
-     # refuse *.local, then allow www.*, but ignore "www.private.local"
+  Example: refuse *.local, then allow www.*, but ignore "www.private.local"
+  \begin{verbatim}
      reqipass  ^Host:\ www.private\.local
      reqideny  ^Host:\ .*\.local
      reqiallow ^Host:\ www\.
+  \end{verbatim}
 
   See also: "reqallow", "reqdeny", "block", section 6 about HTTP header
             manipulation, and section 7 about ACLs.
 
+\subsubsection[reqrep]{reqrep <search> <string> [ \{if | unless\} <cond> ]}
+\subsubsection[reqirep]{reqirep <search> <string> [ \{if | unless\} <cond> ] (ignore case)}
 
-reqrep  <search> <string> [{if | unless} <cond>]
-reqirep <search> <string> [{if | unless} <cond>]   (ignore case)
+\index{reqrep}
+\index{reqirep}
+
   Replace a regular expression with a string in an HTTP request line
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <search>  is the regular expression applied to HTTP headers and to the
+
+\dflb{no}{yes}{yes}{yes}
+ 
+  Arguments:
+  \begin{description}
+  \item[<search>] is the regular expression applied to HTTP headers and to the
               request line. This is an extended regular expression. Parenthesis
               grouping is supported and no preliminary backslash is required.
               Any space or known delimiter must be escaped using a backslash
-              ('\'). The pattern applies to a full line at a time. The "reqrep"
+              ('\verb|\|'). The pattern applies to a full line at a time. The "reqrep"
               keyword strictly matches case while "reqirep" ignores case.
 
-    <string>  is the complete line to be added. Any space or known delimiter
-              must be escaped using a backslash ('\'). References to matched
-              pattern groups are possible using the common \N form, with N
+  \item[<string>] is the complete line to be added. Any space or known delimiter
+              must be escaped using a backslash ('\verb|\|'). References to matched
+              pattern groups are possible using the common \verb|\N| form, with N
               being a single digit between 0 and 9. Please refer to section
               6 about HTTP header manipulation for more information.
 
-    <cond>    is an optional matching condition built from ACLs. It makes it
+  \item[<cond>] is an optional matching condition built from ACLs. It makes it
               possible to ignore this rule when other conditions are not met.
+  \end{description}
 
   Any line matching extended regular expression <search> in the request (both
   the request line and header lines) will be completely replaced with <string>.
@@ -3946,32 +3958,39 @@ reqirep <search> <string> [{if | unless} <cond>]   (ignore case)
   spaces between the request and the response. Keep in mind that URLs in
   request line are case-sensitive while header names are not.
 
-  Example :
-     # replace "/static/" with "/" at the beginning of any request path.
+  Example: replace "/static/" with "/" at the beginning of any request path.
+  \begin{verbatim}
      reqrep ^([^\ :]*)\ /static/(.*)     \1\ /\2
      # replace "www.mydomain.com" with "www" in the host name.
      reqirep ^Host:\ www.mydomain.com   Host:\ www
+  \end{verbatim}
 
   See also: "reqadd", "reqdel", "rsprep", section 6 about HTTP header
             manipulation, and section 7 about ACLs.
 
+\subsubsection[reqtarpit]{reqtarpit  <search> [ \{if | unless\} <cond> ]}
+\subsubsection[reqitarpit]{reqitarpit <search> [ \{if | unless\} <cond> ]  (ignore case)}
 
-reqtarpit  <search> [{if | unless} <cond>]
-reqitarpit <search> [{if | unless} <cond>]  (ignore case)
+\index{reqtarpit}
+\index{reqitarpit}
+
   Tarpit an HTTP request containing a line matching a regular expression
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <search>  is the regular expression applied to HTTP headers and to the
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<search>] is the regular expression applied to HTTP headers and to the
               request line. This is an extended regular expression. Parenthesis
               grouping is supported and no preliminary backslash is required.
               Any space or known delimiter must be escaped using a backslash
-              ('\'). The pattern applies to a full line at a time. The
+              ('\verb|\|'). The pattern applies to a full line at a time. The
               "reqtarpit" keyword strictly matches case while "reqitarpit"
               ignores case.
 
-    <cond>    is an optional matching condition built from ACLs. It makes it
+  \item[<cond>] is an optional matching condition built from ACLs. It makes it
               possible to ignore this rule when other conditions are not met.
+  \end{description}
 
   A request containing any line which matches extended regular expression
   <search> will be tarpitted, which means that it will connect to nowhere, will
@@ -3987,29 +4006,34 @@ reqitarpit <search> [{if | unless} <cond>]  (ignore case)
   come. Depending on the environment and attack, it may be particularly
   efficient at reducing the load on the network and firewalls.
 
-  Examples :
-     # ignore user-agents reporting any flavour of "Mozilla" or "MSIE", but
-     # block all others.
+  Examples: ignore user-agents reporting any flavour of "Mozilla" or "MSIE", but block all others.
+  \begin{verbatim}
      reqipass   ^User-Agent:\.*(Mozilla|MSIE)
      reqitarpit ^User-Agent:
 
      # block bad guys
      acl badguys src 10.1.0.3 172.16.13.20/28
      reqitarpit . if badguys
+  \end{verbatim}
 
   See also: "reqallow", "reqdeny", "reqpass", section 6 about HTTP header
             manipulation, and section 7 about ACLs.
 
+\subsubsection[retries]{retries <value>}
 
-retries <value>
+\index{retries}
+
   Set the number of retries to perform on a server after a connection failure
-  May be used in sections:    defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <value>   is the number of times a connection attempt should be retried on
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<value>] is the number of times a connection attempt should be retried on
               a server when a connection either is refused or times out. The
               default value is 3.
-
+  \end{description}
+  
   It is important to understand that this value applies to the number of
   connection attempts, not full requests. When a connection has effectively
   been established to a server, there will be no more retry.
@@ -4020,20 +4044,25 @@ retries <value>
   When "option redispatch" is set, the last retry may be performed on another
   server even if a cookie references a different server.
 
-  See also : "option redispatch"
+  See also: "option redispatch"
 
+\subsubsection[rspadd]{rspadd <string> [ \{if | unless\} <cond>] }
 
-rspadd <string> [{if | unless} <cond>]
+\index{rspadd}
+
   Add a header at the end of the HTTP response
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <string>  is the complete line to be added. Any space or known delimiter
-              must be escaped using a backslash ('\'). Please refer to section
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<string>] is the complete line to be added. Any space or known delimiter
+              must be escaped using a backslash ('\verb|\|'). Please refer to section
               6 about HTTP header manipulation for more information.
 
-    <cond>    is an optional matching condition built from ACLs. It makes it
+  \item[<cond>] is an optional matching condition built from ACLs. It makes it
               possible to ignore this rule when other conditions are not met.
+  \end{description}
 
   A new line consisting in <string> followed by a line feed will be added after
   the last header of an HTTP response.
@@ -4045,23 +4074,29 @@ rspadd <string> [{if | unless} <cond>]
   See also: "reqadd", section 6 about HTTP header manipulation, and section 7
             about ACLs.
 
+\subsubsection[rspdel]{rspdel  <search> [ \{if | unless\} <cond> ]}
+\subsubsection[rspidel]{<search> [ \{if | unless\} <cond> ]  (ignore case)}
 
-rspdel  <search> [{if | unless} <cond>]
-rspidel <search> [{if | unless} <cond>]  (ignore case)
+\index{rspdel}
+\index{rspidel}
+
   Delete all headers matching a regular expression in an HTTP response
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <search>  is the regular expression applied to HTTP headers and to the
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<search>] is the regular expression applied to HTTP headers and to the
               response line. This is an extended regular expression, so
               parenthesis grouping is supported and no preliminary backslash
               is required. Any space or known delimiter must be escaped using
-              a backslash ('\'). The pattern applies to a full line at a time.
+              a backslash ('\verb|\|'). The pattern applies to a full line at a time.
               The "rspdel" keyword strictly matches case while "rspidel"
               ignores case.
 
-    <cond>    is an optional matching condition built from ACLs. It makes it
+  \item[<cond>] is an optional matching condition built from ACLs. It makes it
               possible to ignore this rule when other conditions are not met.
+  \end{description}
 
   Any header line matching extended regular expression <search> in the response
   will be completely deleted. Most common use of this is to remove unwanted
@@ -4072,30 +4107,37 @@ rspidel <search> [{if | unless} <cond>]  (ignore case)
   and not to traffic generated by HAProxy, such as health-checks or error
   responses. Keep in mind that header names are not case-sensitive.
 
-  Example :
-     # remove the Server header from responses
+  Example: remove the Server header from responses
+  \begin{verbatim}
      reqidel ^Server:.*
+  \end{verbatim}
 
   See also: "rspadd", "rsprep", "reqdel", section 6 about HTTP header
             manipulation, and section 7 about ACLs.
 
+\subsubsection[rspdeny] {rspdeny <search> [ \{if | unless\} <cond> ]}
+\subsubsection[rspideny] {rspideny <search> [ \{if | unless\} <cond> ] (ignore case)}
 
-rspdeny  <search> [{if | unless} <cond>]
-rspideny <search> [{if | unless} <cond>]  (ignore case)
+\index{rspdeny}
+\index{rspideny}
+
   Block an HTTP response if a line matches a regular expression
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <search>  is the regular expression applied to HTTP headers and to the
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<search>] is the regular expression applied to HTTP headers and to the
               response line. This is an extended regular expression, so
               parenthesis grouping is supported and no preliminary backslash
               is required. Any space or known delimiter must be escaped using
-              a backslash ('\'). The pattern applies to a full line at a time.
+              a backslash ('\verb|\|'). The pattern applies to a full line at a time.
               The "rspdeny" keyword strictly matches case while "rspideny"
               ignores case.
 
-    <cond>    is an optional matching condition built from ACLs. It makes it
+  \item[<cond>] is an optional matching condition built from ACLs. It makes it
               possible to ignore this rule when other conditions are not met.
+  \end{description}
 
   A response containing any line which matches extended regular expression
   <search> will mark the request as denied. The test applies both to the
@@ -4110,36 +4152,43 @@ rspideny <search> [{if | unless} <cond>]  (ignore case)
   It is easier, faster and more powerful to use ACLs to write access policies.
   Rspdeny should be avoided in new designs.
 
-  Example :
-     # Ensure that no content type matching ms-word will leak
+  Example: ensure that no content type matching ms-word will leak
+  \begin{verbatim}
      rspideny  ^Content-type:\.*/ms-word
+  \end{verbatim}
 
   See also: "reqdeny", "acl", "block", section 6 about HTTP header manipulation
             and section 7 about ACLs.
 
+\subsubsection[rsprep]{rsprep <search> <string> [ \{if | unless\} <cond> ]}
+\subsubsection[rspirep]{rspirep <search> <string> [ \{if | unless\} <cond> ]  (ignore case)}
 
-rsprep  <search> <string> [{if | unless} <cond>]
-rspirep <search> <string> [{if | unless} <cond>]  (ignore case)
+\index{rsprep}
+\index{rspirep}
+
   Replace a regular expression with a string in an HTTP response line
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <search>  is the regular expression applied to HTTP headers and to the
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<search>] is the regular expression applied to HTTP headers and to the
               response line. This is an extended regular expression, so
               parenthesis grouping is supported and no preliminary backslash
               is required. Any space or known delimiter must be escaped using
-              a backslash ('\'). The pattern applies to a full line at a time.
+              a backslash ('\verb|\|'). The pattern applies to a full line at a time.
               The "rsprep" keyword strictly matches case while "rspirep"
               ignores case.
 
-    <string>  is the complete line to be added. Any space or known delimiter
-              must be escaped using a backslash ('\'). References to matched
-              pattern groups are possible using the common \N form, with N
+  \item[<string>] is the complete line to be added. Any space or known delimiter
+              must be escaped using a backslash ('\verb|\|'). References to matched
+              pattern groups are possible using the common \verb|\N| form, with N
               being a single digit between 0 and 9. Please refer to section
               6 about HTTP header manipulation for more information.
 
-    <cond>    is an optional matching condition built from ACLs. It makes it
+  \item[<cond>] is an optional matching condition built from ACLs. It makes it
               possible to ignore this rule when other conditions are not met.
+  \end{description}
 
   Any line matching extended regular expression <search> in the response (both
   the response line and header lines) will be completely replaced with
@@ -4151,24 +4200,29 @@ rspirep <search> <string> [{if | unless} <cond>]  (ignore case)
   spaces between the request and the response. Keep in mind that header names
   are not case-sensitive.
 
-  Example :
-     # replace "Location: 127.0.0.1:8080" with "Location: www.mydomain.com"
+  Example: replace "Location: 127.0.0.1:8080" with "Location: www.mydomain.com"
+  \begin{verbatim}
      rspirep ^Location:\ 127.0.0.1:8080    Location:\ www.mydomain.com
+  \end{verbatim}
 
   See also: "rspadd", "rspdel", "reqrep", section 6 about HTTP header
             manipulation, and section 7 about ACLs.
 
+\subsubsection[server]{server <name> <address>[:[port]] [param*]}
 
-server <name> <address>[:[port]] [param*]
+\index{server}
+
   Declare a server in a backend
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    no    |   yes  |   yes
-  Arguments :
-    <name>    is the internal name assigned to this server. This name will
+
+\dflb{no}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<name>] is the internal name assigned to this server. This name will
               appear in logs and alerts.  If "http-send-server-name" is
               set, it will be added to the request header sent to the server.
 
-    <address> is the IPv4 or IPv6 address of the server. Alternatively, a
+  \item[<address>] is the IPv4 or IPv6 address of the server. Alternatively, a
               resolvable hostname is supported, but this name will be resolved
               during start-up. Address "0.0.0.0" or "*" has a special meaning.
               It indicates that the connection will be forwarded to the same IP
@@ -4179,55 +4233,62 @@ server <name> <address>[:[port]] [param*]
               except that with a server it's possible to limit concurrency and
               to report statistics.
 
-    <ports>   is an optional port specification. If set, all connections will
+   \item[<ports>] is an optional port specification. If set, all connections will
               be sent to this port. If unset, the same port the client
               connected to will be used. The port may also be prefixed by a "+"
               or a "-". In this case, the server's port will be determined by
               adding this value to the client's port.
 
-    <param*>  is a list of parameters for this server. The "server" keywords
+  \item[<param*>] is a list of parameters for this server. The "server" keywords
               accepts an important number of options and has a complete section
               dedicated to it. Please refer to section 5 for more details.
+  \end{description}
 
-  Examples :
+  Examples:
+  \begin{verbatim}
         server first  10.1.1.1:1080 cookie first  check inter 1000
         server second 10.1.1.2:1080 cookie second check inter 1000
+  \end{verbatim}
 
   See also: "default-server", "http-send-name-header" and section 5 about
              server options
 
+\subsubsection[source]{source <addr>[:<port>] [usesrc \{ <addr2>[:<port2>] | client | clientip \} ]}
+\subsubsection*{source <addr>[:<port>] [usesrc \{ <addr2>[:<port2>] | hdr\_ip(<hdr>[,<occ>]) \} ]}
+\subsubsection*{source <addr>[:<port>] [interface <name>]}
 
-source <addr>[:<port>] [usesrc { <addr2>[:<port2>] | client | clientip } ]
-source <addr>[:<port>] [usesrc { <addr2>[:<port2>] | hdr_ip(<hdr>[,<occ>]) } ]
-source <addr>[:<port>] [interface <name>]
+\index{source}
+
   Set the source address for outgoing connections
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <addr>    is the IPv4 address HAProxy will bind to before connecting to a
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<addr>] is the IPv4 address HAProxy will bind to before connecting to a
               server. This address is also used as a source for health checks.
               The default value of 0.0.0.0 means that the system will select
               the most appropriate address to reach its destination.
 
-    <port>    is an optional port. It is normally not needed but may be useful
+  \item[<port>] is an optional port. It is normally not needed but may be useful
               in some very specific contexts. The default value of zero means
               the system will select a free port. Note that port ranges are not
               supported in the backend. If you want to force port ranges, you
               have to specify them on each "server" line.
 
-    <addr2>   is the IP address to present to the server when connections are
+  \item[<addr2>] is the IP address to present to the server when connections are
               forwarded in full transparent proxy mode. This is currently only
               supported on some patched Linux kernels. When this address is
               specified, clients connecting to the server will be presented
               with this address, while health checks will still use the address
               <addr>.
 
-    <port2>   is the optional port to present to the server when connections
+  \item[<port2>] is the optional port to present to the server when connections
               are forwarded in full transparent proxy mode (see <addr2> above).
               The default value of zero means the system will select a free
               port.
 
-    <hdr>     is the name of a HTTP header in which to fetch the IP to bind to.
+  \item[<hdr>] is the name of a HTTP header in which to fetch the IP to bind to.
               This is the name of a comma-separated header list which can
               contain multiple IP addresses. By default, the last occurrence is
               used. This is designed to work with the X-Forwarded-For header
@@ -4239,8 +4300,8 @@ source <addr>[:<port>] [interface <name>]
               keep in mind that the header name is case insensitive, as for any
               HTTP header.
 
-    <occ>     is the occurrence number of a value to be used in a multi-value
-              header. This is to be used in conjunction with "hdr_ip(<hdr>)",
+  \item[<occ>] is the occurrence number of a value to be used in a multi-value
+              header. This is to be used in conjunction with "hdr\_ip(<hdr>)",
               in order to specificy which occurrence to use for the source IP
               address. Positive values indicate a position from the first
               occurrence, 1 being the first one. Negative values indicate
@@ -4250,12 +4311,13 @@ source <addr>[:<port>] [interface <name>]
               proxy layers away. When this value is not specified, -1 is
               assumed. Passing a zero here disables the feature.
 
-    <name>    is an optional interface name to which to bind to for outgoing
+  \item[<name>] is an optional interface name to which to bind to for outgoing
               traffic. On systems supporting this features (currently, only
               Linux), this allows one to bind all traffic to the server to
               this interface even if it is not the one the system would select
               based on routing tables. This should be used with extreme care.
               Note that using this option requires root privileges.
+  \end{description}
 
   The "source" keyword is useful in complex environments where a specific
   address only is allowed to connect to the servers. It may be needed when a
@@ -4272,22 +4334,24 @@ source <addr>[:<port>] [interface <name>]
   In this "full transparent proxy" mode, it is possible to force a specific IP
   address to be presented to the servers. This is not much used in fact. A more
   common use is to tell HAProxy to present the client's IP address. For this,
-  there are two methods :
+  there are two methods:
 
-    - present the client's IP and port addresses. This is the most transparent
+  \begin{itemize}
+  \item[-] present the client's IP and port addresses. This is the most transparent
       mode, but it can cause problems when IP connection tracking is enabled on
       the machine, because a same connection may be seen twice with different
       states. However, this solution presents the huge advantage of not
       limiting the system to the 64k outgoing address+port couples, because all
       of the client ranges may be used.
 
-    - present only the client's IP address and select a spare port. This
+   \item[-] present only the client's IP address and select a spare port. This
       solution is still quite elegant but slightly less transparent (downstream
       firewalls logs will not match upstream's). It also presents the downside
       of limiting the number of concurrent connections to the usual 64k ports.
       However, since the upstream and downstream ports are different, local IP
       connection tracking on the machine will not be upset by the reuse of the
       same session.
+  \end{itemize}
 
   Note that depending on the transparent proxy technology used, it may be
   required to force the source address. In fact, cttproxy version 2 requires an
@@ -4301,7 +4365,8 @@ source <addr>[:<port>] [interface <name>]
   is possible at the server level using the "source" server option. Refer to
   section 5 for more information.
 
-  Examples :
+  Examples:
+  \begin{verbatim}
         backend private
             # Connect to the servers using our 192.168.1.200 source address
             source 192.168.1.200
@@ -4329,19 +4394,25 @@ source <addr>[:<port>] [interface <name>]
             # Connect to the servers using the client's IP as seen by previous
             # proxy.
             source 0.0.0.0 usesrc hdr_ip(x-forwarded-for,-1)
+  \end{verbatim}
 
-  See also : the "source" server option in section 5, the Tproxy patches for
+  See also: the "source" server option in section 5, the Tproxy patches for
              the Linux kernel on www.balabit.com, the "bind" keyword.
 
+\subsubsection[srvtimeout]{srvtimeout <timeout> (deprecated)}
 
-srvtimeout <timeout> (deprecated)
+\index{srvtimeout}
+
   Set the maximum inactivity time on the server side.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <timeout> is the timeout value specified in milliseconds by default, but
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
   The inactivity timeout applies when the server is expected to acknowledge or
   send data. In HTTP mode, this timeout is particularly important to consider
@@ -4370,14 +4441,16 @@ srvtimeout <timeout> (deprecated)
   This parameter is provided for compatibility but is currently deprecated.
   Please use "timeout server" instead.
 
-  See also : "timeout server", "timeout tunnel", "timeout client" and
+  See also: "timeout server", "timeout tunnel", "timeout client" and
              "clitimeout".
 
+\subsubsection[stats admin]{stats admin \{ if | unless \} <cond>}
 
-stats admin { if | unless } <cond>
+\index{stats admin}
+
   Enable statistics admin level if/unless a condition is matched
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    no    |   yes  |   yes
+
+\dflb{no}{no}{yes}{yes}
 
   This statement enables the statistics admin level if/unless a condition is
   matched.
@@ -4385,30 +4458,32 @@ stats admin { if | unless } <cond>
   The admin level allows to enable/disable servers from the web interface. By
   default, statistics page is read-only for security reasons.
 
-  Note : Consider not using this feature in multi-process mode (nbproc > 1)
-         unless you know what you do : memory is not shared between the
-         processes, which can result in random behaviours.
+  \emph{Note:} Consider not using this feature in multi-process mode (nbproc > 1)
+         unless you know what you do: memory is not shared between the
+         processes, which can result in random behaviors.
 
   Currently, the POST request is limited to the buffer size minus the reserved
   buffer space, which means that if the list of servers is too long, the
   request won't be processed. It is recommended to alter few servers at a
   time.
-
-  Example :
-    # statistics admin level only for localhost
+  
+  Example: statistics admin level only for localhost
+  \begin{verbatim}
     backend stats_localhost
         stats enable
         stats admin if LOCALHOST
+  \end{verbatim}
 
-  Example :
-    # statistics admin level always enabled because of the authentication
+  Example: statistics admin level always enabled because of the authentication
+  \begin{verbatim}
     backend stats_auth
         stats enable
         stats auth  admin:AdMiN123
         stats admin if TRUE
+  \end{verbatim}
 
-  Example :
-    # statistics admin level depends on the authenticated user
+  Example: statistics admin level depends on the authenticated user
+  \begin{verbatim}
     userlist stats-auth
         group admin    users admin
         user  admin    insecure-password AdMiN123
@@ -4421,20 +4496,25 @@ stats admin { if | unless } <cond>
         acl AUTH_ADMIN http_auth_group(stats-auth) admin
         stats http-request auth unless AUTH
         stats admin if AUTH_ADMIN
+  \end{verbatim}
 
-  See also : "stats enable", "stats auth", "stats http-request", "nbproc",
+  See also: "stats enable", "stats auth", "stats http-request", "nbproc",
              "bind-process", section 3.4 about userlists and section 7 about
              ACL usage.
 
+\subsubsection[stats auth]{stats auth <user>:<passwd>}
 
-stats auth <user>:<passwd>
+\index{stats auth}
+
   Enable statistics with authentication and grant access to an account
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <user>    is a user name to grant access to
 
-    <passwd>  is the cleartext password associated to this user
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<user>] is a user name to grant access to
+  \item[<passwd>] is the cleartext password associated to this user
+  \end{description}
 
   This statement enables statistics with default settings, and restricts access
   to declared users only. It may be repeated as many times as necessary to
@@ -4455,8 +4535,8 @@ stats auth <user>:<passwd>
   recommended to set all other settings in order to avoid relying on default
   unobvious parameters.
 
-  Example :
-    # public access (limited to this backend only)
+  Example: public access (limited to this backend only)
+  \begin{verbatim}
     backend public_www
         server srv1 192.168.0.1:80
         stats enable
@@ -4466,35 +4546,44 @@ stats auth <user>:<passwd>
         stats realm   Haproxy\ Statistics
         stats auth    admin1:AdMiN123
         stats auth    admin2:AdMiN321
+   \end{verbatim}
 
-    # internal monitoring access (unlimited)
+   Example: internal monitoring access (unlimited)
+   \begin{verbatim}
     backend private_monitoring
         stats enable
         stats uri     /admin?stats
         stats refresh 5s
+   \end{verbatim}
 
-  See also : "stats enable", "stats realm", "stats scope", "stats uri"
+  See also: "stats enable", "stats realm", "stats scope", "stats uri"
 
+\subsubsection{stats enable}
 
-stats enable
+\index{stats enable}
+
   Enable statistics reporting with default settings
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments: none
 
   This statement enables statistics reporting with default settings defined
-  at build time. Unless stated otherwise, these settings are used :
-    - stats uri   : /haproxy?stats
-    - stats realm : "HAProxy Statistics"
-    - stats auth  : no authentication
-    - stats scope : no restriction
+  at build time. Unless stated otherwise, these settings are used:
+  
+  \begin{tabular}{llll}
+  - & stats uri   & : & \verb|/haproxy?stats| \\
+  - & stats realm & : & "HAProxy Statistics" \\
+  - & stats auth  & : & no authentication \\
+  - & stats scope & : & no restriction \\
+  \end{tabular}
 
   Though this statement alone is enough to enable statistics reporting, it is
   recommended to set all other settings in order to avoid relying on default
   unobvious parameters.
 
-  Example :
-    # public access (limited to this backend only)
+  Example: public access (limited to this backend only)
+  \begin{verbatim}
     backend public_www
         server srv1 192.168.0.1:80
         stats enable
@@ -4504,21 +4593,28 @@ stats enable
         stats realm   Haproxy\ Statistics
         stats auth    admin1:AdMiN123
         stats auth    admin2:AdMiN321
-
-    # internal monitoring access (unlimited)
+  \end{verbatim}
+  
+  Example: internal monitoring access (unlimited)
+  \begin{verbatim}
     backend private_monitoring
         stats enable
         stats uri     /admin?stats
         stats refresh 5s
+  \end{verbatim}
 
-  See also : "stats auth", "stats realm", "stats uri"
+  See also: "stats auth", "stats realm", "stats uri"
 
 
-stats hide-version
+\subsubsection{stats hide-version}
+
+\index{stats hide-version}
+
   Enable statistics and hide HAProxy version reporting
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments : none
+ 
+  \dflb{yes}{no}{yes}{yes}
+ 
+  Arguments: none
 
   By default, the stats page reports some useful status information along with
   the statistics. Among them is HAProxy's version. However, it is generally
@@ -4531,8 +4627,8 @@ stats hide-version
   recommended to set all other settings in order to avoid relying on default
   unobvious parameters.
 
-  Example :
-    # public access (limited to this backend only)
+  Example: public access (limited to this backend only)
+  \begin{verbatim}
     backend public_www
         server srv1 192.168.0.1:80
         stats enable
@@ -4542,22 +4638,25 @@ stats hide-version
         stats realm   Haproxy\ Statistics
         stats auth    admin1:AdMiN123
         stats auth    admin2:AdMiN321
+   \end{verbatim}
 
-    # internal monitoring access (unlimited)
+   Example: internal monitoring access (unlimited)
+   \begin{verbatim}
     backend private_monitoring
         stats enable
         stats uri     /admin?stats
         stats refresh 5s
+   \end{verbatim}
 
-  See also : "stats auth", "stats enable", "stats realm", "stats uri"
+  See also: "stats auth", "stats enable", "stats realm", "stats uri"
 
+\subsubsection[stats http-request]{stats http-request \{ allow | deny | auth [realm <realm>] \} [ \{ if | unless \} <condition> ]}
 
-stats http-request { allow | deny | auth [realm <realm>] }
-             [ { if | unless } <condition> ]
+\index{stats http-request}
+
   Access control for statistics
 
-  May be used in sections:   defaults | frontend | listen | backend
-                                no    |    no    |   yes  |   yes
+\dflb{no}{no}{yes}{yes}
 
   As "http-request", these set of options allow to fine control access to
   statistics. Each option may be followed by if/unless and acl.
@@ -4569,21 +4668,24 @@ stats http-request { allow | deny | auth [realm <realm>] }
   There is no fixed limit to the number of http-request statements per
   instance.
 
-  See also : "http-request", section 3.4 about userlists and section 7
+  See also: "http-request", section 3.4 about userlists and section 7
              about ACL usage.
 
+\subsubsection[stats realm]{stats realm <realm>}
 
-stats realm <realm>
   Enable statistics and set authentication realm
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <realm>   is the name of the HTTP Basic Authentication realm reported to
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<realm>] is the name of the HTTP Basic Authentication realm reported to
               the browser. The browser uses it to display it in the pop-up
               inviting the user to enter a valid username and password.
+  \end{description}
 
   The realm is read as a single word, so any spaces in it should be escaped
-  using a backslash ('\').
+  using a backslash ('\verb|\|').
 
   This statement is useful only in conjunction with "stats auth" since it is
   only related to authentication.
@@ -4592,8 +4694,8 @@ stats realm <realm>
   recommended to set all other settings in order to avoid relying on default
   unobvious parameters.
 
-  Example :
-    # public access (limited to this backend only)
+  Example: public access (limited to this backend only)
+  \begin{verbatim}
     backend public_www
         server srv1 192.168.0.1:80
         stats enable
@@ -4603,27 +4705,35 @@ stats realm <realm>
         stats realm   Haproxy\ Statistics
         stats auth    admin1:AdMiN123
         stats auth    admin2:AdMiN321
+   \end{verbatim}
 
-    # internal monitoring access (unlimited)
+   Example: internal monitoring access (unlimited)
+   \begin{verbatim}
     backend private_monitoring
         stats enable
         stats uri     /admin?stats
         stats refresh 5s
+   \end{verbatim}
 
-  See also : "stats auth", "stats enable", "stats uri"
+  See also: "stats auth", "stats enable", "stats uri"
 
+\subsubsection[stats refresh]{stats refresh <delay>}
 
-stats refresh <delay>
+\index{stats refresh}
+
   Enable statistics with automatic refresh
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <delay>   is the suggested refresh delay, specified in seconds, which will
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<delay>] is the suggested refresh delay, specified in seconds, which will
               be returned to the browser consulting the report page. While the
               browser is free to apply any delay, it will generally respect it
               and refresh the page this every seconds. The refresh interval may
               be specified in any other non-default time unit, by suffixing the
               unit after the value, as explained at the top of this document.
+  \end{description}
 
   This statement is useful on monitoring displays with a permanent page
   reporting the load balancer's activity. When set, the HTML report page will
@@ -4634,8 +4744,8 @@ stats refresh <delay>
   recommended to set all other settings in order to avoid relying on default
   unobvious parameters.
 
-  Example :
-    # public access (limited to this backend only)
+  Example: public access (limited to this backend only)
+  \begin{verbatim}
     backend public_www
         server srv1 192.168.0.1:80
         stats enable
@@ -4645,24 +4755,32 @@ stats refresh <delay>
         stats realm   Haproxy\ Statistics
         stats auth    admin1:AdMiN123
         stats auth    admin2:AdMiN321
+   \end{verbatim}
 
-    # internal monitoring access (unlimited)
+   Example: internal monitoring access (unlimited)
+   \begin{verbatim}
     backend private_monitoring
         stats enable
         stats uri     /admin?stats
         stats refresh 5s
+   \end{verbatim}
 
-  See also : "stats auth", "stats enable", "stats realm", "stats uri"
+  See also: "stats auth", "stats enable", "stats realm", "stats uri"
 
+\subsubsection[stats scope]{stats scope \{ <name> | "." \}}
 
-stats scope { <name> | "." }
+\index{stats scope}
+
   Enable statistics and limit access scope
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <name>    is the name of a listen, frontend or backend section to be
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<name>] is the name of a listen, frontend or backend section to be
               reported. The special name "." (a single dot) designates the
               section in which the statement appears.
+  \end{description}
 
   When this statement is specified, only the sections enumerated with this
   statement will appear in the report. All other ones will be hidden. This
@@ -4675,8 +4793,8 @@ stats scope { <name> | "." }
   recommended to set all other settings in order to avoid relying on default
   unobvious parameters.
 
-  Example :
-    # public access (limited to this backend only)
+  Example: public access (limited to this backend only)
+  \begin{verbatim}
     backend public_www
         server srv1 192.168.0.1:80
         stats enable
@@ -4686,23 +4804,31 @@ stats scope { <name> | "." }
         stats realm   Haproxy\ Statistics
         stats auth    admin1:AdMiN123
         stats auth    admin2:AdMiN321
+  \end{verbatim}
 
-    # internal monitoring access (unlimited)
+  Example: internal monitoring access (unlimited)
+  \begin{verbatim}
     backend private_monitoring
         stats enable
         stats uri     /admin?stats
         stats refresh 5s
+  \end{verbatim}
 
-  See also : "stats auth", "stats enable", "stats realm", "stats uri"
+  See also: "stats auth", "stats enable", "stats realm", "stats uri"
 
+\subsubsection[stats show-desc]{stats show-desc [ <desc> ]}
 
-stats show-desc [ <desc> ]
+\index{stats show-desc}
+
   Enable reporting of a description on the statistics page.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
 
-    <desc>    is an optional description to be reported. If unspecified, the
+\dflb{yes}{no}{yes}{yes}
+
+   Arguments:
+   \begin{description}
+    \item[<desc>]    is an optional description to be reported. If unspecified, the
               description from global section is automatically used instead.
+   \end{description}
 
   This statement is useful for users that offer shared services to their
   customers, where node or description should be different for each customer.
@@ -4711,83 +4837,102 @@ stats show-desc [ <desc> ]
   recommended to set all other settings in order to avoid relying on default
   unobvious parameters.  By default description is not shown.
 
-  Example :
-    # internal monitoring access (unlimited)
+  Example: internal monitoring access (unlimited)
+  \begin{verbatim}
     backend private_monitoring
         stats enable
         stats show-desc Master node for Europe, Asia, Africa
         stats uri       /admin?stats
         stats refresh   5s
+  \end{verbatim}
 
   See also: "show-node", "stats enable", "stats uri" and "description" in
             global section.
 
+\subsubsection{stats show-legends}
 
-stats show-legends
-  Enable reporting additional informations on the statistics page :
-    - cap: capabilities (proxy)
-    - mode: one of tcp, http or health (proxy)
-    - id: SNMP ID (proxy, socket, server)
-    - IP (socket, server)
-    - cookie (backend, server)
+\index{stats show-legends}
+
+\dflb{yes}{no}{yes}{yes}
+
+  Enable reporting additional informations on the statistics page:
+  \begin{itemize}
+  \item[-] cap: capabilities (proxy)
+  \item[-] mode: one of tcp, http or health (proxy)
+  \item[-] id: SNMP ID (proxy, socket, server)
+  \item[-] IP (socket, server)
+  \item[-] cookie (backend, server)
+  \end{itemize}
 
   Though this statement alone is enough to enable statistics reporting, it is
   recommended to set all other settings in order to avoid relying on default
-  unobvious parameters.  Default behaviour is not to show this information.
+  unobvious parameters.  Default behavior is not to show this information.
 
   See also: "stats enable", "stats uri".
 
 
-stats show-node [ <name> ]
+\subsubsection[stats show-node]{stats show-node [ <name> ]}
+
+\index{stats show-node}
+
   Enable reporting of a host name on the statistics page.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
+
+\dflb{yes}{no}{yes}{yes}
+
   Arguments:
-    <name>    is an optional name to be reported. If unspecified, the
+  \begin{description}
+  \item[<name>] is an optional name to be reported. If unspecified, the
               node name from global section is automatically used instead.
+  \end{description}
 
   This statement is useful for users that offer shared services to their
   customers, where node or description might be different on a stats page
-  provided for each customer.  Default behaviour is not to show host name.
+  provided for each customer.  Default behavior is not to show host name.
 
   Though this statement alone is enough to enable statistics reporting, it is
   recommended to set all other settings in order to avoid relying on default
   unobvious parameters.
 
-  Example:
-    # internal monitoring access (unlimited)
+  Example: internal monitoring access (unlimited)
+  \begin{verbatim}
     backend private_monitoring
         stats enable
         stats show-node Europe-1
         stats uri       /admin?stats
         stats refresh   5s
+  \end{verbatim}
 
   See also: "show-desc", "stats enable", "stats uri", and "node" in global
             section.
 
+\subsubsection[stats uri]{stats uri <prefix>}
 
-stats uri <prefix>
+\index{stats uri}
+
   Enable statistics and define the URI prefix to access them
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <prefix>  is the prefix of any URI which will be redirected to stats. This
-              prefix may contain a question mark ('?') to indicate part of a
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<prefix>] is the prefix of any URI which will be redirected to stats. This
+              prefix may contain a question mark ('\verb|?|') to indicate part of a
               query string.
+  \end{description}
 
   The statistics URI is intercepted on the relayed traffic, so it appears as a
   page within the normal application. It is strongly advised to ensure that the
   selected URI will never appear in the application, otherwise it will never be
   possible to reach it in the application.
 
-  The default URI compiled in haproxy is "/haproxy?stats", but this may be
+  The default URI compiled in haproxy is "\verb|/haproxy?stats|", but this may be
   changed at build time, so it's better to always explicitly specify it here.
   It is generally a good idea to include a question mark in the URI so that
   intermediate proxies refrain from caching the results. Also, since any string
   beginning with the prefix will be accepted as a stats request, the question
   mark helps ensuring that no valid URI will begin with the same words.
 
-  It is sometimes very convenient to use "/" as the URI prefix, and put that
+  It is sometimes very convenient to use "\verb|/|" as the URI prefix, and put that
   statement in a "listen" instance of its own. That makes it easy to dedicate
   an address or a port to statistics only.
 
@@ -4795,8 +4940,8 @@ stats uri <prefix>
   recommended to set all other settings in order to avoid relying on default
   unobvious parameters.
 
-  Example :
-    # public access (limited to this backend only)
+  Example: public access (limited to this backend only)
+  \begin{verbatim}
     backend public_www
         server srv1 192.168.0.1:80
         stats enable
@@ -4806,36 +4951,43 @@ stats uri <prefix>
         stats realm   Haproxy\ Statistics
         stats auth    admin1:AdMiN123
         stats auth    admin2:AdMiN321
+  \end{verbatim}
 
-    # internal monitoring access (unlimited)
+  Example: internal monitoring access (unlimited)
+  \begin{verbatim}
     backend private_monitoring
         stats enable
         stats uri     /admin?stats
         stats refresh 5s
+  \end{verbatim}
 
-  See also : "stats auth", "stats enable", "stats realm"
+  See also: "stats auth", "stats enable", "stats realm"
 
+\subsubsection[stick match]{stick match <pattern> [table <table>] [ \{if | unless\} <cond>]}
 
-stick match <pattern> [table <table>] [{if | unless} <cond>]
+\index{stick match}
+
   Define a request pattern matching condition to stick a user to a server
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    no    |   yes  |   yes
 
-  Arguments :
-    <pattern>  is a pattern extraction rule as described in section 7.8. It
+\dflb{no}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<pattern>] is a pattern extraction rule as described in section 7.8. It
                describes what elements of the incoming request or connection
-               will be analysed in the hope to find a matching entry in a
+               will be analyzed in the hope to find a matching entry in a
                stickiness table. This rule is mandatory.
 
-    <table>    is an optional stickiness table name. If unspecified, the same
+  \item[<table>] is an optional stickiness table name. If unspecified, the same
                backend's table is used. A stickiness table is declared using
                the "stick-table" statement.
 
-    <cond>     is an optional matching condition. It makes it possible to match
+  \item[<cond>] is an optional matching condition. It makes it possible to match
                on a certain criterion only when other conditions are met (or
                not met). For instance, it could be used to match on a source IP
                address except when a request passes through a known proxy, in
                which case we'd match on a header containing that IP address.
+  \end{description}
 
   Some protocols or applications require complex stickiness rules and cannot
   always simply rely on cookies nor hashing. The "stick match" statement
@@ -4865,13 +5017,12 @@ stick match <pattern> [table <table>] [{if | unless} <cond>]
   way, it becomes very easy to insert cookies and match on IP addresses in
   order to maintain stickiness between HTTP and HTTPS.
 
-  Note : Consider not using this feature in multi-process mode (nbproc > 1)
+  \emph{Note:} Consider not using this feature in multi-process mode (nbproc > 1)
          unless you know what you do : memory is not shared between the
-         processes, which can result in random behaviours.
+         processes, which can result in random behaviors.
 
-  Example :
-    # forward SMTP users to the same server they just used for POP in the
-    # last 30 minutes
+  Example: forward SMTP users to the same server they just used for POP in the last 30 minutes
+  \begin{verbatim}
     backend pop
         mode tcp
         balance roundrobin
@@ -4886,33 +5037,37 @@ stick match <pattern> [table <table>] [{if | unless} <cond>]
         stick match src table pop
         server s1 192.168.1.1:25
         server s2 192.168.1.1:25
+  \end{verbatim}
 
-  See also : "stick-table", "stick on", "nbproc", "bind-process" and section 7
+  See also: "stick-table", "stick on", "nbproc", "bind-process" and section 7
              about ACLs and pattern extraction.
 
 
-stick on <pattern> [table <table>] [{if | unless} <condition>]
-  Define a request pattern to associate a user to a server
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    no    |   yes  |   yes
+\subsubsection[stick on]{stick on <pattern> [table <table>] [ \{if | unless\} <condition> ]}
 
-  Note : This form is exactly equivalent to "stick match" followed by
+\index{stick on}
+
+  Define a request pattern to associate a user to a server
+
+\dflb{no}{no}{yes}{yes}
+
+  \emph{Note:} This form is exactly equivalent to "stick match" followed by
          "stick store-request", all with the same arguments. Please refer
          to both keywords for details. It is only provided as a convenience
          for writing more maintainable configurations.
 
-  Note : Consider not using this feature in multi-process mode (nbproc > 1)
-         unless you know what you do : memory is not shared between the
-         processes, which can result in random behaviours.
+  \emph{Note:} Consider not using this feature in multi-process mode (nbproc > 1)
+         unless you know what you do: memory is not shared between the
+         processes, which can result in random behaviors.
 
-  Examples :
+  Examples:
+  \begin{verbatim}
     # The following form ...
     stick on src table pop if !localhost
 
     # ...is strictly equivalent to this one :
     stick match src table pop if !localhost
     stick store-request src table pop if !localhost
-
 
     # Use cookie persistence for HTTP, and stick on source address for HTTPS as
     # well as HTTP without cookie. Share the same table between both accesses.
@@ -4931,31 +5086,37 @@ stick on <pattern> [table <table>] [{if | unless} <condition>]
         stick on src
         server s1 192.168.1.1:443
         server s2 192.168.1.1:443
+   \end{verbatim}
 
-  See also : "stick match", "stick store-request", "nbproc" and "bind-process".
+  See also: "stick match", "stick store-request", "nbproc" and "bind-process".
 
 
-stick store-request <pattern> [table <table>] [{if | unless} <condition>]
+\subsubsection[stick store-request]{stick store-request <pattern> [table <table>] [ \{if | unless\} <condition> ]}
+
+\index{stick store-request}
+
   Define a request pattern used to create an entry in a stickiness table
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    no    |   yes  |   yes
 
-  Arguments :
-    <pattern>  is a pattern extraction rule as described in section 7.8. It
+\dflb{no}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<pattern>] is a pattern extraction rule as described in section 7.8. It
                describes what elements of the incoming request or connection
-               will be analysed, extracted and stored in the table once a
+               will be analyzed, extracted and stored in the table once a
                server is selected.
 
-    <table>    is an optional stickiness table name. If unspecified, the same
+  \item[<table>] is an optional stickiness table name. If unspecified, the same
                backend's table is used. A stickiness table is declared using
                the "stick-table" statement.
 
-    <cond>     is an optional storage condition. It makes it possible to store
+  \item[<cond>] is an optional storage condition. It makes it possible to store
                certain criteria only when some conditions are met (or not met).
                For instance, it could be used to store the source IP address
                except when the request passes through a known proxy, in which
                case we'd store a converted form of a header containing that IP
                address.
+  \end{description}
 
   Some protocols or applications require complex stickiness rules and cannot
   always simply rely on cookies nor hashing. The "stick store-request" statement
@@ -4993,13 +5154,12 @@ stick store-request <pattern> [table <table>] [{if | unless} <condition>]
   established, so that the table will contain the real server that processed
   the request.
 
-  Note : Consider not using this feature in multi-process mode (nbproc > 1)
-         unless you know what you do : memory is not shared between the
-         processes, which can result in random behaviours.
+  \emph{Note:} Consider not using this feature in multi-process mode (nbproc > 1)
+         unless you know what you do: memory is not shared between the
+         processes, which can result in random behaviors.
 
-  Example :
-    # forward SMTP users to the same server they just used for POP in the
-    # last 30 minutes
+  Example: forward SMTP users to the same server they just used for POP in the last 30 minutes
+  \begin{verbatim}
     backend pop
         mode tcp
         balance roundrobin
@@ -5014,34 +5174,34 @@ stick store-request <pattern> [table <table>] [{if | unless} <condition>]
         stick match src table pop
         server s1 192.168.1.1:25
         server s2 192.168.1.1:25
+   \end{verbatim}
 
-  See also : "stick-table", "stick on", "nbproc", "bind-process" and section 7
+  See also: "stick-table", "stick on", "nbproc", "bind-process" and section 7
              about ACLs and pattern extraction.
 
+\subsubsection[stick-table type]{stick-table type \{ ip | integer | string [len <length>] | binary [len <length>] \} size <size> [expire <expire>] [nopurge] [peers <peersect>] [store <data\_type>]*}
 
-stick-table type {ip | integer | string [len <length>] | binary [len <length>]}
-            size <size> [expire <expire>] [nopurge] [peers <peersect>]
-            [store <data_type>]*
   Configure the stickiness table for the current backend
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
 
-  Arguments :
-    ip         a table declared with "type ip" will only store IPv4 addresses.
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[ip] a table declared with "type ip" will only store IPv4 addresses.
                This form is very compact (about 50 bytes per entry) and allows
                very fast entry lookup and stores with almost no overhead. This
                is mainly used to store client source IP addresses.
 
-    ipv6       a table declared with "type ipv6" will only store IPv6 addresses.
+  \item[ipv6] a table declared with "type ipv6" will only store IPv6 addresses.
                This form is very compact (about 60 bytes per entry) and allows
                very fast entry lookup and stores with almost no overhead. This
                is mainly used to store client source IP addresses.
 
-    integer    a table declared with "type integer" will store 32bit integers
+  \item[integer] a table declared with "type integer" will store 32bit integers
                which can represent a client identifier found in a request for
                instance.
 
-    string     a table declared with "type string" will store substrings of up
+  \item[string] a table declared with "type string" will store substrings of up
                to <len> characters. If the string provided by the pattern
                extractor is larger than <len>, it will be truncated before
                being stored. During matching, at most <len> characters will be
@@ -5049,29 +5209,29 @@ stick-table type {ip | integer | string [len <length>] | binary [len <length>]}
                pattern. When not specified, the string is automatically limited
                to 32 characters.
 
-    binary     a table declared with "type binary" will store binary blocks
+  \item[binary] a table declared with "type binary" will store binary blocks
                of <len> bytes. If the block provided by the pattern
                extractor is larger than <len>, it will be truncated before
                being stored. If the block provided by the pattern extractor
                is shorter than <len>, it will be padded by 0. When not
                specified, the block is automatically limited to 32 bytes.
 
-    <length>   is the maximum number of characters that will be stored in a
+  \item[<length>] is the maximum number of characters that will be stored in a
                "string" type table (See type "string" above). Or the number
                of bytes of the block in "binary" type table. Be careful when
                changing this parameter as memory usage will proportionally
                increase.
 
-    <size>     is the maximum number of entries that can fit in the table. This
+  \item[<size>] is the maximum number of entries that can fit in the table. This
                value directly impacts memory usage. Count approximately
                50 bytes per entry, plus the size of a string if any. The size
-               supports suffixes "k", "m", "g" for 2^10, 2^20 and 2^30 factors.
+               supports suffixes "k", "m", "g" for $2^{10}$, $2^{20}$ and $2^{30}$ factors.
 
-    [nopurge]  indicates that we refuse to purge older entries when the table
+  \item[{[nopurge]}] indicates that we refuse to purge older entries when the table
                is full. When not specified and the table is full when haproxy
                wants to store an entry in it, it will flush a few of the oldest
                entries in order to release some space for the new ones. This is
-               most often the desired behaviour. In some specific cases, it
+               most often the desired behavior. In some specific cases, it
                be desirable to refuse new entries instead of purging the older
                ones. That may be the case when the amount of data to store is
                far above the hardware limits and we prefer not to offer access
@@ -5079,15 +5239,15 @@ stick-table type {ip | integer | string [len <length>] | binary [len <length>]}
                using this parameter, be sure to properly set the "expire"
                parameter (see below).
 
-    <peersect> is the name of the peers section to use for replication. Entries
+  \item[<peersect>] is the name of the peers section to use for replication. Entries
                which associate keys to server IDs are kept synchronized with
                the remote peers declared in this section. All entries are also
                automatically learned from the local peer (old process) during a
                soft restart.
 
-               NOTE : peers can't be used in multi-process mode.
+               \emph{Note:} peers can't be used in multi-process mode.
 
-    <expire>   defines the maximum duration of an entry in the table since it
+  \item[<expire>] defines the maximum duration of an entry in the table since it
                was last created, refreshed or matched. The expiration delay is
                defined using the standard time format, similarly as the various
                timeouts. The maximum duration is slightly above 24 days. See
@@ -5096,7 +5256,7 @@ stick-table type {ip | integer | string [len <length>] | binary [len <length>]}
                be removed once full. Be sure not to use the "nopurge" parameter
                if not expiration delay is specified.
 
-   <data_type> is used to store additional information in the stick-table. This
+   \item[<data\_type>] is used to store additional information in the stick-table. This
                may be used by ACLs in order to control various criteria related
                to the activity of the client matching the stick-table. For each
                item specified here, the size of each entry will be inflated so
@@ -5104,7 +5264,7 @@ stick-table type {ip | integer | string [len <length>] | binary [len <length>]}
                stored with an entry. Multiple data types may be specified after
                the "store" keyword, as a comma-separated list. Alternatively,
                it is possible to repeat the "store" keyword followed by one or
-               several data types. Except for the "server_id" type which is
+               several data types. Except for the "server\_id" type which is
                automatically detected and enabled, all data types must be
                explicitly declared to be stored. If an ACL references a data
                type which is not stored, the ACL will simply not match. Some
@@ -5112,50 +5272,51 @@ stick-table type {ip | integer | string [len <length>] | binary [len <length>]}
                the type between parenthesis. See below for the supported data
                types and their arguments.
 
-  The data types that can be stored with an entry are the following :
-    - server_id : this is an integer which holds the numeric ID of the server a
+  The data types that can be stored with an entry are the following:
+  \begin{itemize}
+  \item[-] server\_id: this is an integer which holds the numeric ID of the server a
       request was assigned to. It is used by the "stick match", "stick store",
       and "stick on" rules. It is automatically enabled when referenced.
 
-    - gpc0 : first General Purpose Counter. It is a positive 32-bit integer
+  \item[-] gpc0: first General Purpose Counter. It is a positive 32-bit integer
       integer which may be used for anything. Most of the time it will be used
       to put a special tag on some entries, for instance to note that a
-      specific behaviour was detected and must be known for future matches.
+      specific behavior was detected and must be known for future matches.
 
-    - conn_cnt : Connection Count. It is a positive 32-bit integer which counts
+  \item[-] conn\_cnt: Connection Count. It is a positive 32-bit integer which counts
       the absolute number of connections received from clients which matched
       this entry. It does not mean the connections were accepted, just that
       they were received.
 
-    - conn_cur : Current Connections. It is a positive 32-bit integer which
+  \item[-] conn\_cur: Current Connections. It is a positive 32-bit integer which
       stores the concurrent connection counts for the entry. It is incremented
       once an incoming connection matches the entry, and decremented once the
       connection leaves. That way it is possible to know at any time the exact
       number of concurrent connections for an entry.
 
-    - conn_rate(<period>) : frequency counter (takes 12 bytes). It takes an
+  \item[-] conn\_rate(<period>): frequency counter (takes 12 bytes). It takes an
       integer parameter <period> which indicates in milliseconds the length
       of the period over which the average is measured. It reports the average
       incoming connection rate over that period, in connections per period. The
       result is an integer which can be matched using ACLs.
 
-    - sess_cnt : Session Count. It is a positive 32-bit integer which counts
+  \item[-] sess\_cnt: Session Count. It is a positive 32-bit integer which counts
       the absolute number of sessions received from clients which matched this
       entry. A session is a connection that was accepted by the layer 4 rules.
 
-    - sess_rate(<period>) : frequency counter (takes 12 bytes). It takes an
+  \item[-] sess\_rate(<period>): frequency counter (takes 12 bytes). It takes an
       integer parameter <period> which indicates in milliseconds the length
       of the period over which the average is measured. It reports the average
       incoming session rate over that period, in sessions per period. The
       result is an integer which can be matched using ACLs.
 
-    - http_req_cnt : HTTP request Count. It is a positive 32-bit integer which
+  \item[-] http\_req\_cnt: HTTP request Count. It is a positive 32-bit integer which
       counts the absolute number of HTTP requests received from clients which
       matched this entry. It does not matter whether they are valid requests or
       not. Note that this is different from sessions when keep-alive is used on
       the client side.
 
-    - http_req_rate(<period>) : frequency counter (takes 12 bytes). It takes an
+  \item[-] http\_req\_rate(<period>): frequency counter (takes 12 bytes). It takes an
       integer parameter <period> which indicates in milliseconds the length
       of the period over which the average is measured. It reports the average
       HTTP request rate over that period, in requests per period. The result is
@@ -5163,7 +5324,7 @@ stick-table type {ip | integer | string [len <length>] | binary [len <length>]}
       they are valid requests or not. Note that this is different from sessions
       when keep-alive is used on the client side.
 
-    - http_err_cnt : HTTP Error Count. It is a positive 32-bit integer which
+  \item[-] http\_err\_cnt: HTTP Error Count. It is a positive 32-bit integer which
       counts the absolute number of HTTP requests errors induced by clients
       which matched this entry. Errors are counted on invalid and truncated
       requests, as well as on denied or tarpitted requests, and on failed
@@ -5171,19 +5332,19 @@ stick-table type {ip | integer | string [len <length>] | binary [len <length>]}
       also counted as an error since it's an error triggered by the client
       (eg: vulnerability scan).
 
-    - http_err_rate(<period>) : frequency counter (takes 12 bytes). It takes an
+  \item[-] http\_err\_rate(<period>): frequency counter (takes 12 bytes). It takes an
       integer parameter <period> which indicates in milliseconds the length
       of the period over which the average is measured. It reports the average
       HTTP request error rate over that period, in requests per period (see
-      http_err_cnt above for what is accounted as an error). The result is an
+      http\_err\_cnt above for what is accounted as an error). The result is an
       integer which can be matched using ACLs.
 
-    - bytes_in_cnt : client to server byte count. It is a positive 64-bit
+  \item[-] bytes\_in\_cnt: client to server byte count. It is a positive 64-bit
       integer which counts the cumulated amount of bytes received from clients
       which matched this entry. Headers are included in the count. This may be
       used to limit abuse of upload features on photo or video servers.
 
-    - bytes_in_rate(<period>) : frequency counter (takes 12 bytes). It takes an
+  \item[-] bytes\_in\_rate(<period>): frequency counter (takes 12 bytes). It takes an
       integer parameter <period> which indicates in milliseconds the length
       of the period over which the average is measured. It reports the average
       incoming bytes rate over that period, in bytes per period. It may be used
@@ -5191,15 +5352,15 @@ stick-table type {ip | integer | string [len <length>] | binary [len <length>]}
       uploads, it is possible that the amount of uploaded data will be counted
       once upon termination, thus causing spikes in the average transfer speed
       instead of having a smooth one. This may partially be smoothed with
-      "option contstats" though this is not perfect yet. Use of byte_in_cnt is
+      "option contstats" though this is not perfect yet. Use of byte\_in\_cnt is
       recommended for better fairness.
 
-    - bytes_out_cnt : server to client byte count. It is a positive 64-bit
+  \item[-] bytes\_out\_cnt: server to client byte count. It is a positive 64-bit
       integer which counts the cumulated amount of bytes sent to clients which
       matched this entry. Headers are included in the count. This may be used
       to limit abuse of bots sucking the whole site.
 
-    - bytes_out_rate(<period>) : frequency counter (takes 12 bytes). It takes
+  \item[-] bytes\_out\_rate(<period>): frequency counter (takes 12 bytes). It takes
       an integer parameter <period> which indicates in milliseconds the length
       of the period over which the average is measured. It reports the average
       outgoing bytes rate over that period, in bytes per period. It may be used
@@ -5208,7 +5369,7 @@ stick-table type {ip | integer | string [len <length>] | binary [len <length>]}
       counted once upon termination, thus causing spikes in the average
       transfer speed instead of having a smooth one. This may partially be
       smoothed with "option contstats" though this is not perfect yet. Use of
-      byte_out_cnt is recommended for better fairness.
+      byte\_out\_cnt is recommended for better fairness.
 
   There is only one stick-table per proxy. At the moment of writing this doc,
   it does not seem useful to have multiple tables per proxy. If this happens
@@ -5226,16 +5387,18 @@ stick-table type {ip | integer | string [len <length>] | binary [len <length>]}
   something that can be ignored.
 
   Example:
+  \begin{verbatim}
         # Keep track of counters of up to 1 million IP addresses over 5 minutes
         # and store a general purpose counter and the average connection rate
         # computed over a sliding window of 30 seconds.
         stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
+  \end{verbatim}
 
-  See also : "stick match", "stick on", "stick store-request", section 2.2
+  See also: "stick match", "stick on", "stick store-request", section 2.2
              about time format and section 7 about ACLs.
+\endinput
 
-
-stick store-response <pattern> [table <table>] [{if | unless} <condition>]
+\subsubsection[stick store-response <pattern> [table <table>] [{if | unless} <condition>]
   Define a request pattern used to create an entry in a stickiness table
   May be used in sections :   defaults | frontend | listen | backend
                                  no    |    no    |   yes  |   yes
@@ -5323,7 +5486,7 @@ stick store-response <pattern> [table <table>] [{if | unless} <condition>]
              extraction.
 
 
-tcp-request connection <action> [{if | unless} <condition>]
+\subsubsection[tcp-request connection <action> [{if | unless} <condition>]
   Perform an action on an incoming connection depending on a layer 4 condition
   May be used in sections :   defaults | frontend | listen | backend
                                  no    |    yes   |   yes  |   no
@@ -5424,7 +5587,7 @@ tcp-request connection <action> [{if | unless} <condition>]
   See also : "tcp-request content", "stick-table"
 
 
-tcp-request content <action> [{if | unless} <condition>]
+\subsubsection[tcp-request content <action> [{if | unless} <condition>]
   Perform an action on a new session depending on a layer 4-7 condition
   May be used in sections :   defaults | frontend | listen | backend
                                  no    |    yes   |   yes  |   yes
@@ -5528,7 +5691,7 @@ tcp-request content <action> [{if | unless} <condition>]
   See also : "tcp-request connection", "tcp-request inspect-delay"
 
 
-tcp-request inspect-delay <timeout>
+\subsubsection[tcp-request inspect-delay <timeout>
   Set the maximum allowed time to wait for data during content inspection
   May be used in sections :   defaults | frontend | listen | backend
                                  no    |    yes   |   yes  |   yes
@@ -5575,7 +5738,7 @@ tcp-request inspect-delay <timeout>
              "timeout client".
 
 
-tcp-response content <action> [{if | unless} <condition>]
+\subsubsection[tcp-response content <action> [{if | unless} <condition>]
   Perform an action on a session response depending on a layer 4-7 condition
   May be used in sections :   defaults | frontend | listen | backend
                                  no    |    no    |   yes  |   yes
@@ -5625,7 +5788,7 @@ tcp-response content <action> [{if | unless} <condition>]
   See also : "tcp-request content", "tcp-response inspect-delay"
 
 
-tcp-response inspect-delay <timeout>
+\subsubsection[tcp-response inspect-delay <timeout>
   Set the maximum allowed time to wait for a response during content inspection
   May be used in sections :   defaults | frontend | listen | backend
                                  no    |    no    |   yes  |   yes
@@ -5637,7 +5800,7 @@ tcp-response inspect-delay <timeout>
   See also : "tcp-response content", "tcp-request inspect-delay".
 
 
-timeout check <timeout>
+\subsubsection[timeout check <timeout>
   Set additional check timeout, but only after a connection has been already
   established.
 
@@ -5671,8 +5834,8 @@ timeout check <timeout>
             "timeout tarpit".
 
 
-timeout client <timeout>
-timeout clitimeout <timeout> (deprecated)
+\subsubsection[timeout client <timeout>
+\subsubsection[timeout clitimeout <timeout> (deprecated)
   Set the maximum inactivity time on the client side.
   May be used in sections :   defaults | frontend | listen | backend
                                  yes   |    yes   |   yes  |   no
@@ -5709,8 +5872,8 @@ timeout clitimeout <timeout> (deprecated)
   See also : "clitimeout", "timeout server", "timeout tunnel".
 
 
-timeout connect <timeout>
-timeout contimeout <timeout> (deprecated)
+\subsubsection[timeout connect <timeout>
+\subsubsection[timeout contimeout <timeout> (deprecated)
   Set the maximum time to wait for a connection attempt to a server to succeed.
   May be used in sections :   defaults | frontend | listen | backend
                                  yes   |    no    |   yes  |   yes
@@ -5741,7 +5904,7 @@ timeout contimeout <timeout> (deprecated)
             "timeout tarpit".
 
 
-timeout http-keep-alive <timeout>
+\subsubsection[timeout http-keep-alive <timeout>
   Set the maximum allowed time to wait for a new HTTP request to appear
   May be used in sections :   defaults | frontend | listen | backend
                                  yes   |    yes   |   yes  |   yes
@@ -5782,7 +5945,7 @@ timeout http-keep-alive <timeout>
   See also : "timeout http-request", "timeout client".
 
 
-timeout http-request <timeout>
+\subsubsection[timeout http-request <timeout>
   Set the maximum allowed time to wait for a complete HTTP request
   May be used in sections :   defaults | frontend | listen | backend
                                  yes   |    yes   |   yes  |   yes
@@ -5819,7 +5982,7 @@ timeout http-request <timeout>
   See also : "timeout http-keep-alive", "timeout client".
 
 
-timeout queue <timeout>
+\subsubsection[timeout queue <timeout>
   Set the maximum time to wait in the queue for a connection slot to be free
   May be used in sections :   defaults | frontend | listen | backend
                                  yes   |    no    |   yes  |   yes
@@ -5842,8 +6005,8 @@ timeout queue <timeout>
   See also : "timeout connect", "contimeout".
 
 
-timeout server <timeout>
-timeout srvtimeout <timeout> (deprecated)
+\subsubsection[timeout server <timeout>
+\subsubsection[timeout srvtimeout <timeout> (deprecated)
   Set the maximum inactivity time on the server side.
   May be used in sections :   defaults | frontend | listen | backend
                                  yes   |    no    |   yes  |   yes
@@ -5886,7 +6049,7 @@ timeout srvtimeout <timeout> (deprecated)
   See also : "srvtimeout", "timeout client" and "timeout tunnel".
 
 
-timeout tarpit <timeout>
+\subsubsection[timeout tarpit <timeout>
   Set the duration for which tarpitted connections will be maintained
   May be used in sections :   defaults | frontend | listen | backend
                                  yes   |    yes   |   yes  |   yes
@@ -5908,7 +6071,7 @@ timeout tarpit <timeout>
   See also : "timeout connect", "contimeout".
 
 
-timeout tunnel <timeout>
+\subsubsection[timeout tunnel <timeout>
   Set the maximum inactivity time on the client and server side for tunnels.
   May be used in sections :   defaults | frontend | listen | backend
                                  yes   |    no    |   yes  |   yes
@@ -5949,7 +6112,7 @@ timeout tunnel <timeout>
   See also : "timeout client", "timeout server".
 
 
-transparent (deprecated)
+\subsubsection[transparent (deprecated)
   Enable client-side transparent proxying
   May be used in sections :   defaults | frontend | listen | backend
                                  yes   |    no    |   yes  |   yes
@@ -5971,7 +6134,7 @@ transparent (deprecated)
 
   See also: "option transparent"
 
-unique-id-format <string>
+\subsubsection[unique-id-format <string>
   Generate a unique ID for each request.
   May be used in sections :   defaults | frontend | listen | backend
                                   yes  |    yes   |   yes  |   no
@@ -5981,7 +6144,7 @@ unique-id-format <string>
   This keyword creates a ID for each request using the custom log format. A
   unique ID is useful to trace a request passing through many components of
   a complex infrastructure. The newly created ID may also be logged using the
-  %ID tag the log-format string.
+  \%ID tag the log-format string.
 
   The format should be composed from elements that are guaranteed to be
   unique when combined together. For instance, if multiple haproxy instances
@@ -6005,7 +6168,7 @@ unique-id-format <string>
 
   See also: "unique-id-header"
 
-unique-id-header <name>
+\subsubsection[unique-id-header <name>
   Add a unique ID header in the HTTP request.
   May be used in sections :   defaults | frontend | listen | backend
                                   yes  |    yes   |   yes  |   no
@@ -6026,8 +6189,8 @@ unique-id-header <name>
 
     See also: "unique-id-format"
 
-use_backend <backend> if <condition>
-use_backend <backend> unless <condition>
+\subsubsection[use_backend <backend> if <condition>
+\subsubsection[use_backend <backend> unless <condition>
   Switch to a specific backend if/unless an ACL-based condition is matched.
   May be used in sections :   defaults | frontend | listen | backend
                                   no   |    yes   |   yes  |   no
@@ -6064,8 +6227,8 @@ use_backend <backend> unless <condition>
   See also: "default_backend", "tcp-request", and section 7 about ACLs.
 
 
-use-server <server> if <condition>
-use-server <server> unless <condition>
+\subsubsection[use-server <server> if <condition>
+\subsubsection[use-server <server> unless <condition>
   Only use a specific server if/unless an ACL-based condition is matched.
   May be used in sections :   defaults | frontend | listen | backend
                                   no   |    no    |   yes  |   yes
