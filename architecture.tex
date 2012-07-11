@@ -11,7 +11,7 @@ which is not much loaded. User contexts are stored on the server itself, and
 not in the database, so that simply adding another server with simple IP/TCP
 load-balancing would not work.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
 
   \begin{tikzpicture} [
@@ -50,7 +50,7 @@ adding low-cost pizza boxes. The solution is to buy N cheap boxes and install
 the application on them. Install haproxy on the old one which will spread the
 load across the new boxes.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
 
   \begin{tikzpicture} [
@@ -127,7 +127,7 @@ load across the new boxes.
 
 \subsubsection{Flows}
 
-\begin{figure}[!hb]
+\begin{figure}[!htb]
 \centering
 \small
 
@@ -261,7 +261,7 @@ proxy to bind to the shared IP on Linux 2.4, you must enable it in /proc:
 
 \verb|# echo 1 >/proc/sys/net/ipv4/ip_nonlocal_bind|
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
 
   \begin{tikzpicture} [
@@ -398,7 +398,7 @@ option.
 \newpage
 \subsubsection{Flows}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \centering
 \footnotesize
 
@@ -484,7 +484,7 @@ Instead of using a VRRP-based active/backup solution for the proxies,
 they can also be load-balanced by a layer4 load-balancer (eg: Alteon)
 which will also check that the services run fine on both proxies:
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
 
   \begin{tikzpicture} [
@@ -619,7 +619,7 @@ systems and must not lead to a forwarding connection nor to any log, using the
 "monitor-net" keyword. \emph{Note:} this feature expects a version of haproxy greater
 than or equal to 1.1.32 or 1.2.6.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \centering
 
 \begin{tikzpicture} [
@@ -746,7 +746,7 @@ SSL Hello messages. Setting it up is very easy:
 This is the same context as in example 1 above, but the web
 server uses HTTPS.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
 
   \begin{tikzpicture} [
@@ -788,7 +788,7 @@ application is correctly developped, it might even lower its load. However,
 since there now is a cache between the clients and haproxy, some security
 measures must be taken to ensure that inserted cookies will not be cached.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
 
   \begin{tikzpicture} [
@@ -887,7 +887,7 @@ measures must be taken to ensure that inserted cookies will not be cached.
 \newpage
 \subsubsection{Flows}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \centering
 
 \begin{tikzpicture}[
@@ -951,7 +951,7 @@ X-Forwarded-For header for HTTP traffic, but not for HTTPS traffic since
 stunnel will already have done it. We will use the "except" keyword to tell
 haproxy that connections from local host already have a valid header.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
 
   \begin{tikzpicture} [
@@ -1238,17 +1238,22 @@ the port redirector can be installed on the load-balancer itself. See the
 example with iptables below.
 
 Make the servers appear as operational:
+
+\small{
 \begin{verbatim}
 iptables -t nat -A OUTPUT -d 192.168.1.11 -p tcp --dport 81 -j DNAT --to-dest :80
 iptables -t nat -A OUTPUT -d 192.168.1.12 -p tcp --dport 81 -j DNAT --to-dest :80
 iptables -t nat -A OUTPUT -d 192.168.1.13 -p tcp --dport 81 -j DNAT --to-dest :80
 iptables -t nat -A OUTPUT -d 192.168.1.14 -p tcp --dport 81 -j DNAT --to-dest :80
 \end{verbatim}
+}
 
 Soft stop one server:
+\smallskip{
 \begin{verbatim}
 iptables -t nat -D OUTPUT -d 192.168.1.12 -p tcp --dport 81 -j DNAT --to-dest :80
 \end{verbatim}
+}
 
 Another solution is to use the "COMAFILE" patch provided by Alexander Lazic,
 which is available for download here:
@@ -1396,7 +1401,7 @@ The main constraints are:
        site can reach the second one either through the WAN or through
        a dedicated link.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \centering
 
 \begin{tikzpicture} [
@@ -2017,7 +2022,7 @@ Haproxy is installed in front of an application servers farm. It will limit
 the concurrent connections to 4 per server (one thread per CPU), thus ensuring
 very fast response times.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \centering
 
   \begin{tikzpicture} [

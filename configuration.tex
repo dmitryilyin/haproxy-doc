@@ -1,5 +1,4 @@
 \documentclass[12pt,a4paper]{report}
-\usepackage[cm]{fullpage}
 
 \include{configuration_title}
 \include{preamble}
@@ -7,11 +6,12 @@
 \include{tikzstyle}
 
 \begin{document}
-\include{frontmatter}  % ready
+\include{frontmatter} % ready
+\include{introduction} %ready
 \include{chapter01}   % ready
 \include{chapter02}   % ready
 \include{chapter03}   % ready
-\include{chapter04}
+\include{chapter04}   % ready
 \include{chapter05}   % ready
 \include{chapter06}   % ready
 \include{chapter07}
@@ -21,7 +21,11 @@
 \appendix
 
 \chapter{Architecture Guide}
-\include{architecture} %ready  
+\include{architecture} %ready
+\chapter{HTTP Cookies - Theory and reality}
+\include{http_cookies}
+\chapter{Connection header adjustments depending on the transaction mode}
+\include{http_header}
 
 \include{backmatter}
 \end{document}

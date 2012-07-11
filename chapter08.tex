@@ -134,7 +134,9 @@ will eventually disappear.
 
 \subsection{TCP log format}
 
-\endinput
+%-------------------------------------------------------
+
+\begin{verbatim}
 
 The TCP format is used when "option tcplog" is specified in the frontend, and
 is the recommended format for pure TCP proxies. It provides a lot of precious
@@ -301,11 +303,11 @@ Detailed fields description :
     and then both positions will be cumulated. A request should not pass
     through both the server queue and the backend queue unless a redispatch
     occurs.
+\end{verbatim}
 
+\subsection{HTTP log format}
 
-8.2.3. HTTP log format
-----------------------
-
+\begin{verbatim}
 The HTTP format is the most complete and the best suited for HTTP proxies. It
 is enabled by when "option httplog" is specified in the frontend. It provides
 the same level of information as the TCP format with additional features which
@@ -549,11 +551,11 @@ Detailed fields description :
     added before this field. This field might be truncated if the request is
     huge and does not fit in the standard syslog buffer (1024 characters). This
     is the reason why this field must always remain the last one.
+\end{verbatim}
 
+\subsection{Custom log format}
 
-8.2.4. Custom log format
-------------------------
-
+\begin{verbatim}
 The directive log-format allows you to custom the logs in http mode and tcp
 mode. It takes a string as argument.
 
@@ -646,19 +648,18 @@ Please refer to the table below for currently defined variables :
   +---+------+-----------------------------------------------+-------------+
 
 *: mode http only
+\end{verbatim}
 
-8.3. Advanced logging options
------------------------------
+\section{Advanced logging options}
 
 Some advanced logging options are often looked for but are not easy to find out
 just by looking at the various options. Here is an entry point for the few
 options which can enable better logging. Please refer to the keywords reference
 for more information about their usage.
 
+\subsection{Disabling logging of external tests}
 
-8.3.1. Disabling logging of external tests
-------------------------------------------
-
+\begin{verbatim}
 It is quite common to have some monitoring tools perform health checks on
 haproxy. Sometimes it will be a layer 3 load-balancer such as LVS or any
 commercial load-balancer, and sometimes it will simply be a more complete
@@ -679,10 +680,9 @@ ask how to disable logging for those checks. There are three possibilities :
   - if the tests are performed on a known URI, use "monitor-uri" to declare
     this URI as dedicated to monitoring. Any host sending this request will
     only get the result of a health-check, and the request will not be logged.
+\end{verbatim}
 
-
-8.3.2. Logging before waiting for the session to terminate
-----------------------------------------------------------
+\subsection{Logging before waiting for the session to terminate}
 
 The problem with logging at end of connection is that you have no clue about
 what is happening during very long sessions, such as remote terminal sessions
@@ -696,8 +696,7 @@ with normal logs, the total time field and the number of bytes are prefixed
 with a '+' sign which means that real numbers are certainly larger.
 
 
-8.3.3. Raising log level upon errors
-------------------------------------
+\subsection{Raising log level upon errors}
 
 Sometimes it is more convenient to separate normal traffic from errors logs,
 for instance in order to ease error monitoring from log files. When the option
@@ -709,9 +708,7 @@ file too, so that log ordering is not altered. You should also be careful if
 you already have configured your syslog daemon to store all logs higher than
 "notice" in an "admin" file, because the "err" level is higher than "notice".
 
-
-8.3.4. Disabling logging of successful connections
---------------------------------------------------
+\subsection{Disabling logging of successful connections}
 
 Although this may sound strange at first, some large sites have to deal with
 multiple thousands of logs per second and are experiencing difficulties keeping
@@ -724,10 +721,9 @@ too. Of course, doing is is really discouraged as it will remove most of the
 useful information from the logs. Do this only if you have no other
 alternative.
 
+\section{Timing events}
 
-8.4. Timing events
-------------------
-
+\begin{verbatim}
 Timers provide a great help in troubleshooting network problems. All values are
 reported in milliseconds (ms). These timers should be used in conjunction with
 the session termination flags. In TCP mode with "option tcplog" set on the
@@ -844,11 +840,11 @@ Other noticeable HTTP log cases ('xx' means any value to be ignored) :
                    a complete response in time, or it closed its connexion
                    unexpectedly after Tt-(Tq+Tw+Tc) ms. Check the session
                    termination flags, then check the "timeout server" setting.
+\end{verbatim}
 
+\section{Session state at disconnection}
 
-8.5. Session state at disconnection
------------------------------------
-
+\begin{verbatim}
 TCP and HTTP logs provide a session termination indicator in the
 "termination_state" field, just before the number of active connections. It is
 2-characters long in TCP mode, and is extended to 4 characters in HTTP mode,
@@ -1178,11 +1174,11 @@ re-authenticate. The commonly encountered flags are :
      VI   The server designated by the cookie was not marked dead but could not
           be reached. A redispatch happened and selected another one, which was
           then advertised in the response.
+\end{verbatim}
 
+\section{Non-printable characters}
 
-8.6. Non-printable characters
------------------------------
-
+\begin{verbatim}
 In order not to cause trouble to log analysis tools or terminals during log
 consulting, non-printable characters are not sent as-is into log files, but are
 converted to the two-digits hexadecimal representation of their ASCII code,
@@ -1199,11 +1195,11 @@ containing spaces is "User-Agent".
 Last, it has been observed that some syslog daemons such as syslog-ng escape
 the quote ('"') with a backslash ('\'). The reverse operation can safely be
 performed since no quote may appear anywhere else in the logs.
+\end{verbatim}
 
+\section{Capturing HTTP cookies}
 
-8.7. Capturing HTTP cookies
----------------------------
-
+\begin{verbatim}
 Cookie capture simplifies the tracking a complete user session. This can be
 achieved using the "capture cookie" statement in the frontend. Please refer to
 section 4.2 for more details. Only one cookie can be captured, and the same
@@ -1222,11 +1218,11 @@ wrong cookie to a client, leading to session crossing.
 
         # capture the first cookie whose name is exactly "vgnvisitor"
         capture cookie vgnvisitor= len 32
+\end{verbatim}
 
+\section{Capturing HTTP headers}
 
-8.8. Capturing HTTP headers
----------------------------
-
+\begin{verbatim}
 Header captures are useful to track unique request identifiers set by an upper
 proxy, virtual host names, user-agents, POST content-length, referrers, etc. In
 the response, one can search for information about the response length, how the
@@ -1296,11 +1292,11 @@ in the logs.
           {www.sytadin.equipement.gouv.fr||http://trafic.1wt.eu/} \
           {Apache|230|||http://www.sytadin.} \
           "GET http://www.sytadin.equipement.gouv.fr/ HTTP/1.1"
+\end{verbatim}
 
+\section{Examples of logs}
 
-8.9. Examples of logs
----------------------
-
+\begin{verbatim}
 These are real-world examples of logs accompanied with an explanation. Some of
 them have been made up by hand. The syslog part has been removed for better
 reading. Their sole purpose is to explain how to decipher them.
@@ -1371,3 +1367,4 @@ reading. Their sole purpose is to explain how to decipher them.
        connections on this server, 202 connections on this proxy, and 205 on
        the global process. It is possible that the server refused the
        connection because of too many already established.
+       \end{verbatim}

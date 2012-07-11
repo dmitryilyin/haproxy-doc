@@ -14,7 +14,7 @@ from the client to the server, a request is sent by the client on the
 connection, the server responds and the connection is closed. A new request
 will involve a new connection as shown on Figure~\ref{fig:http_close}.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \centering
 \begin{tikzpicture} [
 thick,
@@ -61,7 +61,7 @@ header is used: "Content-length". This mode is called the "keep-alive" mode
 and is shown on Figure shown on Figure~\ref{fig:http_keep_alive}.
 
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \centering
 \begin{tikzpicture} [
   thick,
@@ -98,7 +98,7 @@ keep-alive, but the client does not wait for the first response to send the
 second request. This is useful for fetching large number of images composing a
 page. This mode is shown on Figure~\ref{fig:http_pipelining}.
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 \centering
 \begin{tikzpicture} [
 thick,
@@ -145,23 +145,28 @@ mode.
 \section{HTTP request}
 
 First, let's consider this HTTP request:
-\begin{verbatim}
-  Line     Contents
-  number
-     1     GET /serv/login.php?lang=en&profile=2 HTTP/1.1
-     2     Host: www.mydomain.com
-     3     User-agent: my small browser
-     4     Accept: image/jpeg, image/gif
-     5     Accept: image/png
-\end{verbatim}
+
+\vspace{2mm}
+\begin{tabular}{cl}
+Line number & Contents \\
+1 & \verb|GET /serv/login.php?lang=en&profile=2 HTTP/1.1| \\
+2 & \verb|Host: www.mydomain.com| \\
+3 & \verb|User-agent: my small browser| \\
+4 & \verb|Accept: image/jpeg, image/gif| \\
+5 & \verb|Accept: image/png| \\
+\end{tabular}
+\vspace{2mm}
 
 \subsection{The Request line}
 Line 1 is the "request line". It is always composed of 3 fields:
-\begin{verbatim}
-  - a METHOD      : GET
-  - a URI         : /serv/login.php?lang=en&amp;profile=2
-  - a version tag : HTTP/1.1
-\end{verbatim}
+
+\vspace{2mm}
+\begin{tabular}{clcl}
+- & a METHOD      & : & \verb|GET| \\
+- & a URI         & : & \verb|/serv/login.php?lang=en&amp;profile=2| \\
+- & a version tag & : & \verb|HTTP/1.1| \\
+\end{tabular}
+\vspace{2mm}
 
 All of them are delimited by what the standard calls LWS (linear white spaces),
 which are commonly spaces, but can also be tabs or line feeds/carriage returns

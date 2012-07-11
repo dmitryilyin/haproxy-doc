@@ -2766,7 +2766,7 @@ This section provides a description of each keyword and its usage.
 
   The server is considered valid only when the LDAP response contains success resultCode.
   
-  (http://tools.ietf.org/html/rfc4511#section-4.1.9).
+  \verb|http://tools.ietf.org/html/rfc4511#section-4.1.9|
 
   Logging of bind requests is server dependent see your documentation how to
   configure it.
@@ -3676,7 +3676,7 @@ This section provides a description of each keyword and its usage.
 
   Example: send redirects for request for articles without a '\verb|/|'.
   \begin{verbatim}
-%out        acl missing_slash path_reg ^/article/[^/]*$
+        acl missing_slash path_reg ^/article/[^/]*$
         redirect code 301 prefix / drop-query append-slash if missing_slash
   \end{verbatim}
 
@@ -5271,6 +5271,7 @@ This section provides a description of each keyword and its usage.
                data types require an argument which must be passed just after
                the type between parenthesis. See below for the supported data
                types and their arguments.
+  \end{description}
 
   The data types that can be stored with an entry are the following:
   \begin{itemize}
@@ -5370,6 +5371,7 @@ This section provides a description of each keyword and its usage.
       transfer speed instead of having a smooth one. This may partially be
       smoothed with "option contstats" though this is not perfect yet. Use of
       byte\_out\_cnt is recommended for better fairness.
+  \end{itemize}
 
   There is only one stick-table per proxy. At the moment of writing this doc,
   it does not seem useful to have multiple tables per proxy. If this happens
@@ -5396,27 +5398,31 @@ This section provides a description of each keyword and its usage.
 
   See also: "stick match", "stick on", "stick store-request", section 2.2
              about time format and section 7 about ACLs.
-\endinput
 
-\subsubsection[stick store-response <pattern> [table <table>] [{if | unless} <condition>]
+\subsubsection[stick store-response]{stick store-response <pattern> [table <table>] [ \{if | unless\} <condition> ]}
+
+\index{stick store-response}
+
   Define a request pattern used to create an entry in a stickiness table
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    no    |   yes  |   yes
+  
+\dflb{no}{no}{yes}{yes}
 
-  Arguments :
-    <pattern>  is a pattern extraction rule as described in section 7.8. It
+  Arguments:
+  \begin{description}
+  \item[<pattern>] is a pattern extraction rule as described in section 7.8. It
                describes what elements of the response or connection will
-               be analysed, extracted and stored in the table once a
+               be analyzed, extracted and stored in the table once a
                server is selected.
 
-    <table>    is an optional stickiness table name. If unspecified, the same
+  \item[<table>] is an optional stickiness table name. If unspecified, the same
                backend's table is used. A stickiness table is declared using
                the "stick-table" statement.
 
-    <cond>     is an optional storage condition. It makes it possible to store
+  \item[<cond>] is an optional storage condition. It makes it possible to store
                certain criteria only when some conditions are met (or not met).
                For instance, it could be used to store the SSL session ID only
                when the response is a SSL server hello.
+  \end{description}
 
   Some protocols or applications require complex stickiness rules and cannot
   always simply rely on cookies nor hashing. The "stick store-response"
@@ -5451,8 +5457,8 @@ This section provides a description of each keyword and its usage.
 
   The table will contain the real server that processed the request.
 
-  Example :
-    # Learn SSL session ID from both request and response and create affinity.
+  Example: Learn SSL session ID from both request and response and create affinity.
+  \begin{verbatim}
     backend https
         mode tcp
         balance roundrobin
@@ -5481,21 +5487,29 @@ This section provides a description of each keyword and its usage.
 
         server s1 192.168.1.1:443
         server s2 192.168.1.1:443
+  \end{verbatim}
 
-  See also : "stick-table", "stick on", and section 7 about ACLs and pattern
+  See also: "stick-table", "stick on", and section 7 about ACLs and pattern
              extraction.
 
 
-\subsubsection[tcp-request connection <action> [{if | unless} <condition>]
+\subsubsection[tcp-request connection]{tcp-request connection <action> [ \{if | unless\} <condition> ]}
+
+\index{tcp-request connection}
+
   Perform an action on an incoming connection depending on a layer 4 condition
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   no
-  Arguments :
-    <action>    defines the action to perform if the condition applies. Valid
+  
+
+\dflb{no}{yes}{yes}{no}
+
+  Arguments:
+  \begin{description}
+  \item[<action>] defines the action to perform if the condition applies. Valid
                 actions include : "accept", "reject", "track-sc1", "track-sc2".
                 See below for more details.
 
-    <condition> is a standard layer4-only ACL-based condition (see section 7).
+  \item[<condition>] is a standard layer4-only ACL-based condition (see section 7).
+  \end{description}
 
   Immediately after acceptance of a new incoming connection, it is possible to
   evaluate some conditions to decide whether this connection must be accepted
@@ -5511,13 +5525,14 @@ This section provides a description of each keyword and its usage.
   accept the incoming connection. There is no specific limit to the number of
   rules which may be inserted.
 
-  Three types of actions are supported :
-    - accept :
+  Three types of actions are supported:
+  \begin{itemize}
+  \item[-] \emph{accept:}
         accepts the connection if the condition is true (when used with "if")
         or false (when used with "unless"). The first such rule executed ends
         the rules evaluation.
 
-    - reject :
+  \item[-] \emph{reject:}
         rejects the connection if the condition is true (when used with "if")
         or false (when used with "unless"). The first such rule executed ends
         the rules evaluation. Rejected connections do not even become a
@@ -5531,7 +5546,7 @@ This section provides a description of each keyword and its usage.
         logging is absolutely desired, then "tcp-request content" rules should
         be used instead.
 
-    - { track-sc1 | track-sc2 } <key> [table <table>] :
+   \item[-] \emph{\{ track-sc1 | track-sc2 \} <key> [table <table>]}
         enables tracking of sticky counters from current connection. These
         rules do not stop evaluation and do not change default action. Two sets
         of counters may be simultaneously tracked by the same connection. The
@@ -5541,15 +5556,17 @@ This section provides a description of each keyword and its usage.
         set. It is a recommended practice to use the first set of counters for
         the per-frontend counters and the second set for the per-backend ones.
 
-        These actions take one or two arguments :
-          <key>   is mandatory, and defines the criterion the tracking key will
+        These actions take one or two arguments:
+        \begin{description}
+        \item[<key>] is mandatory, and defines the criterion the tracking key will
                   be derived from. At the moment, only "src" is supported. With
                   it, the key will be the connection's source IPv4 address.
 
-         <table>  is an optional table to be used instead of the default one,
+        \item[<table>] is an optional table to be used instead of the default one,
                   which is the stick-table declared in the current proxy. All
                   the counters for the matches and updates for the key will
                   then be performed in that table until the session ends.
+        \end{description}
 
         Once a "track-sc*" rule is executed, the key is looked up in the table
         and if it is not found, an entry is allocated for it. Then a pointer to
@@ -5561,6 +5578,7 @@ This section provides a description of each keyword and its usage.
         expire during that time. Tracking counters also provides a performance
         advantage over just checking the keys, because only one table lookup is
         performed for all ACL checks that make use of it.
+  \end{itemize}
 
   Note that the "if/unless" condition is optional. If no condition is set on
   the action, it is simply performed unconditionally. That can be useful for
@@ -5570,35 +5588,44 @@ This section provides a description of each keyword and its usage.
            connection without counting them, and track accepted connections.
            This results in connection rate being capped from abusive sources.
 
+  \begin{verbatim}
         tcp-request connection accept if { src -f /etc/haproxy/whitelist.lst }
         tcp-request connection reject if { src_conn_rate gt 10 }
         tcp-request connection track-sc1 src
+  \end{verbatim}
 
   Example: accept all connections from white-listed hosts, count all other
            connections and reject too fast ones. This results in abusive ones
            being blocked as long as they don't slow down.
 
+  \begin{verbatim}
         tcp-request connection accept if { src -f /etc/haproxy/whitelist.lst }
         tcp-request connection track-sc1 src
         tcp-request connection reject if { sc1_conn_rate gt 10 }
+  \end{verbatim}
 
   See section 7 about ACL usage.
 
-  See also : "tcp-request content", "stick-table"
+  See also: "tcp-request content", "stick-table"
 
+\subsubsection[tcp-request content]{tcp-request content <action> [ \{if | unless\} <condition> ]}
 
-\subsubsection[tcp-request content <action> [{if | unless} <condition>]
+\index{tcp-request content}
+
   Perform an action on a new session depending on a layer 4-7 condition
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <action>    defines the action to perform if the condition applies. Valid
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<action>] defines the action to perform if the condition applies. Valid
                 actions include : "accept", "reject", "track-sc1", "track-sc2".
                 See "tcp-request connection" above for their signification.
 
-    <condition> is a standard layer 4-7 ACL-based condition (see section 7).
+  \item[<condition>] is a standard layer 4-7 ACL-based condition (see section 7).
+  \end{description}
 
-  A request's contents can be analysed at an early stage of request processing
+  A request's contents can be analyzed at an early stage of request processing
   called "TCP content inspection". During this stage, ACL-based rules are
   evaluated every time the request contents are updated, until either an
   "accept" or a "reject" rule matches, or the TCP request inspection delay
@@ -5619,10 +5646,12 @@ This section provides a description of each keyword and its usage.
   contents. There is no specific limit to the number of rules which may be
   inserted.
 
-  Three types of actions are supported :
-    - accept :
-    - reject :
-    - { track-sc1 | track-sc2 } <key> [table <table>]
+  Three types of actions are supported:
+  \begin{itemize}
+  \item[-] accept:
+  \item[-] reject:
+  \item[-] \{ track-sc1 | track-sc2 \} <key> [table <table>]
+  \end{itemize}
 
   They have the same meaning as their counter-parts in "tcp-request connection"
   so please refer to that section for a complete description.
@@ -5645,16 +5674,16 @@ This section provides a description of each keyword and its usage.
   The parser which is involved there is exactly the same as for all other HTTP
   processing, so there is no risk of parsing something differently.
 
-  Example:
-        # Accept HTTP requests containing a Host header saying "example.com"
-        # and reject everything else.
+  Example: Accept HTTP requests containing a Host header saying "example.com" and reject everything else.
+  \begin{verbatim}
         acl is_host_com hdr(Host) -i example.com
         tcp-request inspect-delay 30s
         tcp-request content accept if is_host_com
         tcp-request content reject
+  \end{verbatim}
 
-  Example:
-        # reject SMTP connection if client speaks first
+  Example: reject SMTP connection if client speaks first
+  \begin{verbatim}
         tcp-request inspect-delay 30s
         acl content_present req_len gt 0
         tcp-request content reject if content_present
@@ -5664,10 +5693,12 @@ This section provides a description of each keyword and its usage.
         acl content_present req_len gt 0
         tcp-request content accept if content_present
         tcp-request content reject
+  \end{verbatim}
 
   Example: track per-frontend and per-backend counters, block abusers at the
            frontend when the backend detects abuse.
 
+  \begin{verbatim}
         frontend http
             # Use General Purpose Couter 0 in SC1 as a global abuse counter
             # protecting all our sites
@@ -5685,20 +5716,26 @@ This section provides a description of each keyword and its usage.
             acl mark_as_abuser sc1_inc_gpc0
             tcp-request content track-sc2 src
             tcp-request content reject if click_too_fast mark_as_abuser
+  \end{verbatim}
 
   See section 7 about ACL usage.
 
-  See also : "tcp-request connection", "tcp-request inspect-delay"
+  See also: "tcp-request connection", "tcp-request inspect-delay"
 
+\subsubsection[tcp-request inspect-delay]{tcp-request inspect-delay <timeout>}
 
-\subsubsection[tcp-request inspect-delay <timeout>
+\index{tcp-request inspect-delay}
+
   Set the maximum allowed time to wait for data during content inspection
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    yes   |   yes  |   yes
-  Arguments :
-    <timeout> is the timeout value specified in milliseconds by default, but
+
+\dflb{no}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
   People using haproxy primarily as a TCP relay are often worried about the
   risk of passing any type of protocol to a server without any analysis. In
@@ -5734,22 +5771,28 @@ This section provides a description of each keyword and its usage.
   closes the connection or if the buffer is full, the delay immediately expires
   since the contents will not be able to change anymore.
 
-  See also : "tcp-request content accept", "tcp-request content reject",
+  See also: "tcp-request content accept", "tcp-request content reject",
              "timeout client".
 
 
-\subsubsection[tcp-response content <action> [{if | unless} <condition>]
+\subsubsection[tcp-response content]{tcp-response content <action> [ \{if | unless\} <condition> ]}
+
+\index{tcp-response content}
+
   Perform an action on a session response depending on a layer 4-7 condition
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    no    |   yes  |   yes
-  Arguments :
-    <action>    defines the action to perform if the condition applies. Valid
+
+\dflb{no}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<action>] defines the action to perform if the condition applies. Valid
                 actions include : "accept", "reject".
                 See "tcp-request connection" above for their signification.
 
-    <condition> is a standard layer 4-7 ACL-based condition (see section 7).
+  \item[<condition>] is a standard layer 4-7 ACL-based condition (see section 7).
+  \end{description}
 
-  Response contents can be analysed at an early stage of response processing
+  Response contents can be analyzed at an early stage of response processing
   called "TCP content inspection". During this stage, ACL-based rules are
   evaluated every time the response contents are updated, until either an
   "accept" or a "reject" rule matches, or a TCP response inspection delay is
@@ -5762,16 +5805,18 @@ This section provides a description of each keyword and its usage.
   contents. There is no specific limit to the number of rules which may be
   inserted.
 
-  Two types of actions are supported :
-    - accept :
+  Two types of actions are supported:
+  \begin{itemize}
+  \item[-] \emph{accept:}
         accepts the response if the condition is true (when used with "if")
         or false (when used with "unless"). The first such rule executed ends
         the rules evaluation.
 
-    - reject :
+  \item[-] \emph{reject:}
         rejects the response if the condition is true (when used with "if")
         or false (when used with "unless"). The first such rule executed ends
-        the rules evaluation. Rejected session are immediatly closed.
+        the rules evaluation. Rejected session are immediately closed.
+  \end{itemize}
 
   Note that the "if/unless" condition is optional. If no condition is set on
   the action, it is simply performed unconditionally. That can be useful for
@@ -5785,35 +5830,44 @@ This section provides a description of each keyword and its usage.
 
   See section 7 about ACL usage.
 
-  See also : "tcp-request content", "tcp-response inspect-delay"
+  See also: "tcp-request content", "tcp-response inspect-delay"
 
+\subsubsection[tcp-response]{tcp-response inspect-delay <timeout>}
 
-\subsubsection[tcp-response inspect-delay <timeout>
+\index{tcp-response}
+
   Set the maximum allowed time to wait for a response during content inspection
-  May be used in sections :   defaults | frontend | listen | backend
-                                 no    |    no    |   yes  |   yes
-  Arguments :
-    <timeout> is the timeout value specified in milliseconds by default, but
+
+\dflb{no}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
-  See also : "tcp-response content", "tcp-request inspect-delay".
+  See also: "tcp-response content", "tcp-request inspect-delay".
 
+\subsubsection[timeout check]{timeout check <timeout>}
 
-\subsubsection[timeout check <timeout>
+\index{timeout check}
+
   Set additional check timeout, but only after a connection has been already
   established.
 
-  May be used in sections:    defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
+\dflb{yes}{no}{yes}{yes}
+
   Arguments:
-    <timeout> is the timeout value specified in milliseconds by default, but
+  \begin{description}
+  \item[<timeout>] is the timeout value specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
   If set, haproxy uses min("timeout connect", "inter") as a connect timeout
   for check and "timeout check" as an additional read timeout. The "min" is
-  used so that people running with *very* long "timeout connect" (eg. those
+  used so that people running with \emph{very} long "timeout connect" (eg. those
   who needed this due to the queue or tarpit) do not slow down their checks.
   (Please also note that there is no valid reason to have such long connect
   timeouts, because "timeout queue" and "timeout tarpit" can always be used to
@@ -5833,16 +5887,22 @@ This section provides a description of each keyword and its usage.
   See also: "timeout connect", "timeout queue", "timeout server",
             "timeout tarpit".
 
+\subsubsection[timeout client]{timeout client <timeout>}
+\subsubsection[timeout clitimeout]{timeout clitimeout <timeout> (deprecated)}
 
-\subsubsection[timeout client <timeout>
-\subsubsection[timeout clitimeout <timeout> (deprecated)
+\index{timeout client}
+\index{timeout clitimeout}
+
   Set the maximum inactivity time on the client side.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   no
-  Arguments :
-    <timeout> is the timeout value specified in milliseconds by default, but
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
   The inactivity timeout applies when the client is expected to acknowledge or
   send data. In HTTP mode, this timeout is particularly important to consider
@@ -5869,18 +5929,24 @@ This section provides a description of each keyword and its usage.
   to use it to write new configurations. The form "timeout clitimeout" is
   provided only by backwards compatibility but its use is strongly discouraged.
 
-  See also : "clitimeout", "timeout server", "timeout tunnel".
+  See also: "clitimeout", "timeout server", "timeout tunnel".
 
+\subsubsection[timeout connect]{timeout connect <timeout>}
+\subsubsection[timeout contimeout]{timeout connect <timeout> (deprecated)}
 
-\subsubsection[timeout connect <timeout>
-\subsubsection[timeout contimeout <timeout> (deprecated)
+\index{timeout contimeout}
+\index{timeout connect}
+
   Set the maximum time to wait for a connection attempt to a server to succeed.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <timeout> is the timeout value specified in milliseconds by default, but
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
   If the server is located on the same LAN as haproxy, the connection should be
   immediate (less than a few milliseconds). Anyway, it is a good practice to
@@ -5904,14 +5970,20 @@ This section provides a description of each keyword and its usage.
             "timeout tarpit".
 
 
-\subsubsection[timeout http-keep-alive <timeout>
+\subsubsection[timeout http-keep-alive]{timeout http-keep-alive <timeout>}
+
+\index{timeout http-keep-alive}
+
   Set the maximum allowed time to wait for a new HTTP request to appear
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments :
-    <timeout> is the timeout value specified in milliseconds by default, but
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
   By default, the time to wait for a new request in case of keep-alive is set
   by "timeout http-request". However this is not always convenient because some
@@ -5942,17 +6014,23 @@ This section provides a description of each keyword and its usage.
   set in the frontend to take effect, unless the frontend is in TCP mode, in
   which case the HTTP backend's timeout will be used.
 
-  See also : "timeout http-request", "timeout client".
+  See also: "timeout http-request", "timeout client".
 
 
-\subsubsection[timeout http-request <timeout>
+\subsubsection[timeout http-request]{timeout http-request <timeout>}
+
+\index{timeout http-request}
+
   Set the maximum allowed time to wait for a complete HTTP request
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments :
-    <timeout> is the timeout value specified in milliseconds by default, but
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
   In order to offer DoS protection, it may be required to lower the maximum
   accepted time to receive a complete HTTP request without affecting the client
@@ -5979,17 +6057,20 @@ This section provides a description of each keyword and its usage.
   effect, unless the frontend is in TCP mode, in which case the HTTP backend's
   timeout will be used.
 
-  See also : "timeout http-keep-alive", "timeout client".
+  See also: "timeout http-keep-alive", "timeout client".
 
+\subsubsection[timeout queue]{timeout queue <timeout>}
 
-\subsubsection[timeout queue <timeout>
   Set the maximum time to wait in the queue for a connection slot to be free
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <timeout> is the timeout value specified in milliseconds by default, but
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
   When a server's maxconn is reached, connections are left pending in a queue
   which may be server-specific or global to the backend. In order not to wait
@@ -6002,18 +6083,24 @@ This section provides a description of each keyword and its usage.
   connection timeout ("timeout connect") is used, for backwards compatibility
   with older versions with no "timeout queue" parameter.
 
-  See also : "timeout connect", "contimeout".
+  See also: "timeout connect", "contimeout".
 
+\subsubsection[timeout server]{timeout server <timeout>}
+\subsubsection[timeout srvtimeout]{timeout srvtimeout <timeout> (deprecated)}
 
-\subsubsection[timeout server <timeout>
-\subsubsection[timeout srvtimeout <timeout> (deprecated)
+\index{timeout server}
+\index{timeout srvtimeout}
+
   Set the maximum inactivity time on the server side.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <timeout> is the timeout value specified in milliseconds by default, but
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
   The inactivity timeout applies when the server is expected to acknowledge or
   send data. In HTTP mode, this timeout is particularly important to consider
@@ -6046,17 +6133,23 @@ This section provides a description of each keyword and its usage.
   to use it to write new configurations. The form "timeout srvtimeout" is
   provided only by backwards compatibility but its use is strongly discouraged.
 
-  See also : "srvtimeout", "timeout client" and "timeout tunnel".
+  See also: "srvtimeout", "timeout client" and "timeout tunnel".
 
 
-\subsubsection[timeout tarpit <timeout>
+\subsubsection[timeout tarpit]{timeout tarpit <timeout>}
+
+\index{timeout tarpit}
+
   Set the duration for which tarpitted connections will be maintained
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    yes   |   yes  |   yes
-  Arguments :
-    <timeout> is the tarpit duration specified in milliseconds by default, but
+
+\dflb{yes}{yes}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the tarpit duration specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
   When a connection is tarpitted using "reqtarpit", it is maintained open with
   no activity for a certain amount of time, then closed. "timeout tarpit"
@@ -6068,23 +6161,26 @@ This section provides a description of each keyword and its usage.
   ("timeout connect") is used, for backwards compatibility with older versions
   with no "timeout tarpit" parameter.
 
-  See also : "timeout connect", "contimeout".
+  See also: "timeout connect", "contimeout".
 
+\subsubsection[timeout tunnel]{timeout tunnel <timeout>}
 
-\subsubsection[timeout tunnel <timeout>
   Set the maximum inactivity time on the client and server side for tunnels.
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments :
-    <timeout> is the timeout value specified in milliseconds by default, but
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<timeout>] is the timeout value specified in milliseconds by default, but
               can be in any other unit if the number is suffixed by the unit,
               as explained at the top of this document.
+  \end{description}
 
-  The tunnel timeout applies when a bidirectionnal connection is established
+  The tunnel timeout applies when a bidirectional connection is established
   between a client and a server, and the connection remains inactive in both
   directions. This timeout supersedes both the client and server timeouts once
   the connection becomes a tunnel. In TCP, this timeout is used as soon as no
-  analyser remains attached to either connection (eg: tcp content rules are
+  analyzer remains attached to either connection (eg: tcp content rules are
   accepted). In HTTP, this timeout is used when a connection is upgraded (eg:
   when switching to the WebSocket protocol, or forwarding a CONNECT request
   to a proxy), or after the first response when no keepalive/close option is
@@ -6100,7 +6196,8 @@ This section provides a description of each keyword and its usage.
   "defaults" sections. This is in fact one of the easiest solutions not to
   forget about it.
 
-  Example :
+  Example:
+  \begin{verbatim}
         defaults http
             option http-server-close
             timeout connect 5s
@@ -6108,15 +6205,20 @@ This section provides a description of each keyword and its usage.
             timeout client 30s
             timeout server 30s
             timeout tunnel  1h    # timeout to use with WebSocket and CONNECT
+  \end{verbatim}
 
   See also : "timeout client", "timeout server".
 
 
-\subsubsection[transparent (deprecated)
+\subsubsection[transparent]{transparent (deprecated)}
+
+\index{transparent}
+
   Enable client-side transparent proxying
-  May be used in sections :   defaults | frontend | listen | backend
-                                 yes   |    no    |   yes  |   yes
-  Arguments : none
+
+\dflb{yes}{no}{yes}{yes}
+
+  Arguments: none
 
   This keyword was introduced in order to provide layer 7 persistence to layer
   3 load balancers. The idea is to use the OS's ability to redirect an incoming
@@ -6134,12 +6236,18 @@ This section provides a description of each keyword and its usage.
 
   See also: "option transparent"
 
-\subsubsection[unique-id-format <string>
+\subsubsection[unique-id-format]{unique-id-format <string>}
+
+\index{unique-id-format}
+
   Generate a unique ID for each request.
-  May be used in sections :   defaults | frontend | listen | backend
-                                  yes  |    yes   |   yes  |   no
-  Arguments :
-    <string>   is a log-format string.
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments:
+  \begin{description}
+  \item[<string>] is a log-format string.
+  \end{description}
 
   This keyword creates a ID for each request using the custom log format. A
   unique ID is useful to trace a request passing through many components of
@@ -6159,61 +6267,72 @@ This section provides a description of each keyword and its usage.
   makes them more compact and saves space in logs.
 
   Example:
-
+  \begin{verbatim}
         unique-id-format %{+X}o\ %Ci:%Cp_%Fi:%Fp_%Ts_%rt:%pid
 
         will generate:
 
                7F000001:8296_7F00001E:1F90_4F7B0A69_0003:790A
+  \end{verbatim}
 
   See also: "unique-id-header"
 
-\subsubsection[unique-id-header <name>
+\subsubsection[unique-id-header]{unique-id-header <name>}
+
+\index{unique-id-header}
+
   Add a unique ID header in the HTTP request.
-  May be used in sections :   defaults | frontend | listen | backend
-                                  yes  |    yes   |   yes  |   no
-  Arguments :
-    <name>   is the name of the header.
+
+\dflb{yes}{yes}{yes}{no}
+
+  Arguments:
+  \begin{description}
+  \item[<name>] is the name of the header.
+  \end{description}
 
   Add a unique-id header in the HTTP request sent to the server, using the
   unique-id-format. It can't work if the unique-id-format doesn't exist.
 
   Example:
-
+\begin{verbatim}
         unique-id-format %{+X}o\ %Ci:%Cp_%Fi:%Fp_%Ts_%rt:%pid
         unique-id-header X-Unique-ID
 
         will generate:
 
            X-Unique-ID: 7F000001:8296_7F00001E:1F90_4F7B0A69_0003:790A
-
+\end{verbatim}
     See also: "unique-id-format"
 
-\subsubsection[use_backend <backend> if <condition>
-\subsubsection[use_backend <backend> unless <condition>
-  Switch to a specific backend if/unless an ACL-based condition is matched.
-  May be used in sections :   defaults | frontend | listen | backend
-                                  no   |    yes   |   yes  |   no
-  Arguments :
-    <backend>   is the name of a valid backend or "listen" section.
+\subsubsection[use\_backend]{use\_backend <backend> \{ if | unless \} <condition>}
 
-    <condition> is a condition composed of ACLs, as described in section 7.
+\index{use\_backend}
+
+  Switch to a specific backend if/unless an ACL-based condition is matched.
+
+\dflb{no}{yes}{yes}{no}
+
+  Arguments:
+  \begin{description}
+  \item[<backend>] is the name of a valid backend or "listen" section.
+  \item[<condition>] is a condition composed of ACLs, as described in section 7.
+  \end{description}
 
   When doing content-switching, connections arrive on a frontend and are then
   dispatched to various backends depending on a number of conditions. The
   relation between the conditions and the backends is described with the
-  "use_backend" keyword. While it is normally used with HTTP processing, it can
+  "use\_backend" keyword. While it is normally used with HTTP processing, it can
   also be used in pure TCP, either without content using stateless ACLs (eg:
   source address validation) or combined with a "tcp-request" rule to wait for
   some payload.
 
-  There may be as many "use_backend" rules as desired. All of these rules are
+  There may be as many "use\_backend" rules as desired. All of these rules are
   evaluated in their declaration order, and the first one which matches will
   assign the backend.
 
   In the first form, the backend will be used if the condition is met. In the
   second form, the backend will be used if the condition is not met. If no
-  condition is valid, the backend defined with "default_backend" will be used.
+  condition is valid, the backend defined with "default\_backend" will be used.
   If no default backend is defined, either the servers in the same section are
   used (in case of a "listen" section) or, in case of a frontend, no server is
   used and a 503 service unavailable response is returned.
@@ -6224,18 +6343,19 @@ This section provides a description of each keyword and its usage.
   a complete HTTP request to get in. This feature is useful when a frontend
   must decode several protocols on a unique port, one of them being HTTP.
 
-  See also: "default_backend", "tcp-request", and section 7 about ACLs.
+  See also: "default\_backend", "tcp-request", and section 7 about ACLs.
 
+\subsubsection[use-server]{use-server <server> \{ if | unless \} <condition>}
 
-\subsubsection[use-server <server> if <condition>
-\subsubsection[use-server <server> unless <condition>
   Only use a specific server if/unless an ACL-based condition is matched.
-  May be used in sections :   defaults | frontend | listen | backend
-                                  no   |    no    |   yes  |   yes
-  Arguments :
-    <server>    is the name of a valid server in the same backend section.
 
-    <condition> is a condition composed of ACLs, as described in section 7.
+\dflb{no}{no}{yes}{yes}
+
+  Arguments:
+  \begin{description}
+  \item[<server>] is the name of a valid server in the same backend section.
+  \item[<condition>] is a condition composed of ACLs, as described in section 7.
+  \end{description}
 
   By default, connections which arrive to a backend are load-balanced across
   the available servers according to the configured algorithm, unless a
@@ -6267,7 +6387,8 @@ This section provides a description of each keyword and its usage.
   be selected in a farm according to the TLS SNI field. And if these servers
   have their weight set to zero, they will not be used for other traffic.
 
-  Example :
+  Example:
+  \begin{verbatim}
      # intercept incoming TLS requests based on the SNI field
      use-server www if { req_ssl_sni -i www.example.com }
      server     www 192.168.0.1:443 weight 0
@@ -6277,5 +6398,6 @@ This section provides a description of each keyword and its usage.
      server     mail 192.168.0.1:993 weight 0
      # all the rest is forwarded to this server
      server  default 192.168.0.2:443 check
+  \end{verbatim}
 
-  See also: "use_backend", serction 5 about server and section 7 about ACLs.
+  See also: "use\_backend", serction 5 about server and section 7 about ACLs.

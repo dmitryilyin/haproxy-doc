@@ -525,7 +525,7 @@ addresses and ports, as well as internal values independent on the stream.
   not found, zero is returned. See also sc1/sc2\_bytes\_out\_rate.
 
 \subsubsection[src\_clr\_gpc0]{src\_clr\_gpc0 <integer>}
-\subsubsection{src\_clr\_gpc0(<table>) <integer>}
+\subsubsection*{src\_clr\_gpc0(<table>) <integer>}
 \index{src\_clr\_gpc0}
   Clears the first General Purpose Counter associated to the connection's
   source IPv4 address in the current proxy's stick-table or in the designated
@@ -545,7 +545,7 @@ addresses and ports, as well as internal values independent on the stream.
 \end{verbatim}
 
 \subsubsection[src\_conn\_cnt]{src\_conn\_cnt <integer>}
-\subsubsection{src\_conn\_cnt(<table>) <integer>}
+\subsubsection*{src\_conn\_cnt(<table>) <integer>}
 \index{src\_conn\_cnt}
   Returns the cumulated number of connections initiated from the current
   connection's source IPv4 address in the current proxy's stick-table or in
@@ -553,71 +553,81 @@ addresses and ports, as well as internal values independent on the stream.
   See also sc1/sc2\_conn\_cnt.
 
 \subsubsection[src\_conn\_cur]{src\_conn\_cur <integer>}
-\subsubsection{src\_conn\_cur(<table>) <integer>}
+\subsubsection*{src\_conn\_cur(<table>) <integer>}
+
 \index{src\_conn\_cur}
+
   Returns the current amount of concurrent connections initiated from the
   current connection's source IPv4 address in the current proxy's stick-table
   or in the designated stick-table. If the address is not found, zero is
   returned. See also sc1/sc2\_conn\_cur.
 
 \subsubsection[src\_conn\_rate]{src\_conn\_rate <integer>}
-\subsubsection{src\_conn\_rate(<table>) <integer>}
+\subsubsection*{src\_conn\_rate(<table>) <integer>}
+\index{src\_conn\_rate}
   Returns the average connection rate from the connection's source IPv4 address
   in the current proxy's stick-table or in the designated stick-table, measured
   in amount of connections over the period configured in the table. If the
   address is not found, zero is returned. See also sc1/sc2\_conn\_rate.
 
-\endinput
-
-\subsubsection src_get_gpc0 <integer>
-\subsubsection src_get_gpc0(<table>) <integer>
+\subsubsection[src\_get\_gpc0]{src\_get\_gpc0 <integer>}
+\subsubsection*{src\_get\_gpc0(<table>) <integer>}
+\index{src\_get\_gpc0}
   Returns the value of the first General Purpose Counter associated to the
   connection's source IPv4 address in the current proxy's stick-table or in
   the designated stick-table. If the address is not found, zero is returned.
-  See also sc1/sc2_get_gpc0 and src_inc_gpc0.
+  See also sc1/sc2\_get\_gpc0 and src\_inc\_gpc0.
 
-\subsubsection src_http_err_cnt <integer>
-\subsubsection src_http_err_cnt(<table>) <integer>
+\subsubsection[src\_http\_err\_cnt]{src\_http\_err\_cnt <integer>}
+\subsubsection*{src\_http\_err\_cnt(<table>) <integer>}
+\index{src\_http\_err\_cnt}
   Returns the cumulated number of HTTP errors from the current connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table. This includes the both request errors and 4xx error responses.
-  If the address is not found, zero is returned. See also sc1/sc2_http_err_cnt.
+  If the address is not found, zero is returned. See also sc1/sc2\_http\_err\_cnt.
 
-\subsubsection src_http_err_rate <integer>
-\subsubsection src_http_err_rate(<table>) <integer>
+\subsubsection[src\_http\_err\_rate]{src\_http\_err\_rate <integer>}
+\subsubsection{src\_http\_err\_rate(<table>) <integer>}
+\index{src\_http\_err\_rate}
   Returns the average rate of HTTP errors from the current connection's source
   IPv4 address in the current proxy's stick-table or in the designated stick-
   table, measured in amount of errors over the period configured in the table.
   This includes the both request errors and 4xx error responses. If the address
-  is not found, zero is returned. See also sc1/sc2_http_err_rate.
+  is not found, zero is returned. See also sc1/sc2\_http\_err\_rate.
 
-\subsubsection src_http_req_cnt <integer>
-\subsubsection src_http_req_cnt(<table>) <integer>
+\subsubsection[src\_http\_req\_cnt]{src\_http\_req\_cnt <integer>}
+\subsubsection*{src\_http\_req\_cnt(<table>) <integer>}
+\index{src\_http\_req\_cnt}
   Returns the cumulated number of HTTP requests from the current connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table. This includes every started request, valid or not. If the
-  address is not found, zero is returned. See also sc1/sc2_http_req_cnt.
+  address is not found, zero is returned. See also sc1/sc2\_http\_req\_cnt.
 
-\subsubsection src_http_req_rate <integer>
-\subsubsection src_http_req_rate(<table>) <integer>
+\subsubsection[src\_http\_req\_rate]{src\_http\_req\_rate <integer>}
+\subsubsection*{src\_http\_req\_rate(<table>) <integer>}
   Returns the average rate of HTTP requests from the current connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table, measured in amount of requests over the period configured in the
   table. This includes every started request, valid or not. If the address is
-  not found, zero is returned. See also sc1/sc2_http_req_rate.
+  not found, zero is returned. See also sc1/sc2\_http\_req\_rate.
 
-\subsubsection src_inc_gpc0 <integer>
-\subsubsection src_inc_gpc0(<table>) <integer>
+\subsubsection[src\_inc\_gpc0]{src\_inc\_gpc0 <integer>}
+\subsubsection{src\_inc\_gpc0(<table>) <integer>}
+\index{src\_inc\_gpc0}
   Increments the first General Purpose Counter associated to the connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table, and returns its value. If the address is not found, an entry is
   created and 1 is returned. The test can also be used alone and always returns
   true. This is typically used as a second ACL in an expression in order to
-  mark a connection when a first ACL was verified :
-
+  mark a connection when a first ACL was verified:
+  \begin{verbatim}
         acl abuse src_http_req_rate gt 10
         acl kill  src_inc_gpc0
         tcp-request connection reject if abuse kill
+  \end{verbatim}
+
+%----------------------------------------------------------
+\begin{verbatim}
 
 \subsubsection src_kbytes_in <integer>
 \subsubsection src_kbytes_in(<table>) <integer>
@@ -810,10 +820,11 @@ keyword for more detailed information on the subject.
      tcp-request content accept if goodguys
      tcp-request content reject if badguys WAIT_END
      tcp-request content reject
-
+\end{verbatim}
 
 \subsection{Matching at Layer 7}
 
+\begin{verbatim}
 A third set of criteria applies to information which can be found at the
 application layer (layer 7). Those require that a full HTTP request has been
 read, and are only evaluated then. They may require slightly more CPU resources
@@ -1150,10 +1161,11 @@ than the layer 4 ones, but not much since the request and response are indexed.
   Returns true when the URL parameter "<name>" contains one of the strings. It
   can be used to detect particular patterns in query strings for example. See
   also "path_sub" and other "urlp_" criteria.
-
+\end{verbatim}
 
 \section{Pre-defined ACLs}
 
+\begin{verbatim}
 Some predefined ACLs are hard-coded so that they do not have to be declared in
 every frontend which needs them. They all have their names in upper case in
 order to avoid confusion. Their equivalence is provided below.
@@ -1180,10 +1192,11 @@ REQ_CONTENT      req_len gt 0                  match data in the request buffer
 TRUE             always_true                   always match
 WAIT_END         wait_end                      wait for end of content analysis
 ---------------+-----------------------------+---------------------------------
-
+\end{verbatim}
 
 \section{Using ACLs to form conditions}
 
+\begin{verbatim}
 Some actions are only performed upon a valid condition. A condition is a
 combination of ACLs with operators. 3 operators are supported :
 
@@ -1252,10 +1265,11 @@ good use is the following :
         monitor fail if { nbsrv(dynamic) lt 2 } || { nbsrv(static) lt 2 }
 
 See section 4.2 for detailed help on the "block" and "use_backend" keywords.
-
+\end{verbatim}
 
 \section{Pattern extraction}
 
+\begin{verbatim}
 The stickiness features relies on pattern extraction in the request and
 response. Sometimes the data needs to be converted first before being stored,
 for instance converted from ASCII to IP or upper case to lower case.
@@ -1397,3 +1411,5 @@ The currently available list of transformations include :
                certain mask to share the same table entries and as such use
                the same server. The mask can be passed in dotted form (eg:
                255.255.255.0) or in CIDR form (eg: 24).
+               
+               \end{verbatim}
