@@ -10,7 +10,7 @@ headers.
 
 In order to improve administrators reactivity, it offers a great transparency
 about encountered problems, both internal and external, and it is possible to
-send logs to different sources at the same time with different level filters :
+send logs to different sources at the same time with different level filters:
 
 \begin{itemize}
 \item[-] global process-level logs (system errors, start/stop, etc..)
@@ -27,7 +27,6 @@ while the application team might be monitoring the up/down for their servers in
 real time, and the security team might analyze the activity logs with one hour
 delay.
 
-
 \section{Log levels}
 
 TCP and HTTP connections can be logged with information such as the date, time,
@@ -37,7 +36,6 @@ in which the session ended, and even exchanged cookies values. For example
 track a particular user's problems. All messages may be sent to up to two
 syslog servers. Check the "log" keyword in section 4.2 for more information
 about log facilities.
-
 
 \section{Log formats}
 
@@ -49,7 +47,7 @@ options. The supported formats are as follows:
 \begin{itemize}
 \item[-] the default format, which is very basic and very rarely used. It only
     provides very basic information about the incoming connection at the moment
-    it is accepted : source IP:port, destination IP:port, and frontend-name.
+    it is accepted: source IP:port, destination IP:port, and frontend-name.
     This mode will eventually disappear so it will not be described to great
     extents.
 
@@ -130,7 +128,6 @@ connection (the same ID as reported in the stats).
 
 It is advised not to use this deprecated format for newer installations as it
 will eventually disappear.
-
 
 \subsection{TCP log format}
 
