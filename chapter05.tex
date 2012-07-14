@@ -21,7 +21,7 @@ The currently supported settings are the following ones.
   to send health-checks. On some servers, it may be desirable to dedicate an IP
   address to specific component able to perform complex tests which are more
   suitable to health-checks than the application. This parameter is ignored if
-  the "check" parameter is not set. See also the "port" parameter.
+  the "check" parameter is not set. See also: the "port" parameter.
 
   Supported in default-server: No
 
@@ -30,7 +30,7 @@ The currently supported settings are the following ones.
   balancing when all other non-backup servers are unavailable. Requests coming
   with a persistence cookie referencing the server will always be served
   though. By default, only the first operational backup server is used, unless
-  the "allbackups" option is set in the backend. See also the "allbackups"
+  the "allbackups" option is set in the backend. See also: the "allbackups"
   option.
 
   Supported in default-server: No
@@ -57,7 +57,7 @@ The currently supported settings are the following ones.
   cookie insertion or rewrite modes, this value will be assigned to the cookie
   sent to the client. There is nothing wrong in having several servers sharing
   the same cookie value, and it is in fact somewhat common between normal and
-  backup servers. See also the "cookie" keyword in backend section.
+  backup servers. See also: the "cookie" keyword in backend section.
 
   Supported in default-server: No
 
@@ -77,12 +77,12 @@ The currently supported settings are the following ones.
 
   Supported in default-server: Yes
 
-  See also the "check", "error-limit" and "on-error".
+  See also: the "check", "error-limit" and "on-error".
 
 \subsubsection[fall]{\kw{fall} <count>}
   The "fall" parameter states that a server will be considered as dead after
   <count> consecutive unsuccessful health checks. This value defaults to 3 if
-  unspecified. See also the "check", "inter" and "rise" parameters.
+  unspecified. See also: the "check", "inter" and "rise" parameters.
 
   Supported in default-server: Yes
 
@@ -134,7 +134,7 @@ The currently supported settings are the following ones.
   for a connection to be released. This parameter is very important as it can
   save fragile servers from going down under extreme loads. If a "minconn"
   parameter is specified, the limit becomes dynamic. The default value is "0"
-  which means unlimited. See also the "minconn" and "maxqueue" parameters, and
+  which means unlimited. See also: the "minconn" and "maxqueue" parameters, and
   the backend's "fullconn" keyword.
 
   Supported in default-server: Yes
@@ -145,7 +145,7 @@ The currently supported settings are the following ones.
   requests will be redispatched to other servers instead of indefinitely
   waiting to be served. This will break persistence but may allow people to
   quickly re-log in when the server they try to connect to is dying. The
-  default value is "0" which means the queue is unlimited. See also the
+  default value is "0" which means the queue is unlimited. See also: the
   "maxconn" and "minconn" parameters.
 
   Supported in default-server: Yes
@@ -157,7 +157,7 @@ The currently supported settings are the following ones.
   the ramp between both values when the backend has less than <fullconn>
   concurrent connections. This makes it possible to limit the load on the
   server during normal loads, but push it further for important loads without
-  overloading the server during exceptional loads. See also the "maxconn"
+  overloading the server during exceptional loads. See also: the "maxconn"
   and "maxqueue" parameters, as well as the "fullconn" backend keyword.
 
   Supported in default-server: Yes
@@ -178,7 +178,7 @@ The currently supported settings are the following ones.
 
   Supported in default-server: No
 
-  See also the "check", "on-error" and "error-limit".
+  See also: the "check", "on-error" and "error-limit".
 
 \subsubsection[on-error]{\kw{on-error} <mode>}
   Select what should happen when enough consecutive errors are detected.
@@ -193,7 +193,7 @@ The currently supported settings are the following ones.
 
   Supported in default-server: Yes
 
-  See also the "check", "observe" and "error-limit".
+  See also: the "check", "observe" and "error-limit".
 
 \subsubsection[on-marked-down]{\kw{on-marked-down} <action>}
   Modify what occurs when a server is marked down.
@@ -237,7 +237,7 @@ The currently supported settings are the following ones.
   to a specific component able to perform complex tests which are more suitable
   to health-checks than the application. It is common to run a simple script in
   inetd for instance. This parameter is ignored if the "check" parameter is not
-  set. See also the "addr" parameter.
+  set. See also: the "addr" parameter.
 
   Supported in default-server: Yes
 
@@ -266,7 +266,7 @@ The currently supported settings are the following ones.
 \subsubsection[rise]{\kw{rise} <count>}
   The "rise" parameter states that a server will be considered as operational
   after <count> consecutive successful health checks. This value defaults to 2
-  if unspecified. See also the "check", "inter" and "fall" parameters.
+  if unspecified. See also: the "check", "inter" and "fall" parameters.
 
   Supported in default-server: Yes
 
@@ -280,7 +280,7 @@ The currently supported settings are the following ones.
   are supported. Other families such as Unix sockets, will report an UNKNOWN
   family. Servers using this option can fully be chained to another instance of
   haproxy listening with an "accept-proxy" setting. This setting must not be
-  used if the server isn't aware of the protocol. See also the "accept-proxy"
+  used if the server isn't aware of the protocol. See also: the "accept-proxy"
   option of the "bind" keyword.
 
   Supported in default-server: No

@@ -203,7 +203,7 @@ addresses and ports, as well as internal values independent on the stream.
   there would not be any active server anymore, we would consider twice the
   number of queued connections as the measured value. This is a fair estimate,
   as we expect one server to get back soon anyway, but we still prefer to send
-  new traffic to another backend if in better shape. See also the "queue",
+  new traffic to another backend if in better shape. See also: the "queue",
   "be\_conn", and "be\_sess\_rate" criteria.
 
 \subsubsection[be\_conn]{\kw{be\_conn} <integer>}
@@ -213,7 +213,7 @@ addresses and ports, as well as internal values independent on the stream.
   possibly including the connection being evaluated. If no backend name is
   specified, the current one is used. But it is also possible to check another
   backend. It can be used to use a specific farm when the nominal one is full.
-  See also the "fe\_conn", "queue" and "be\_sess\_rate" criteria.
+  See also: the "fe\_conn", "queue" and "be\_sess\_rate" criteria.
 
 \subsubsection[be\_id]{\kw{be\_id} <integer>}
 \index{be\_id}
@@ -254,7 +254,7 @@ addresses and ports, as well as internal values independent on the stream.
   you want to be able to differentiate between different backends, and their
   available "connslots".  Also, whereas "nbsrv" only measures servers that are
   actually *down*, this acl is more fine-grained and looks into the number of
-  available connection slots as well. See also "queue" and "avg\_queue".
+  available connection slots as well. See also: "queue" and "avg\_queue".
 
   \begin{note}{Other caveats and notes:} at this point in time, the code does not take care
   of dynamic connections. Also, if any of the server maxconn, or maxqueue is 0,
@@ -273,7 +273,7 @@ addresses and ports, as well as internal values independent on the stream.
   including the one being evaluated. It can be used to either return a sorry
   page before hard-blocking, or to use a specific backend to drain new requests
   when the socket is considered saturated. This offers the ability to assign
-  different limits to different listening ports or addresses. See also the
+  different limits to different listening ports or addresses. See also: the
   "fe\_conn" and "be\_conn" criteria.
 
 \subsubsection[dst\_port]{\kw{dst\_port} <integer>}
@@ -289,7 +289,7 @@ addresses and ports, as well as internal values independent on the stream.
   specified, the current one is used. But it is also possible to check another
   frontend. It can be used to either return a sorry page before hard-blocking,
   or to use a specific backend to drain new requests when the farm is
-  considered saturated. See also the "dst\_conn", "be\_conn" and "fe\_sess\_rate"
+  considered saturated. See also: the "dst\_conn", "be\_conn" and "fe\_sess\_rate"
   criteria.
 
 \subsubsection[fe\_id]{\kw{fe\_id} <integer>}
@@ -341,7 +341,7 @@ addresses and ports, as well as internal values independent on the stream.
   one. This can be used to take actions when queuing goes above a known level,
   generally indicating a surge of traffic or a massive slowdown on the servers.
   One possible action could be to reject new users but still accept old ones.
-  See also the "avg\_queue", "be\_conn", and "be\_sess\_rate" criteria.
+  See also: the "avg\_queue", "be\_conn", and "be\_sess\_rate" criteria.
 
 \subsubsection[sc1\_bytes\_in\_rate]{\kw{sc1\_bytes\_in\_rate}}
 \subsubsection[sc2\_bytes\_in\_rate]{\kw{sc2\_bytes\_in\_rate}}
@@ -349,7 +349,7 @@ addresses and ports, as well as internal values independent on the stream.
 \index{sc2\_bytes\_in\_rate}
   Returns the average client-to-server bytes rate from the currently tracked
   counters, measured in amount of bytes over the period configured in the
-  table. See also src\_bytes\_in\_rate.
+  table. See also: src\_bytes\_in\_rate.
 
 \subsubsection[sc1\_bytes\_out\_rate]{\kw{sc1\_bytes\_out\_rate}}
 \subsubsection[sc2\_bytes\_out\_rate]{\kw{sc2\_bytes\_out\_rate}}
@@ -357,7 +357,7 @@ addresses and ports, as well as internal values independent on the stream.
 \index{sc2\_bytes\_out\_rate}
   Returns the average server-to-client bytes rate from the currently tracked
   counters, measured in amount of bytes over the period configured in the
-  table. See also src\_bytes\_out\_rate.
+  table. See also: src\_bytes\_out\_rate.
 
 \subsubsection[sc1\_clr\_gpc0]{\kw{sc1\_clr\_gpc0}}
 \subsubsection[sc2\_clr\_gpc0]{\kw{sc2\_clr\_gpc0}}
@@ -385,7 +385,7 @@ addresses and ports, as well as internal values independent on the stream.
 \index{sc1\_conn\_cnt}
 \index{sc2\_conn\_cnt}
   Returns the cumulated number of incoming connections from currently tracked
-  counters. See also src\_conn\_cnt.
+  counters. See also: src\_conn\_cnt.
 
 \subsubsection[sc1\_conn\_cur]{\kw{sc1\_conn\_cur}}
 \subsubsection[sc2\_conn\_cur]{\kw{sc2\_conn\_cur}}
@@ -393,7 +393,7 @@ addresses and ports, as well as internal values independent on the stream.
 \index{sc2\_conn\_cur}
   Returns the current amount of concurrent connections tracking the same
   tracked counters. This number is automatically incremented when tracking
-  begins and decremented when tracking stops. See also src\_conn\_cur.
+  begins and decremented when tracking stops. See also: src\_conn\_cur.
 
 \subsubsection[sc1\_conn\_rate]{\kw{sc1\_conn\_rate}}
 \subsubsection[sc2\_conn\_rate]{\kw{sc2\_conn\_rate}}
@@ -401,14 +401,14 @@ addresses and ports, as well as internal values independent on the stream.
 \index{sc2\_conn\_rate}
   Returns the average connection rate from the currently tracked counters,
   measured in amount of connections over the period configured in the table.
-  See also src\_conn\_rate.
+  See also: src\_conn\_rate.
 
 \subsubsection[sc1\_get\_gpc0]{\kw{sc1\_get\_gpc0}}
 \subsubsection[sc2\_get\_gpc0]{\kw{sc2\_get\_gpc0}}
 \index{sc1\_get\_gpc0}
 \index{sc2\_get\_gpc0}
   Returns the value of the first General Purpose Counter associated to the
-  currently tracked counters. See also src\_get\_gpc0 and sc1/sc2\_inc\_gpc0.
+  currently tracked counters. See also: src\_get\_gpc0 and sc1/sc2\_inc\_gpc0.
 
 \subsubsection[sc1\_http\_err\_cnt]{\kw{sc1\_http\_err\_cnt}}
 \subsubsection[sc2\_http\_err\_cnt]{\kw{sc2\_http\_err\_cnt}}
@@ -416,7 +416,7 @@ addresses and ports, as well as internal values independent on the stream.
 \index{sc2\_http\_err\_cnt}
   Returns the cumulated number of HTTP errors from the currently tracked
   counters. This includes the both request errors and 4xx error responses.
-  See also src\_http\_err\_cnt.
+  See also: src\_http\_err\_cnt.
 
 \subsubsection[sc1\_http\_err\_rate]{\kw{sc1\_http\_err\_rate}}
 \subsubsection[sc2\_http\_err\_rate]{\kw{sc2\_http\_err\_rate}}
@@ -424,16 +424,14 @@ addresses and ports, as well as internal values independent on the stream.
 \index{sc2\_http\_err\_rate}
   Returns the average rate of HTTP errors from the currently tracked counters,
   measured in amount of errors over the period configured in the table. This
-  includes the both request errors and 4xx error responses. See also
-  src\_http\_err\_rate.
+  includes the both request errors and 4xx error responses. See also:   src\_http\_err\_rate.
 
 \subsubsection[sc1\_http\_req\_cnt]{\kw{sc1\_http\_req\_cnt}}
 \subsubsection[sc2\_http\_req\_cnt]{\kw{sc2\_http\_req\_cnt}}
 \index{sc1\_http\_req\_cnt}
 \index{sc2\_http\_req\_cnt}
   Returns the cumulated number of HTTP requests from the currently tracked
-  counters. This includes every started request, valid or not. See also
-  src\_http\_req\_cnt.
+  counters. This includes every started request, valid or not. See also:   src\_http\_req\_cnt.
 
 \subsubsection[sc1\_http\_req\_rate]{\kw{sc1\_http\_req\_rate}}
 \subsubsection[sc2\_http\_req\_rate]{\kw{sc2\_http\_req\_rate}}
@@ -441,8 +439,7 @@ addresses and ports, as well as internal values independent on the stream.
 \index{sc2\_http\_req\_rate}
   Returns the average rate of HTTP requests from the currently tracked
   counters, measured in amount of requests over the period configured in
-  the table. This includes every started request, valid or not. See also
-  src\_http\_req\_rate.
+  the table. This includes every started request, valid or not. See also:   src\_http\_req\_rate.
 
 \subsubsection[sc1\_inc\_gpc0]{\kw{sc1\_inc\_gpc0}}
 \subsubsection[sc2\_inc\_gpc0]{\kw{sc2\_inc\_gpc0}}
@@ -467,7 +464,7 @@ addresses and ports, as well as internal values independent on the stream.
   Returns the amount of client-to-server data from the currently tracked
   counters, measured in kilobytes over the period configured in the table. The
   test is currently performed on 32-bit integers, which limits values to 4
-  terabytes. See also src\_kbytes\_in.
+  terabytes. See also: src\_kbytes\_in.
 
 \subsubsection[sc1\_kbytes\_out]{\kw{sc1\_kbytes\_out}}
 \subsubsection[sc2\_kbytes\_out]{\kw{sc2\_kbytes\_out}}
@@ -476,7 +473,7 @@ addresses and ports, as well as internal values independent on the stream.
   Returns the amount of server-to-client data from the currently tracked
   counters, measured in kilobytes over the period configured in the table. The
   test is currently performed on 32-bit integers, which limits values to 4
-  terabytes. See also src\_kbytes\_out.
+  terabytes. See also: src\_kbytes\_out.
 
 \subsubsection[sc1\_sess\_cnt]{\kw{sc1\_sess\_cnt}}
 \subsubsection[sc2\_sess\_cnt]{\kw{sc2\_sess\_cnt}}
@@ -487,7 +484,7 @@ addresses and ports, as well as internal values independent on the stream.
   connection" rule, from the currently tracked counters. A backend may count
   more sessions than connections because each connection could result in many
   backend sessions if some HTTP keep-alive is performend over the connection
-  with the client. See also src\_sess\_cnt.
+  with the client. See also: src\_sess\_cnt.
 
 \subsubsection[sc1\_sess\_rate]{\kw{sc1\_sess\_rate}}
 \subsubsection[sc2\_sess\_rate]{\kw{sc2\_sess\_rate}}
@@ -498,7 +495,7 @@ addresses and ports, as well as internal values independent on the stream.
   session is a connection that got past the early "tcp-request connection"
   rules. A backend may count more sessions than connections because each
   connection could result in many backend sessions if some HTTP keep-alive is
-  performed over the connection with the client. See also src\_sess\_rate.
+  performed over the connection with the client. See also: src\_sess\_rate.
 
 \subsubsection[so\_id]{\kw{so\_id} <integer>}
 \index{so\_id}
@@ -516,7 +513,7 @@ addresses and ports, as well as internal values independent on the stream.
   Returns the average bytes rate from the connection's source IPv4 address in
   the current proxy's stick-table or in the designated stick-table, measured in
   amount of bytes over the period configured in the table. If the address is
-  not found, zero is returned. See also sc1/sc2\_bytes\_in\_rate.
+  not found, zero is returned. See also: sc1/sc2\_bytes\_in\_rate.
 
 \subsubsection[src\_bytes\_out\_rate]{\kw{src\_bytes\_out\_rate} <integer>}
 \subsubsection*{src\_bytes\_out\_rate(<table>) <integer>}
@@ -524,7 +521,7 @@ addresses and ports, as well as internal values independent on the stream.
   Returns the average bytes rate to the connection's source IPv4 address in the
   current proxy's stick-table or in the designated stick-table, measured in
   amount of bytes over the period configured in the table. If the address is
-  not found, zero is returned. See also sc1/sc2\_bytes\_out\_rate.
+  not found, zero is returned. See also: sc1/sc2\_bytes\_out\_rate.
 
 \subsubsection[src\_clr\_gpc0]{\kw{src\_clr\_gpc0} <integer>}
 \subsubsection*{src\_clr\_gpc0(<table>) <integer>}
@@ -552,7 +549,7 @@ addresses and ports, as well as internal values independent on the stream.
   Returns the cumulated number of connections initiated from the current
   connection's source IPv4 address in the current proxy's stick-table or in
   the designated stick-table. If the address is not found, zero is returned.
-  See also sc1/sc2\_conn\_cnt.
+  See also: sc1/sc2\_conn\_cnt.
 
 \subsubsection[src\_conn\_cur]{\kw{src\_conn\_cur} <integer>}
 \subsubsection*{src\_conn\_cur(<table>) <integer>}
@@ -562,7 +559,7 @@ addresses and ports, as well as internal values independent on the stream.
   Returns the current amount of concurrent connections initiated from the
   current connection's source IPv4 address in the current proxy's stick-table
   or in the designated stick-table. If the address is not found, zero is
-  returned. See also sc1/sc2\_conn\_cur.
+  returned. See also: sc1/sc2\_conn\_cur.
 
 \subsubsection[src\_conn\_rate]{\kw{src\_conn\_rate} <integer>}
 \subsubsection*{src\_conn\_rate(<table>) <integer>}
@@ -570,7 +567,7 @@ addresses and ports, as well as internal values independent on the stream.
   Returns the average connection rate from the connection's source IPv4 address
   in the current proxy's stick-table or in the designated stick-table, measured
   in amount of connections over the period configured in the table. If the
-  address is not found, zero is returned. See also sc1/sc2\_conn\_rate.
+  address is not found, zero is returned. See also: sc1/sc2\_conn\_rate.
 
 \subsubsection[src\_get\_gpc0]{\kw{src\_get\_gpc0} <integer>}
 \subsubsection*{src\_get\_gpc0(<table>) <integer>}
@@ -579,7 +576,7 @@ addresses and ports, as well as internal values independent on the stream.
   Returns the value of the first General Purpose Counter associated to the
   connection's source IPv4 address in the current proxy's stick-table or in
   the designated stick-table. If the address is not found, zero is returned.
-  See also sc1/sc2\_get\_gpc0 and src\_inc\_gpc0.
+  See also: sc1/sc2\_get\_gpc0 and src\_inc\_gpc0.
 
 \subsubsection[src\_http\_err\_cnt]{\kw{src\_http\_err\_cnt} <integer>}
 \subsubsection*{src\_http\_err\_cnt(<table>) <integer>}
@@ -588,7 +585,7 @@ addresses and ports, as well as internal values independent on the stream.
   Returns the cumulated number of HTTP errors from the current connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table. This includes the both request errors and 4xx error responses.
-  If the address is not found, zero is returned. See also sc1/sc2\_http\_err\_cnt.
+  If the address is not found, zero is returned. See also: sc1/sc2\_http\_err\_cnt.
 
 \subsubsection[src\_http\_err\_rate]{\kw{src\_http\_err\_rate} <integer>}
 \subsubsection*{src\_http\_err\_rate(<table>) <integer>}
@@ -598,7 +595,7 @@ addresses and ports, as well as internal values independent on the stream.
   IPv4 address in the current proxy's stick-table or in the designated stick-
   table, measured in amount of errors over the period configured in the table.
   This includes the both request errors and 4xx error responses. If the address
-  is not found, zero is returned. See also sc1/sc2\_http\_err\_rate.
+  is not found, zero is returned. See also: sc1/sc2\_http\_err\_rate.
 
 \subsubsection[src\_http\_req\_cnt]{\kw{src\_http\_req\_cnt} <integer>}
 \subsubsection*{src\_http\_req\_cnt(<table>) <integer>}
@@ -606,7 +603,7 @@ addresses and ports, as well as internal values independent on the stream.
   Returns the cumulated number of HTTP requests from the current connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table. This includes every started request, valid or not. If the
-  address is not found, zero is returned. See also sc1/sc2\_http\_req\_cnt.
+  address is not found, zero is returned. See also: sc1/sc2\_http\_req\_cnt.
 
 \subsubsection[src\_http\_req\_rate]{\kw{src\_http\_req\_rate} <integer>}
 \subsubsection*{src\_http\_req\_rate(<table>) <integer>}
@@ -614,7 +611,7 @@ addresses and ports, as well as internal values independent on the stream.
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table, measured in amount of requests over the period configured in the
   table. This includes every started request, valid or not. If the address is
-  not found, zero is returned. See also sc1/sc2\_http\_req\_rate.
+  not found, zero is returned. See also: sc1/sc2\_http\_req\_rate.
 
 \subsubsection[src\_inc\_gpc0]{\kw{src\_inc\_gpc0} <integer>}
 \subsubsection*{src\_inc\_gpc0(<table>) <integer>}
@@ -639,7 +636,7 @@ Returns the amount of data received from the connection's source IPv4 address
 in the current proxy's stick-table or in the designated stick-table, measured
 in kilobytes over the period configured in the table. If the address is not
 found, zero is returned. The test is currently performed on 32-bit integers,
-which limits values to 4 terabytes. See also sc1/sc2\_kbytes\_in.
+which limits values to 4 terabytes. See also: sc1/sc2\_kbytes\_in.
 
 \subsubsection[src\_kbytes\_out]{\kw{src\_kbytes\_out} <integer>}
 \subsubsection*{src\_kbytes\_out(<table>) <integer>}
@@ -649,7 +646,7 @@ Returns the amount of data sent to the connection's source IPv4 address in
 the current proxy's stick-table or in the designated stick-table, measured
 in kilobytes over the period configured in the table. If the address is not
 found, zero is returned. The test is currently performed on 32-bit integers,
-which limits values to 4 terabytes. See also sc1/sc2\_kbytes\_out.
+which limits values to 4 terabytes. See also: sc1/sc2\_kbytes\_out.
 
 \subsubsection[src\_port]{\kw{src\_port} <integer>}
 \index{src\_port}
@@ -664,7 +661,7 @@ Returns the cumulated number of connections initiated from the current
 connection's source IPv4 address in the current proxy's stick-table or in the
 designated stick-table, that were transformed into sessions, which means that
 they were accepted by "tcp-request" rules. If the address is not found, zero
-is returned. See also sc1/sc2\_sess\_cnt.
+is returned. See also: sc1/sc2\_sess\_cnt.
 
 \subsubsection[src\_sess\_rate]{\kw{src\_sess\_rate} <integer>}
 \subsubsection*{src\_sess\_rate(<table>) <integer>}
@@ -674,7 +671,7 @@ Returns the average session rate from the connection's source IPv4 address in
 the current proxy's stick-table or in the designated stick-table, measured in
 amount of sessions over the period configured in the table. A session is a
 connection that got past the early "tcp-request" rules. If the address is not
-found, zero is returned. See also sc1/sc2\_sess\_rate.
+found, zero is returned. See also: sc1/sc2\_sess\_rate.
 
 \subsubsection[src\_updt\_conn\_cnt]{\kw{src\_updt\_conn\_cnt} <integer>}
 \subsubsection*{src\_updt\_conn\_cnt(<table>) <integer>}
@@ -711,7 +708,7 @@ It is recommended to use the more complete "track-counters" instead.
 Applies to the number of currently established connections on the server,
 possibly including the connection being evaluated.
 It can be used to use a specific farm when one server is full.
-See also the "fe\_conn", "be\_conn" and "queue" criteria.
+See also: the "fe\_conn", "be\_conn" and "queue" criteria.
 
 \subsubsection[srv\_id]{\kw{srv\_id} <integer>}
 
@@ -733,13 +730,13 @@ rules depending on those ACLs can be tweaked in realtime.
 \subsubsection*{table\_avl(<table>) <integer>}
 
 Returns the total number of available entries in the current proxy's
-stick-table or in the designated stick-table. See also table\_cnt.
+stick-table or in the designated stick-table. See also: table\_cnt.
 
 \subsubsection[table\_cnt]{\kw{table\_cnt} <integer>}
 \subsubsection*{table\_cnt(<table>) <integer>}
 
 Returns the total number of entries currently in use in the current proxy's
-stick-table or in the designated stick-table. See also src\_conn\_cnt and
+stick-table or in the designated stick-table. See also: src\_conn\_cnt and
 table\_avl for other entry counting methods.
 
 \subsection{Matching contents at Layer 4 (also called Layer 6)}
@@ -947,7 +944,7 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true if any of the request cookies <name> matches any of the regular
   expressions. It can be used at any time, but it is important to remember that
-  regex matching is slower than other methods. See also other "cook\_" criteria,
+  regex matching is slower than other methods. See also: other "cook\_" criteria,
   as well as "cook" for more information on cookie matching. Use the
   scook\_reg() variant for response cookies sent by the server.
 
@@ -1060,7 +1057,7 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true it one of the headers matches one of the regular expressions. It
   can be used at any time, but it is important to remember that regex matching
-  is slower than other methods. See also other "hdr\_" criteria, as well as
+  is slower than other methods. See also: other "hdr\_" criteria, as well as
   "hdr" for more information on header matching. Use the shdr\_reg() variant for
   response headers sent by the server.
 
@@ -1125,15 +1122,14 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true when one of the strings is found isolated or delimited with
   slashes in the path. This is used to perform filename or directory name
-  matching without the risk of wrong match due to colliding prefixes. See also
-  "url\_dir" and "path\_sub".
+  matching without the risk of wrong match due to colliding prefixes. See also:   "url\_dir" and "path\_sub".
 
 \subsubsection[path\_dom]{\kw{path\_dom} <string>}
 \index{path\_dom}
 
   Returns true when one of the strings is found isolated or delimited with dots
   in the path. This may be used to perform domain name matching in proxy
-  requests. See also "path\_sub" and "url\_dom".
+  requests. See also: "path\_sub" and "url\_dom".
 
 \subsubsection[path\_end]{\kw{path\_end} <string>}
 \index{path\_end}
@@ -1152,14 +1148,13 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true when the path matches one of the regular expressions. It can be
   used any time, but it is important to remember that regex matching is slower
-  than other methods. See also "url\_reg" and all "path\_" criteria.
+  than other methods. See also: "url\_reg" and all "path\_" criteria.
 
 \subsubsection[path\_sub]{\kw{path\_sub} <string>}
 \index{path\_sub}
 
   Returns true when the path contains one of the strings. It can be used to
-  detect particular patterns in paths, such as \cmd{../} for example. See also
-  "path\_dir".
+  detect particular patterns in paths, such as \cmd{../} for example. See also:   "path\_dir".
 
 \subsubsection[payload]{\kw{payload}(<offset>,<length>) <string>}
 \index{payload}
@@ -1207,15 +1202,14 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true when one of the strings is found isolated or delimited with
   slashes in the URL. This is used to perform filename or directory name
-  matching without the risk of wrong match due to colliding prefixes. See also
-  "path\_dir" and "url\_sub".
+  matching without the risk of wrong match due to colliding prefixes. See also:   "path\_dir" and "url\_sub".
 
 \subsubsection[url\_dom]{\kw{url\_dom} <string>}
 \index{url\_dom}
 
   Returns true when one of the strings is found isolated or delimited with dots
   in the URL. This is used to perform domain name matching without the risk of
-  wrong match due to colliding prefixes. See also "url\_sub".
+  wrong match due to colliding prefixes. See also: "url\_sub".
 
 \subsubsection[url\_end]{\kw{url\_end} <string>}
 \index{url\_end}
@@ -1249,13 +1243,13 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true when the URL matches one of the regular expressions. It can be
   used any time, but it is important to remember that regex matching is slower
-  than other methods. See also "path\_reg" and all "url\_" criteria.
+  than other methods. See also: "path\_reg" and all "url\_" criteria.
 
 \subsubsection[url\_sub]{\kw{url\_sub} <string>}
 \index{url\_sub}
 
   Returns true when the URL contains one of the strings. It can be used to
-  detect particular patterns in query strings for example. See also "path\_sub".
+  detect particular patterns in query strings for example. See also: "path\_sub".
 
 \subsubsection[urlp]{\kw{urlp}(<name>) <string>}
 \index{urlp}
@@ -1279,7 +1273,7 @@ than the layer 4 ones, but not much since the request and response are indexed.
   Returns true when the URL parameter "<name>" contains one of the strings
   either isolated or delimited with slashes. This is used to perform filename
   or directory name matching in a specific URL parameter without the risk of
-  wrong match due to colliding prefixes. See also "path\_dir" and "urlp\_sub".
+  wrong match due to colliding prefixes. See also: "path\_dir" and "urlp\_sub".
 
 \subsubsection[urlp\_dom]{\kw{urlp\_dom}(<name>) <string>}
 \index{urlp\_dom}
@@ -1287,7 +1281,7 @@ than the layer 4 ones, but not much since the request and response are indexed.
   Returns true when one of the strings is found isolated or delimited with dots
   in the URL parameter "<name>". This is used to perform domain name matching
   in a specific URL parameter without the risk of wrong match due to colliding
-  prefixes. See also "urlp\_sub".
+  prefixes. See also: "urlp\_sub".
 
 \subsubsection[urlp\_end]{\kw{urlp\_end}(<name>) <string>}
 \index{urlp\_end}
@@ -1311,7 +1305,7 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true when the URL parameter "<name>" matches one of the regular
   expressions. It can be used any time, but it is important to remember that
-  regex matching is slower than other methods. See also "path\_reg" and all
+  regex matching is slower than other methods. See also: "path\_reg" and all
   "urlp\_" criteria.
 
 \subsubsection[urlp\_sub]{\kw{urlp\_sub}(<name>) <string>}
