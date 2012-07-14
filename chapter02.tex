@@ -1,29 +1,37 @@
 \chapter{Configuring HAProxy}
+\label{chap:configuring_haproxy}
+
 \section{Configuration file format}
+\label{sec:config_format}
+
 HAProxy's configuration process involves 3 major sources of parameters:
+
 \begin{enumerate}
 \item the arguments from the command-line, which always take precedence
-\item the "global" section, which sets process-wide parameters
-\item the proxies sections which can take form of "defaults", "listen",
-    "frontend" and "backend".
+\item the \cfgsec{global} section, which sets process-wide parameters
+\item the proxies sections which can take form of \cfgsec{defaults}, \cfgsec{listen},
+    \cfgsec{frontend} and \cfgsec{backend}.
 \end{enumerate}
 
 The configuration file syntax consists in lines beginning with a keyword
 referenced in this manual, optionally followed by one or several parameters
 delimited by spaces. If spaces have to be entered in strings, then they must be
-preceded by a backslash ('\verb|\|') to be escaped. Backslashes also have to be
+preceded by a backslash \chr{\bslash} to be escaped. Backslashes also have to be
 escaped by doubling them.
 
 \section{Time format}
-\index{Time format}
+\label{sec:time_format}
+
 Some parameters involve values representing time, such as timeouts. These
 values are generally expressed in milliseconds (unless explicitly stated
 otherwise) but may be expressed in any other unit by suffixing the unit to the
 numeric value. It is important to consider this because it will not be repeated
 for every keyword.
 
-\vspace{5mm}
+\index{Time format}
+
 Supported units are:
+
 \begin{description}
 \item[us:] microseconds. 1 microsecond = 1/1000000 second
 \item[ms:] milliseconds. 1 millisecond = 1/1000 second. This is the default.
@@ -34,7 +42,9 @@ Supported units are:
 \end{description}
 
 \section{Examples}
-\begin{verbatim}
+\label{sec:examples}
+
+\begin{example}{Simple configuration for an HTTP proxy}
     # Simple configuration for an HTTP proxy listening on port 80 on all
     # interfaces and forwarding requests to a single backend "servers" with a
     # single server "server1" listening on 127.0.0.1:8000
@@ -71,8 +81,8 @@ Supported units are:
     listen http-in
         bind *:80
         server server1 127.0.0.1:8000 maxconn 32
-\end{verbatim}
+\end{example}
 
-Assuming haproxy is in \$PATH, test these configurations in a shell with:
+Assuming haproxy is in \cmd{\$PATH}, test these configurations in a shell with:
 
-\verb|$ sudo haproxy -f configuration.conf -c|
+\cmd{sudo haproxy -f configuration.conf -c}

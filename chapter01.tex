@@ -1,4 +1,6 @@
 \chapter{Quick reminder about HTTP}
+\label{chap:http_reminder}
+
 When haproxy is running in HTTP mode, both the request and the response are
 fully analyzed and indexed, thus it becomes possible to build matching criteria
 on almost anything found in the contents.
@@ -8,6 +10,8 @@ formed, and how HAProxy decomposes them. It will then become easier to write
 correct rules and to debug existing configurations.
 
 \section{The HTTP transaction model}
+\label{sec:http_transaction}
+
 The HTTP protocol is transaction-driven. This means that each request will lead
 to one and only one response. Traditionally, a TCP connection is established
 from the client to the server, a request is sent by the client on the
@@ -47,7 +51,7 @@ node distance=3cm,
 \end{figure}
 
 \index{HTTP close}
-In this mode, called the "HTTP close" mode, there are as many connection
+In this mode, called the \emph{"HTTP close"} mode, there are as many connection
 establishments as there are HTTP transactions. Since the connection is closed
 by the server after the response, the client does not need to know the content
 length.
@@ -57,7 +61,7 @@ Due to the transactional nature of the protocol, it was possible to improve it
 to avoid closing a connection between two subsequent transactions. In this mode
 however, it is mandatory that the server indicates the content length for each
 response so that the client does not wait indefinitely. For this, a special
-header is used: "Content-length". This mode is called the "keep-alive" mode
+header is used: "Content-length". This mode is called the \emph{"keep-alive" mode}
 and is shown on Figure shown on Figure~\ref{fig:http_keep_alive}.
 
 
@@ -93,7 +97,7 @@ but not always because the clients often limit their concurrent connections to
 a smaller value.
 
 \index{HTTP pipelining}
-A last improvement in the communications is the pipelining mode. It still uses
+A last improvement in the communications is the \emph{pipelining mode}. It still uses
 keep-alive, but the client does not wait for the first response to send the
 second request. This is useful for fetching large number of images composing a
 page. This mode is shown on Figure~\ref{fig:http_pipelining}.
@@ -134,43 +138,40 @@ By default HAProxy operates in a tunnel-like mode with regards to persistent
 connections: for each connection it processes the first request and forwards
 everything else (including additional requests) to selected server. Once
 established, the connection is persisted both on the client and server
-sides. Use "option http-server-close" to preserve client persistent connections
+sides. Use \optl{http-server-close} to preserve client persistent connections
 while handling every incoming request individually, dispatching them one after
-another to servers, in HTTP close mode. Use "option httpclose" to switch both
-sides to HTTP close mode. "option forceclose" and "option
-http-pretend-keepalive" help working around servers misbehaving in HTTP close
+another to servers, in HTTP close mode. Use \optl{httpclose} to switch both
+sides to HTTP close mode. The \optl{forceclose} and \optl{http-pretend-keepalive} help working around servers misbehaving in HTTP close
 mode.
 
-
 \section{HTTP request}
+\label{sec:http_request}
 
 First, let's consider this HTTP request:
 
-\vspace{2mm}
 \begin{tabular}{cl}
-Line number & Contents \\
-1 & \verb|GET /serv/login.php?lang=en&profile=2 HTTP/1.1| \\
-2 & \verb|Host: www.mydomain.com| \\
-3 & \verb|User-agent: my small browser| \\
-4 & \verb|Accept: image/jpeg, image/gif| \\
-5 & \verb|Accept: image/png| \\
+\head{Line number} & \head{Contents} \\
+1 & \httphdr{GET /serv/login.php?lang=en\&profile=2 HTTP/1.1} \\
+2 & \httphdr{Host: www.mydomain.com} \\
+3 & \httphdr{User-agent: my small browser} \\
+4 & \httphdr{Accept: image/jpeg, image/gif} \\
+5 & \httphdr{Accept: image/png} \\
 \end{tabular}
-\vspace{2mm}
 
 \subsection{The Request line}
+\label{subsec:request_line}
+
 Line 1 is the "request line". It is always composed of 3 fields:
 
-\vspace{2mm}
 \begin{tabular}{clcl}
 - & a METHOD      & : & \verb|GET| \\
 - & a URI         & : & \verb|/serv/login.php?lang=en&amp;profile=2| \\
 - & a version tag & : & \verb|HTTP/1.1| \\
 \end{tabular}
-\vspace{2mm}
 
 All of them are delimited by what the standard calls LWS (linear white spaces),
 which are commonly spaces, but can also be tabs or line feeds/carriage returns
-followed by spaces/tabs. The method itself cannot contain any colon ('\verb|:|') and
+followed by spaces/tabs. The method itself cannot contain any colon \chr{:} and
 is limited to alphabetic letters. All those various combinations make it
 desirable that HAProxy performs the splitting itself rather than leaving it to
 the user to write a complex or inaccurate regular expression.
@@ -183,19 +184,19 @@ The URI itself can have several forms:
     It is a complete URL without the host part. This is generally what is
     received by servers, reverse proxies and transparent proxies.
     
-    \verb|/serv/login.php?lang=en&profile=2|
+    \site{/serv/login.php?lang=en\&profile=2}
 
 \item[An "absolute URI", also called a "URL"]
 \index{Absolute URI}
-    It is composed of a "scheme" (the protocol name followed by '\verb|://|'), a host
-    name or address, optionally a colon ('\verb|:|') followed by a port number, then
-    a relative URI beginning at the first slash ('\verb|/|') after the address part.
+    It is composed of a "scheme" (the protocol name followed by \chr{://}, a host
+    name or address, optionally a colon \chr{:} followed by a port number, then
+    a relative URI beginning at the first slash \chr{/} after the address part.
     This is generally what proxies receive, but a server supporting HTTP/1.1
     must accept this form too.
     
-    \verb|http://192.168.0.12:8080/serv/login.php?lang=en&profile=2|
+   \site{http://192.168.0.12:8080/serv/login.php?lang=en\&profile=2}
 
-\item[A star "*"]
+\item[A star \chr{*}]
     This form is only accepted in association with the OPTIONS
     method and is not relayable. It is used to inquiry a next hop's
     capabilities.
@@ -205,7 +206,7 @@ The URI itself can have several forms:
     tunnels through HTTP proxies, generally for HTTPS, but sometimes for
     other protocols too.
     
-    \verb|192.168.0.12:80|
+    \site{192.168.0.12:80}
 \end{description}
 
 In a relative URI, two sub-parts are identified. The part before the question
@@ -215,18 +216,20 @@ It is mostly used with GET requests sent to dynamic scripts and is very
 specific to the language, framework or application in use.
 
 \subsection{The request headers}
+\label{subsec:request_headers}
+
 The headers start at the second line. They are composed of a name at the
-beginning of the line, immediately followed by a colon ('\verb|:|'). Traditionally,
+beginning of the line, immediately followed by a colon \chr{:}. Traditionally,
 an LWS is added after the colon but that's not required. Then come the values.
 Multiple identical headers may be folded into one single line, delimiting the
 values with commas, provided that their order is respected. This is commonly
-encountered in the "Cookie:" field. A header may span over multiple lines if
+encountered in the \httphdr{Cookie:} field. A header may span over multiple lines if
 the subsequent lines begin with an LWS. In the example in 1.2, lines 4 and 5
-define a total of 3 values for the "Accept:" header.
+define a total of 3 values for the \httphdr{Accept:} header.
 
 Contrary to a common mis-conception, header names are not case-sensitive, and
 their values are not either if they refer to other header names (such as the
-"Connection:" header).
+\httphdr{Connection:} header).
 
 The end of the headers is indicated by the first empty line. People often say
 that it's a double line feed, which is not exact, even if a double line feed
@@ -237,16 +240,19 @@ headers, checking values and counting them, so there is no reason to worry
 about the way they could be written, but it is important not to accuse an
 application of being buggy if it does unusual, valid things.
 
-\emph{Important note:}
-   As suggested by RFC2616, HAProxy normalizes headers by replacing line breaks
+\begin{note}{Important note:}
+   As suggested by \rfc{2616}, HAProxy normalizes headers by replacing line breaks
    in the middle of headers by LWS in order to join multi-line headers. This
    is necessary for proper analysis and helps less capable HTTP parsers to work
    correctly and not to be fooled by such complex constructs.
-
+\end{note}
 
 \section{HTTP response}
+\label{sec:http_response}
+
 An HTTP response looks very much like an HTTP request. Both are called HTTP
 messages. Let's consider this HTTP response:
+
 \begin{enumerate}
 \item HTTP/1.1 200 OK
 \item Content-length: 350
@@ -254,22 +260,25 @@ messages. Let's consider this HTTP response:
 \end{enumerate}
 
 As a special case, HTTP supports so called "Informational responses" as status
-codes 1xx. These messages are special in that they don't convey any part of the
+codes \httpcode{1xx}. These messages are special in that they don't convey any part of the
 response, they're just used as sort of a signaling message to ask a client to
-continue to post its request for instance. In the case of a status 100 response
-the requested information will be carried by the next non-100 response message
+continue to post its request for instance. In the case of a status \httpcode{100} response
+the requested information will be carried by the next non-\httpcode{100} response message
 following the informational one. This implies that multiple responses may be
 sent to a single request, and that this only works when keep-alive is enabled
-(1xx messages are HTTP/1.1 only). HAProxy handles these messages and is able to
-correctly forward and skip them, and only process the next non-100 response. As
+(\httpcode{1xx} messages are HTTP/1.1 only). HAProxy handles these messages and is able to
+correctly forward and skip them, and only process the next \httpcode{non-100} response. As
 such, these messages are neither logged nor transformed, unless explicitly
-state otherwise. Status 101 messages indicate that the protocol is changing
+state otherwise. Status \httpcode{101} messages indicate that the protocol is changing
 over the same connection and that haproxy must switch to tunnel mode, just as
-if a CONNECT had occurred. Then the Upgrade header would contain additional
+if a \httpmethod{CONNECT} had occurred. Then the Upgrade header would contain additional
 information about the type of protocol the connection is switching to.
 
 \subsection{The Response line}
+\label{subsec:response_line}
+
 Line 1 is the "response line". It is always composed of 3 fields:
+
 \begin{enumerate}
 \item a version tag : HTTP/1.1
 \item a status code : 200
@@ -278,6 +287,7 @@ Line 1 is the "response line". It is always composed of 3 fields:
 
 The status code is always 3-digit. The first digit indicates a general status:
 \index{HTTP response code}
+
 \begin{description}
 \item[1xx] informational message to be skipped (eg: 100, 101)
 \item[2xx] OK, content is following   (eg: 200, 206)
@@ -286,13 +296,14 @@ The status code is always 3-digit. The first digit indicates a general status:
 \item[5xx] error caused by the server (eg: 500, 502, 503)
 \end{description}
 
-Please refer to RFC2616 for the detailed meaning of all such codes. The
+Please refer to \rfc{2616} for the detailed meaning of all such codes. The
 "reason" field is just a hint, but is not parsed by clients. Anything can be
 found there, but it's a common practice to respect the well-established
-messages. It can be composed of one or multiple words, such as "OK", "Found",
-or "Authentication Required".
+messages. It can be composed of one or multiple words, such as \httpstatus{OK}, \httpstatus{Found},
+or \httpstatus{Authentication Required}.
 
 Haproxy may emit the following status codes by itself:
+
 \begin{description}
 \item[200] access to stats page, and when replying to monitoring requests
 \item[301] when performing a redirection, depending on the configured code
@@ -301,21 +312,22 @@ Haproxy may emit the following status codes by itself:
 \item[400] for an invalid or too large request
 \item[401] when an authentication is required to perform the action (when
         accessing the stats page)
-\item[403] when a request is forbidden by a "block" ACL or "reqdeny" filter
+\item[403] when a request is forbidden by a \kwl{block} ACL or \kwl{reqdeny} filter
 \item[408] when the request timeout strikes before the request is complete
 \item[500] when haproxy encounters an unrecoverable internal error, such as a
         memory allocation failure, which should never happen
 \item[502] when the server returns an empty, invalid or incomplete response, or
-        when an "rspdeny" filter blocks the response.
+        when an \kwl{rspdeny} filter blocks the response.
 \item[503] when no server was available to handle the request, or in response to
-        monitoring requests which match the "monitor fail" condition
+        monitoring requests which match the \kwl{monitor fail} condition
 \item[504] when the response timeout strikes before the server responds
 \end{description}
 
-The error 4xx and 5xx codes above may be customized (see "errorloc" in section
-4.2).
+The error \httpcode{4xx} and \httpcode{5xx} codes above may be customized (see \kwl{errorloc} in section~\ref{sec:keywords_reference}).
 
 \subsection{The response headers}
+\label{subsec:response_header}
+
 Response headers work exactly like request headers, and as such, HAProxy uses
-the same parsing function for both. Please refer to paragraph 1.2.2 for more
+the same parsing function for both. Please refer to paragraph~\ref{subsec:request_headers} for more
 details.

@@ -1,5 +1,6 @@
+%TABLE
 \newcommand{\head}[1]{
-  \textnormal{\textbf{#1}}
+\textnormal{\textbf{#1}}
 }
 
 \newcommand{\dflb}[4]{
@@ -15,14 +16,76 @@ May be used in sections:
 \vspace{2mm}
 }
 
-\newcommand{\example}[1] {
-\par
-\vspace{2mm}
-Example:
-\\
-\texttt{
+%COLORS
+
+\definecolor{ColorLink}{cmyk}{1,0.2,0,0.7}
+\definecolor{ColorURL}{cmyk}{1,0.2,0,0.7}
+\definecolor{lightergray}{gray}{0.96}
+
+%HYPERSETUP
+
+\hypersetup{
+	bookmarks=true,						% show bookmarks bar?
+	unicode=false,						% non-Latin characters in bookmarks
+	pdftoolbar=true,					% show Acrobat’s toolbar?
+	pdfmenubar=true,					% show Acrobat’s menu?
+	pdffitwindow=false,					% window fit to page when opened
+	pdfstartview={FitV},				% fits the width of the page to the window
+	pdfnewwindow=true,					% links in new window
+	colorlinks=true,					% false: boxed links; true: colored links
+	linkcolor=ColorLink,				% color of internal links
+	citecolor=green,					% color of links to bibliography
+	filecolor=magenta,					% color of file links
+	urlcolor=ColorURL,					% color of external links
+	linktoc=all
+}
+
+%misc
+\newcommand{\chrbox}[3]{\fcolorbox{#1}{#2}{#3}}
+
+%chars
+\newcommand{\bslash} {$\backslash$}
+\newcommand{\gttt}   {$>>>$}
+
+\newcommand{\chr}  [1] {\chrbox{gray}{gray!10}{\texttt{#1}}}
+\newcommand{\cmd}  [1] {\texttt{#1}}
+\newcommand{\func} [1] {\texttt{#1}}
+
+%http
+\newcommand{\httphdr}    [1] {\texttt{\textbf{#1}}}
+\newcommand{\httpmethod} [1] {\texttt{#1}}
+\newcommand{\httpstatus} [1] {\texttt{#1}}
+\newcommand{\httpcode}   [1] {\texttt{#1}}
+
+%url
+\newcommand{\site} [1] {\href{#1}{#1}}
+\newcommand{\rfc}  [1] {\href{http://tools.ietf.org/html/rfc#1}{RFC~#1}}
+
+%keyword
+\newcommand{\kwl}    [1] {\hyperlink{keyword.#1}{\texttt{#1}}}
+\newcommand{\kw}     [1] {\hypertarget{keyword.#1}{\texttt{#1}}}
+\newcommand{\kwi}    [1] {\item[\kw{#1}]}
+\newcommand{\kwo}    [1] {\texttt{[\textsl{#1}]}}
+\newcommand{\kwp}    [1] {\texttt{<#1>}}
+\newcommand{\optl}   [1] {\texttt{option} \kwl{#1}}
+\newcommand{\cfgsec} [1] {\textbf{\texttt{#1}}}
+
+\newenvironment{keywords}
+{\begin{description}}
+{\end{description}}
+
+\newenvironment{example}[1]
+{
+\vspace{3mm}
+\bfseries
+{\large
 #1
 }
-\vspace{2mm}
-\par
+\verbatim
 }
+{\endverbatim}
+
+\newenvironment{note}[1]
+{\begin{quote}
+{\Large \ding{46}} \hskip 1mm \textbf{#1}}
+{\end{quote}}

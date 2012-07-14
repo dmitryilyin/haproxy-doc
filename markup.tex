@@ -1,0 +1,56 @@
+\begin{verbatim}
+
+SECTIONING
+
+One digit section  = \chapter
+Two digit section  = \section
+Tree digit section = \subsection
+
+Lesser section, mostly description of option line = \subsubsection
+(no digit, but can be referenced and added to TOC)
+\subsubsection*{} if no reference required.
+
+Even lesser part of text inside \subsubsection with bold header and no newline after
+Group of attributes for example = \paragraph{}
+
+MACROS
+Lets use most of your macros, but rename some of them
+
+\httphdr     - HTTP header
+\httpmethod  - HTTP method
+\httpstatus  - HTTP status
+\httpcode    - HTTP code
+
+\site        - Link to site
+\rfc         - Link to RFC. Uses \site to make link.
+\char        - special character
+\cmd         - command line or arguments
+
+\kw          - keyword with hyperlink target (don't use \option, make it \kw too)
+\kwl         - keyword with link to keyword target (in See also for example)
+\kwi         - keyword item in keywords environment
+\kwp         - parameter of keyword
+\kwop        - optional parameter of keyword
+
+\note        - nice note block
+
+ENVIRONMENTS
+
+\begin{keywords}  block of keyword descriptions (uses \begin{description})
+\begin{example}   block of config file example code
+
+\begin{itemize}
+\item[-] list
+\item[-] with
+\item[-] dash
+\item[-] bullets
+\end{itemzie}
+
+TABLE
+
+\head - table header
+\yes  - 'yes' field
+\no   - 'no'  field
+\dflb - Can be used in Defaults|Frontend|Listen|Backend block
+
+\end{verbatim}

@@ -1,6 +1,8 @@
 \chapter{Proxies}
+\label{chap:proxies}
 
 Proxy configuration can be located in a set of sections:
+
 \begin{itemize}
 \item[-] defaults <name>
 \item[-] frontend <name>
@@ -26,7 +28,7 @@ parts combined in one section. It is generally useful for TCP-only traffic.
 
 \index{proxy}
 All proxy names must be formed from upper and lower case letters, digits,
-'/verb|-|' (dash), '\verb|_|' (underscore) , '\verb|.|' (dot) and '\verb|:|' (colon). ACL names are
+\chr{-} (dash), \chr{\_} (underscore) , \chr{.} (dot) and \chr{:} (colon). ACL names are
 case-sensitive, which means that "www" and "WWW" are two different proxies.
 
 Historically, all proxy names could overlap, it just caused troubles in the
@@ -43,11 +45,13 @@ modifying, or removing arbitrary contents in requests or responses, based on
 arbitrary criteria.
 
 \section{Proxy keywords matrix}
+\label{sec:proxy_keywords}
+
 The following list of keywords is supported. Most of them may only be used in a
 limited set of section types. Some of them are marked as "deprecated" because
 they are inherited from an old syntax which may be confusing or functionally
 limited, and there are new recommended keywords to replace them. Keywords
-marked with "(*)" can be optionally inverted using the "no" prefix, eg. "no
+marked with \chr{*} can be optionally inverted using the "no" prefix, eg. "no
 option contstats". This makes sense when the option has been enabled by default
 and must be disabled for a specific instance. Such options may also be prefixed
 with "default" in order to restore default settings regardless of what has been
@@ -61,26 +65,28 @@ specified in a previous "defaults" section.
 \end{longtable}
 
 \section{Alphabetically sorted keywords reference}
+\label{sec:keywords_reference}
 
 This section provides a description of each keyword and its usage.
 
-\subsubsection[acl]{acl <aclname> <criterion> [flags] [operator] <value> ...}
+\subsubsection[acl]{\kw{acl} <aclname> <criterion> [flags] [operator] <value> ...}
 \index{acl}
+
   Declare or complete an access list.
   
   \dflb{no}{yes}{yes}{yes}
   
-  Example:
-  \begin{verbatim}
+  \begin{example}{Example:}
         acl invalid_src  src          0.0.0.0/7 224.0.0.0/3
         acl invalid_src  src_port     0:1023
         acl local_dst    hdr(host) -i localhost
-  \end{verbatim}
+  \end{example}
 
-  See section 7 about ACL usage.
+  See chapter~\ref{chap:using_acl} about ACL usage.
 
-\subsubsection[appsession]{appsession <cookie> len <length> timeout <holdtime> [request-learn] [prefix] [mode <path-parameters|query-string>]}
+\subsubsection[appsession]{\kw{appsession} <cookie> len <length> timeout <holdtime> [request-learn] [prefix] [mode <path-parameters|query-string>]}
 \index{appsession}
+
   Define session stickiness on an existing application cookie.
   
   \dflb{no}{no}{yes}{yes}
@@ -110,9 +116,9 @@ This section provides a description of each keyword and its usage.
                prefix (or URL parameter prefix). The appsession value is the
                data following this prefix.
 
-               Example:
-               
-               \verb|appsession ASPSESSIONID len 64 timeout 3h prefix|
+               \begin{example}{Example:}
+               appsession ASPSESSIONID len 64 timeout 3h prefix
+               \end{example}
 
                This will match the cookie ASPSESSIONIDXXXX=XXXXX,
                the appsession value will be XXXX=XXXXX.
@@ -143,18 +149,22 @@ This section provides a description of each keyword and its usage.
 
   The definition of an application cookie is limited to one per backend.
 
-  \emph{Note:}
+  \begin{note}{Note:}
          Consider not using this feature in multi-process mode (nbproc > 1)
          unless you know what you do: memory is not shared between the
-         processes, which can result in random behaviours.
-         
-  \verb|appsession JSESSIONID len 52 timeout 3h|
+         processes, which can result in random behaviors.
+  \end{note}
+  
+  \begin{example}{Example:}
+  appsession JSESSIONID len 52 timeout 3h
+  \end{example}
 
-  See also : "cookie", "capture cookie", "balance", "stick", "stick-table",
-             "ignore-persist", "nbproc" and "bind-process".
+  See also: \kwl{cookie}, \kwl{capture cookie}, \kwl{balance}, \kwl{stick},
+  \kwl{stick-table}, \kwl{ignore-persist}, \kwl{nbproc} and \kwl{bind-process}.
 
-\subsubsection[backlog]{backlog <conns>}
+\subsubsection[backlog]{\kw{backlog} <conns>}
 \index{backlog}
+
   Give hints to the system about the approximate listen backlog desired size
  
   \dflb{yes}{yes}{yes}{no}
@@ -180,11 +190,12 @@ This section provides a description of each keyword and its usage.
   used as a hint and the system accepts up to the smallest greater power of
   two, and never more than some limits (usually 32768).
 
-  See also : "maxconn" and the target operating system's tuning guide.
+  See also: \kwl{maxconn} and the target operating system's tuning guide.
 
-\subsubsection[balance] {balance <algorithm> [ <arguments> ]}
+\subsubsection[balance] {\kw{balance} <algorithm> [ <arguments> ]}
 \subsubsection*{balance url\_param <param> [check\_post [<max\_wait>]]}
 \index{balance}
+
   Define the load balancing algorithm to be used in a backend.
 
   \dflb{yes}{no}{yes}{yes}
@@ -278,7 +289,7 @@ This section provides a description of each keyword and its usage.
                   indicates that the algorithm should only consider that many
                   characters at the beginning of the URI to compute the hash.
                   Note that having "len" set to 1 rarely makes sense since most
-                  URIs start with a leading "\verb|/|".
+                  URIs start with a leading \chr{/}.
 
                   The "depth" parameter indicates the maximum directory depth
                   to be used to compute the hash. One level is counted for each
@@ -309,7 +320,7 @@ This section provides a description of each keyword and its usage.
                   scanned. Parameter values separated by a chunk boundary, may
                   be randomly balanced if at all.
 
-                  If the parameter is found followed by an equal sign ('\verb|=|') and
+                  If the parameter is found followed by an equal sign \chr{=} and
                   a value, then the value is hashed and divided by the total
                   weight of the running servers. The result designates which
                   server will receive the request.
@@ -357,7 +368,7 @@ This section provides a description of each keyword and its usage.
                   changing a server's weight on the fly will have no effect,
                   but this can be changed using "hash-type".
 
-                  See also the rdp\_cookie pattern fetch function.
+                  See also: the \kwl{rdp\_cookie} pattern fetch function.
        \end{description}
 
     \paragraph*{<arguments>}
@@ -374,17 +385,17 @@ This section provides a description of each keyword and its usage.
   algorithm, mode nor option have been set. The algorithm may only be set once
   for each backend.
 
-  Examples:
-  \begin{verbatim}
+  \begin{example}{Example:}
         balance roundrobin
         balance url_param userid
         balance url_param session_id check_post 64
         balance hdr(User-Agent)
         balance hdr(host)
         balance hdr(Host) use_domain_only
-  \end{verbatim}
+  \end{example}
 
-  \emph{Note:} the following caveats and limitations on using the "check\_post"
+  \begin{note}{Note:}
+  The following caveats and limitations on using the "check\_post"
   extension with "url\_param" must be considered:
   
   \begin{itemize}
@@ -417,11 +428,12 @@ This section provides a description of each keyword and its usage.
       might be a URL parameter list. This is probably not a concern with SGML
       type message bodies.
   \end{itemize}
+  \end{note}
 
-  See also: "dispatch", "cookie", "appsession", "transparent", "hash-type" and
-             "http\_proxy".
+  See also: \kwl{dispatch}, \kwl{cookie}, \kwl{appsession}, \kwl{transparent},
+   \kwl{hash-type} and \kwl{http\_proxy}.
 
-\subsubsection[bind]{bind [<address>]:<port\_range> [, ...]}
+\subsubsection[bind]{\kw{bind} [<address>]:<port\_range> [, ...]}
 \subsubsection*{bind [<address>]:<port\_range> [, ...] interface <interface>}
 \subsubsection*{bind [<address>]:<port\_range> [, ...] mss <maxseg>}
 \subsubsection*{bind [<address>]:<port\_range> [, ...] transparent}
@@ -433,8 +445,8 @@ This section provides a description of each keyword and its usage.
 \subsubsection*{bind /<path> [, ...] mode <mode>}
 \subsubsection*{bind /<path> [, ...] [ user <user> | uid <uid> ]}
 \subsubsection*{bind /<path> [, ...] [ group <user> | gid <gid> ]}
-
 \index{bind}
+
   Define one or several listening addresses and/or ports in a frontend.
     
   \dflb{no}{yes}{yes}{no}
@@ -451,7 +463,7 @@ This section provides a description of each keyword and its usage.
                   proxy will accept connections for the IP address specified
                   above. The port is mandatory for TCP listeners. Note that in
                   the case of an IPv6 address, the port is always the number
-                  after the last colon ('\verb|:|'). A range can either be:
+                  after the last colon \chr{:} A range can either be:
                   
                   \begin{itemize}
                   \item[-] a numerical port (ex: '80')
@@ -470,7 +482,7 @@ This section provides a description of each keyword and its usage.
                   privileges to start the program, which are independant of
                   the 'uid' parameter.
 
-  \item[<path>]        is a UNIX socket path beginning with a slash ('\verb|/|'). This is
+  \item[<path>]        is a UNIX socket path beginning with a slash \chr{/}. This is
                   alternative to the TCP listening port. Haproxy will then
                   receive UNIX connections on the socket located at this place.
                   The path must begin with a slash and by default is absolute.
@@ -519,22 +531,22 @@ This section provides a description of each keyword and its usage.
 
   \item[<user>]        is the name of user that will be marked owner of the UNIX
                   socket.  It can also be set by default in the global
-                  section's "unix-bind" statement. Note that some platforms
+                  section's \kwl{unix-bind} statement. Note that some platforms
                   simply ignore this.
 
   \item[<group>]       is the name of a group that will be used to create the UNIX
                   socket. It can also be set by default in the global section's
-                  "unix-bind" statement. Note that some platforms simply ignore
+                  \kwl{unix-bind} statement. Note that some platforms simply ignore
                   this.
 
   \item[<uid>]         is the uid of user that will be marked owner of the UNIX
                   socket. It can also be set by default in the global section's
-                  "unix-bind" statement. Note that some platforms simply ignore
+                  \kwl{unix-bind} statement. Note that some platforms simply ignore
                   this.
 
   \item[<gid>]         is the gid of a group that will be used to create the UNIX
                   socket. It can also be set by default in the global section's
-                  "unix-bind" statement. Note that some platforms simply ignore
+                  \kwl{unix-bind} statement. Note that some platforms simply ignore
                   this.
 
   \item[transparent]   is an optional keyword which is supported only on certain
@@ -582,19 +594,19 @@ This section provides a description of each keyword and its usage.
   a frontend, as well as there is no limit to the number of "bind" statements
   in a frontend.
 
-  Example:
-  \begin{verbatim}
+  \begin{example}{Example:}
         listen http_proxy
             bind :80,:443
             bind 10.0.0.1:10080,10.0.0.1:10443
             bind /var/run/ssl-frontend.sock user root mode 600 accept-proxy
-  \end{verbatim}
+  \end{example}
 
-  See also: "source", "option forwardfor", "unix-bind" and the PROXY protocol
+  See also: \kwl{source}, \optl{forwardfor}, \kwl{unix-bind} and the PROXY protocol
              documentation.
 
-\subsubsection[bind-process]{bind-process [ all | odd | even | <number 1-32> ] ...}
+\subsubsection[bind-process]{\kw{bind-process} [ all | odd | even | <number 1-32> ] ...}
 \index{bind-process}
+
   Limit visibility of an instance to a certain set of processes numbers.
   
   \dflb{yes}{yes}{yes}{yes}
@@ -632,8 +644,7 @@ This section provides a description of each keyword and its usage.
   If some backends are referenced by frontends bound to other processes, the
   backend automatically inherits the frontend's processes.
 
-  Example:
-  \begin{verbatim}
+  \begin{example}{Example:}
         listen app_ip1
             bind 10.0.0.1:80
             bind-process odd
@@ -645,11 +656,11 @@ This section provides a description of each keyword and its usage.
         listen management
             bind 10.0.0.3:80
             bind-process 1 2 3 4
-  \end{verbatim}
+  \end{example}
 
   See also: "nbproc" in global section.
 
-\subsubsection[block]{block { if | unless } <condition>}
+\subsubsection[block]{\kw{block} { if | unless } <condition>}
 \index{block}
   Block a layer 7 request if/unless a condition is matched
 
@@ -681,7 +692,7 @@ This section provides a description of each keyword and its usage.
   \begin{description} 
   \item[<name>]    is the beginning of the name of the cookie to capture. In order
               to match the exact name, simply suffix the name with an equal
-              sign ('\verb|=|'). The full name will appear in the logs, which is
+              sign \chr{=}. The full name will appear in the logs, which is
               useful with application servers which adjust both the cookie name
               and value (eg: ASPSESSIONXXXXX).
 
@@ -707,10 +718,10 @@ This section provides a description of each keyword and its usage.
   configured in the sources by default to 64 characters. It is not possible to
   specify a capture in a "defaults" section.
 
-  Example:
-
-  \verb|capture cookie ASPSESSION len 32|
-
+  \begin{example}{Example:}
+  capture cookie ASPSESSION len 32
+  \end{example}
+  
   See also: "capture request header", "capture response header" as well as
             section 8 about logging.
 
@@ -754,14 +765,13 @@ This section provides a description of each keyword and its usage.
   same frontend, header captures can only be declared in a frontend. It is not
   possible to specify a capture in a "defaults" section.
 
-  Example:
-  \begin{verbatim}
+  \begin{example}{Example:}
         capture request header Host len 15
         capture request header X-Forwarded-For len 15
         capture request header Referrer len 15
-  \end{verbatim}
+  \end{example}
 
-  See also: "capture cookie", "capture response header" as well as section 8
+  See also: \kwl{capture cookie}, "capture response header" as well as section 8
              about logging.
 
 \subsubsection[capture response header]{capture response header <name> len <length>}

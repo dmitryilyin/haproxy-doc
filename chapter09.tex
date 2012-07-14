@@ -1,4 +1,5 @@
 \chapter{Statistics and monitoring}
+\label{chap:statistics_monitoring}
 
 It is possible to query HAProxy about its status. The most commonly used
 mechanism is the HTTP statistics page. This page also exposes an alternative
@@ -6,6 +7,7 @@ CSV output format for monitoring tools. The same format is provided on the
 Unix socket.
 
 \section{CSV format}
+\label{sec:csv_format}
 
 The statistics may be consulted either from the unix socket or from the HTTP
 page. Both means provide a CSV format whose fields follow.
@@ -82,6 +84,7 @@ page. Both means provide a CSV format whose fields follow.
 \end{verbatim}
 
 \section{Unix Socket commands}
+\label{sec:socket_commands}
 
 The following commands are supported on the UNIX stats socket ; all of them
 must be terminated by a line feed. The socket supports pipelining, so that it
