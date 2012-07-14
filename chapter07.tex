@@ -203,7 +203,7 @@ addresses and ports, as well as internal values independent on the stream.
   there would not be any active server anymore, we would consider twice the
   number of queued connections as the measured value. This is a fair estimate,
   as we expect one server to get back soon anyway, but we still prefer to send
-  new traffic to another backend if in better shape. See also: the "queue",
+  new traffic to another backend if in better shape. See also: the \kwl{queue},
   "be\_conn", and "be\_sess\_rate" criteria.
 
 \subsubsection[be\_conn]{\kw{be\_conn} <integer>}
@@ -213,7 +213,7 @@ addresses and ports, as well as internal values independent on the stream.
   possibly including the connection being evaluated. If no backend name is
   specified, the current one is used. But it is also possible to check another
   backend. It can be used to use a specific farm when the nominal one is full.
-  See also: the "fe\_conn", "queue" and "be\_sess\_rate" criteria.
+  See also: the \kwl{fe\_conn}, \kwl{queue} and \kwl{be\_sess\_rate} criteria.
 
 \subsubsection[be\_id]{\kw{be\_id} <integer>}
 \index{be\_id}
@@ -254,7 +254,7 @@ addresses and ports, as well as internal values independent on the stream.
   you want to be able to differentiate between different backends, and their
   available "connslots".  Also, whereas "nbsrv" only measures servers that are
   actually *down*, this acl is more fine-grained and looks into the number of
-  available connection slots as well. See also: "queue" and "avg\_queue".
+  available connection slots as well. See also: \kwl{queue} and \kwl{avg\_queue}.
 
   \begin{note}{Other caveats and notes:} at this point in time, the code does not take care
   of dynamic connections. Also, if any of the server maxconn, or maxqueue is 0,
@@ -289,7 +289,7 @@ addresses and ports, as well as internal values independent on the stream.
   specified, the current one is used. But it is also possible to check another
   frontend. It can be used to either return a sorry page before hard-blocking,
   or to use a specific backend to drain new requests when the farm is
-  considered saturated. See also: the "dst\_conn", "be\_conn" and "fe\_sess\_rate"
+  considered saturated. See also: the \kwl{dst\_conn}, \kwl{be\_conn} and \kwl{fe\_sess\_rate}
   criteria.
 
 \subsubsection[fe\_id]{\kw{fe\_id} <integer>}
@@ -341,7 +341,7 @@ addresses and ports, as well as internal values independent on the stream.
   one. This can be used to take actions when queuing goes above a known level,
   generally indicating a surge of traffic or a massive slowdown on the servers.
   One possible action could be to reject new users but still accept old ones.
-  See also: the "avg\_queue", "be\_conn", and "be\_sess\_rate" criteria.
+  See also: the \kwl{avg\_queue}, \kwl{be\_conn}, and \kwl{be\_sess\_rate} criteria.
 
 \subsubsection[sc1\_bytes\_in\_rate]{\kw{sc1\_bytes\_in\_rate}}
 \subsubsection[sc2\_bytes\_in\_rate]{\kw{sc2\_bytes\_in\_rate}}
@@ -708,7 +708,7 @@ It is recommended to use the more complete "track-counters" instead.
 Applies to the number of currently established connections on the server,
 possibly including the connection being evaluated.
 It can be used to use a specific farm when one server is full.
-See also: the "fe\_conn", "be\_conn" and "queue" criteria.
+See also: the \kwl{fe\_conn}, \kwl{be\_conn} and \kwl{queue} criteria.
 
 \subsubsection[srv\_id]{\kw{srv\_id} <integer>}
 
@@ -944,7 +944,7 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true if any of the request cookies <name> matches any of the regular
   expressions. It can be used at any time, but it is important to remember that
-  regex matching is slower than other methods. See also: other "cook\_" criteria,
+  regex matching is slower than other methods. See also: other \kwl{cook\_} criteria,
   as well as "cook" for more information on cookie matching. Use the
   scook\_reg() variant for response cookies sent by the server.
 
@@ -1057,7 +1057,7 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true it one of the headers matches one of the regular expressions. It
   can be used at any time, but it is important to remember that regex matching
-  is slower than other methods. See also: other "hdr\_" criteria, as well as
+  is slower than other methods. See also: other \kwl{hdr\_} criteria, as well as
   "hdr" for more information on header matching. Use the shdr\_reg() variant for
   response headers sent by the server.
 
@@ -1122,14 +1122,14 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true when one of the strings is found isolated or delimited with
   slashes in the path. This is used to perform filename or directory name
-  matching without the risk of wrong match due to colliding prefixes. See also:   "url\_dir" and "path\_sub".
+  matching without the risk of wrong match due to colliding prefixes. See also:   \kwl{url\_dir} and \kwl{path\_sub}.
 
 \subsubsection[path\_dom]{\kw{path\_dom} <string>}
 \index{path\_dom}
 
   Returns true when one of the strings is found isolated or delimited with dots
   in the path. This may be used to perform domain name matching in proxy
-  requests. See also: "path\_sub" and "url\_dom".
+  requests. See also: \kwl{path\_sub} and \kwl{url\_dom}.
 
 \subsubsection[path\_end]{\kw{path\_end} <string>}
 \index{path\_end}
@@ -1148,13 +1148,13 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true when the path matches one of the regular expressions. It can be
   used any time, but it is important to remember that regex matching is slower
-  than other methods. See also: "url\_reg" and all "path\_" criteria.
+  than other methods. See also: \kwl{url\_reg} and all \kwl{path\_} criteria.
 
 \subsubsection[path\_sub]{\kw{path\_sub} <string>}
 \index{path\_sub}
 
   Returns true when the path contains one of the strings. It can be used to
-  detect particular patterns in paths, such as \cmd{../} for example. See also:   "path\_dir".
+  detect particular patterns in paths, such as \cmd{../} for example. See also:   \kwl{path\_dir}.
 
 \subsubsection[payload]{\kw{payload}(<offset>,<length>) <string>}
 \index{payload}
@@ -1202,14 +1202,14 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true when one of the strings is found isolated or delimited with
   slashes in the URL. This is used to perform filename or directory name
-  matching without the risk of wrong match due to colliding prefixes. See also:   "path\_dir" and "url\_sub".
+  matching without the risk of wrong match due to colliding prefixes. See also:   \kwl{path\_dir} and \kwl{url\_sub}.
 
 \subsubsection[url\_dom]{\kw{url\_dom} <string>}
 \index{url\_dom}
 
   Returns true when one of the strings is found isolated or delimited with dots
   in the URL. This is used to perform domain name matching without the risk of
-  wrong match due to colliding prefixes. See also: "url\_sub".
+  wrong match due to colliding prefixes. See also: \kwl{url\_sub}.
 
 \subsubsection[url\_end]{\kw{url\_end} <string>}
 \index{url\_end}
@@ -1243,13 +1243,13 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true when the URL matches one of the regular expressions. It can be
   used any time, but it is important to remember that regex matching is slower
-  than other methods. See also: "path\_reg" and all "url\_" criteria.
+  than other methods. See also: \kwl{path\_reg} and all \kwl{url\_} criteria.
 
 \subsubsection[url\_sub]{\kw{url\_sub} <string>}
 \index{url\_sub}
 
   Returns true when the URL contains one of the strings. It can be used to
-  detect particular patterns in query strings for example. See also: "path\_sub".
+  detect particular patterns in query strings for example. See also: \kwl{path\_sub}.
 
 \subsubsection[urlp]{\kw{urlp}(<name>) <string>}
 \index{urlp}
@@ -1273,7 +1273,7 @@ than the layer 4 ones, but not much since the request and response are indexed.
   Returns true when the URL parameter "<name>" contains one of the strings
   either isolated or delimited with slashes. This is used to perform filename
   or directory name matching in a specific URL parameter without the risk of
-  wrong match due to colliding prefixes. See also: "path\_dir" and "urlp\_sub".
+  wrong match due to colliding prefixes. See also: \kwl{path\_dir} and \kwl{urlp\_sub}.
 
 \subsubsection[urlp\_dom]{\kw{urlp\_dom}(<name>) <string>}
 \index{urlp\_dom}
@@ -1281,7 +1281,7 @@ than the layer 4 ones, but not much since the request and response are indexed.
   Returns true when one of the strings is found isolated or delimited with dots
   in the URL parameter "<name>". This is used to perform domain name matching
   in a specific URL parameter without the risk of wrong match due to colliding
-  prefixes. See also: "urlp\_sub".
+  prefixes. See also: \kwl{urlp\_sub}.
 
 \subsubsection[urlp\_end]{\kw{urlp\_end}(<name>) <string>}
 \index{urlp\_end}
@@ -1305,7 +1305,7 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Returns true when the URL parameter "<name>" matches one of the regular
   expressions. It can be used any time, but it is important to remember that
-  regex matching is slower than other methods. See also: "path\_reg" and all
+  regex matching is slower than other methods. See also: \kwl{path\_reg} and all
   "urlp\_" criteria.
 
 \subsubsection[urlp\_sub]{\kw{urlp\_sub}(<name>) <string>}
