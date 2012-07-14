@@ -82,13 +82,11 @@ disabled by the command line \cmd{-db} argument.
 Changes the process' group ID to "number". It is recommended that the group
 ID is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
 be started with a user belonging to this group, or with superuser privileges.
-See also: \kwl{group} and \kwl{uid}.
   
 \subsubsection[group]{\kw{group} <group\_name>}
 \index{group}
 
 Similar to \kwl{gid} but uses the GID of group name "group\_name" from \cmd{/etc/group}.
-See also: \kwl{gid} and \kwl{user}.
 
 \subsubsection[log]{\kw{log} <address> <facility> [max level [min level]]}
 \index{log}
@@ -171,14 +169,14 @@ Using multiple processes
 is harder to debug and is really discouraged.
 \end{note}
 
-See also: \kwl{daemon}.
 
 \subsubsection[pidfile]{\kw{pidfile} <pidfile>}
 \index{pidfile}
 
   Writes pids of all daemons into file "pidfile". This option is equivalent to
   the \cmd{-p} command line argument. The file must be accessible to the user
-  starting the process. See also: \kwl{daemon}.
+  starting the process.
+See also: \kwl{daemon}.
 
 \subsubsection[stats socket]{\kw{stats socket} <path> [ \{uid | user\} <uid> ] [ \{gid | group\} <gid> ] [mode <mode>] [level <level>]}
 \index{stats socket}
@@ -232,7 +230,8 @@ possible to change this value with "stats maxconn".
 Changes the process' user ID to <number>. It is recommended that the user ID
 is dedicated to HAProxy or to a small set of similar daemons. HAProxy must
 be started with superuser privileges in order to be able to switch to another
-one. See also: \kwl{gid} and \kwl{user}.
+one.
+See also: \kwl{gid} and \kwl{user}.
 
 \subsubsection[ulimit-n]{\kw{ulimit-n} <number>}
 \index{ulimit-n}
@@ -260,7 +259,6 @@ both are specified, the "bind" statement has priority, meaning that the
 \index{user}
 
 Similar to "uid" but uses the UID of user name <user name> from \cmd{/etc/passwd}.
-See also: \kwl{uid} and \kwl{group}.
 
 \subsubsection[node]{\kw{node} <name>}
 \index{node}
@@ -292,7 +290,6 @@ is equivalent to the command-line argument \cmd{-n}. Proxies will stop accepting
 connections when this limit is reached. The "ulimit-n" parameter is
 automatically adjusted according to this value.
 
-See also: \kwl{ulimit-n}.
 
 \subsubsection[maxconnrate]{\kw{maxconnrate} <number>}
 \index{maxconnrate}
@@ -323,7 +320,6 @@ Disables the use of the "epoll" event polling system on Linux. It is
 equivalent to the command-line argument \cmd{-de}. The next polling system
 used will generally be "poll".
 
-See also: \kwl{nosepoll}, and \kwl{nopoll}.
 
 \subsubsection[nokqueue]{\kw{nokqueue}}
 \index{nokqueue}
@@ -332,7 +328,6 @@ Disables the use of the "kqueue" event polling system on BSD. It is
 equivalent to the command-line argument \cmd{-dk}. The next polling system
 used will generally be "poll".
 
-See also: \kwl{nopoll}.
 
 \subsubsection[nopoll]{\kw{nopoll}}
 \index{nopoll}
@@ -342,7 +337,6 @@ command-line argument \cmd{-dp}. The next polling system used will be "select".
 It should never be needed to disable "poll" since it's available on all
 platforms supported by HAProxy.
 
-See also: \kwl{nosepoll}, and \kwl{nopoll} and kwl{nokqueue}.
 
 \subsubsection[nosepoll]{\kw{nosepoll}}
 \index{nosepoll}
@@ -351,7 +345,6 @@ Disables the use of the "speculative epoll" event polling system on Linux. It
 is equivalent to the command-line argument \cmd{-ds}. The next polling system
 used will generally be "epoll".
 
-See also: \kwl{nosepoll}, and \kwl{nopoll}.
 
 \subsubsection[nosplice]{\kw{nosplice}}
 \index{nosplice}
@@ -362,7 +355,8 @@ using conventional and more portable recv/send calls. Kernel tcp splicing is
 limited to some very recent instances of kernel 2.6. Most versions between
 2.6.25 and 2.6.28 are buggy and will forward corrupted data, so they must not
 be used. This option makes it easier to globally disable kernel splicing in
-case of doubt. See also: \optl{splice-auto}, \optl{splice-request} and
+case of doubt.
+See also: \optl{splice-auto}, \optl{splice-request} and
 \optl{splice-response}.
 
 \subsubsection[spread-checks]{\kw{spread-checks} <0..50, in percent>}

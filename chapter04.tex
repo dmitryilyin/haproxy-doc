@@ -164,7 +164,8 @@ This section provides a description of each keyword and its usage.
   appsession JSESSIONID len 52 timeout 3h
   \end{example}
 
-  See also: \kwl{cookie}, \kwl{capture cookie}, \kwl{balance}, \kwl{stick},
+
+See also: \kwl{cookie}, \kwl{capture cookie}, \kwl{balance}, \kwl{stick},
   \kwl{stick-table}, \kwl{ignore-persist}, \kwl{nbproc} and \kwl{bind-process}.
 
 \subsubsection[backlog]{\kw{backlog} <conns>}
@@ -195,7 +196,8 @@ This section provides a description of each keyword and its usage.
   used as a hint and the system accepts up to the smallest greater power of
   two, and never more than some limits (usually 32768).
 
-  See also: \kwl{maxconn} and the target operating system's tuning guide.
+
+See also: \kwl{maxconn} and the target operating system's tuning guide.
 
 \subsubsection[balance] {\kw{balance} <algorithm> [ <arguments> ]}
 \subsubsection*{balance url\_param <param> [check\_post [<max\_wait>]]}
@@ -381,7 +383,8 @@ This section provides a description of each keyword and its usage.
                   changing a server's weight on the fly will have no effect,
                   but this can be changed using "hash-type".
 
-                  See also: the \kwl{rdp\_cookie} pattern fetch function.
+
+See also: the \kwl{rdp\_cookie} pattern fetch function.
        \end{description}
 
     \paragraph*{<arguments>}
@@ -443,7 +446,8 @@ This section provides a description of each keyword and its usage.
   \end{itemize}
   \end{note}
 
-  See also: \kwl{dispatch}, \kwl{cookie}, \kwl{appsession}, \kwl{transparent},
+
+See also: \kwl{dispatch}, \kwl{cookie}, \kwl{appsession}, \kwl{transparent},
    \kwl{hash-type} and \kwl{http\_proxy}.
 
 \subsubsection[bind]{\kw{bind} [<address>]:<port\_range> [, ...]}
@@ -628,7 +632,8 @@ This section provides a description of each keyword and its usage.
             bind /var/run/ssl-frontend.sock user root mode 600 accept-proxy
   \end{example}
 
-  See also: \kwl{source}, \kwl{option forwardfor}, \kwl{unix-bind} and the PROXY protocol
+
+See also: \kwl{source}, \kwl{option forwardfor}, \kwl{unix-bind} and the PROXY protocol
              documentation.
 
 \subsubsection[bind-process]{\kw{bind-process} [ all | odd | even | <number 1-32> ] ...}
@@ -685,7 +690,8 @@ This section provides a description of each keyword and its usage.
             bind-process 1 2 3 4
   \end{example}
 
-  See also: \kwl{nbproc} in global section.
+
+See also: \kwl{nbproc} in global section.
 
 \subsubsection[block]{\kw{block} { if | unless } <condition>}
 \index{block}
@@ -748,7 +754,8 @@ This section provides a description of each keyword and its usage.
   capture cookie ASPSESSION len 32
   \end{example}
   
-  See also: \kwl{capture request header}, \kwl{capture response header} as well as
+
+See also: \kwl{capture request header}, \kwl{capture response header} as well as
             chapter~\ref{chap:logging} about logging.
 
 \subsubsection[capture request header]{\kw{capture request header} <name> len <length>}
@@ -797,7 +804,8 @@ This section provides a description of each keyword and its usage.
         capture request header Referrer len 15
   \end{example}
 
-  See also: \kwl{capture cookie}, \kwl{capture response header} as well as chapter~\ref{chap:logging}
+
+See also: \kwl{capture cookie}, \kwl{capture response header} as well as chapter~\ref{chap:logging}
              about logging.
 
 \subsubsection[capture response header]{\kw{capture response header} <name> len <length>}
@@ -839,7 +847,8 @@ This section provides a description of each keyword and its usage.
         capture response header Location len 15
    \end{example}
 
-  See also: \kwl{capture cookie}, \kwl{capture request header} as well as chapter~\ref{chap:logging}
+
+See also: \kwl{capture cookie}, \kwl{capture request header} as well as chapter~\ref{chap:logging}
              about logging.
 
 \subsubsection[clitimeout]{\kw{clitimeout} <timeout> (deprecated)}
@@ -878,7 +887,8 @@ This section provides a description of each keyword and its usage.
   This parameter is provided for compatibility but is currently deprecated.
   Please use \kwl{timeout client} instead.
 
-  See also: \kwl{timeout client}, \kwl{timeout http-request}, \kwl{timeout server}, and
+
+See also: \kwl{timeout client}, \kwl{timeout http-request}, \kwl{timeout server}, and
             \kwl{srvtimeout}.
 
 \subsubsection[contimeout]{\kw{contimeout} <timeout> (deprecated)}
@@ -913,7 +923,8 @@ This section provides a description of each keyword and its usage.
   deprecated. Please use \kwl{timeout connect}, \kwl{timeout queue} or \kwl{timeout tarpit}
   instead.
 
-  See also: \kwl{timeout connect}, \kwl{timeout queue}, \kwl{timeout tarpit},
+
+See also: \kwl{timeout connect}, \kwl{timeout queue}, \kwl{timeout tarpit},
              \kwl{timeout server}, \kwl{contimeout}.
 
 
@@ -1001,7 +1012,8 @@ This section provides a description of each keyword and its usage.
               instance, then all customers will then fetch the page from an
               outer cache and will all share the same persistence cookie,
               leading to one server receiving much more traffic than others.
-              See also: the \kwl{insert} and \kwl{postonly} options.
+
+See also: the \kwl{insert} and \kwl{postonly} options.
 
   \item[postonly]
               This option ensures that cookie insertion will only be performed
@@ -1012,7 +1024,8 @@ This section provides a description of each keyword and its usage.
               first POST which generally is a login request, this is a very
               efficient method to optimize caching without risking to find a
               persistence cookie in the cache.
-              See also: the \kwl{insert} and \kwl{nocache} options.
+
+See also: the \kwl{insert} and \kwl{nocache} options.
 
   \item[preserve]
               This option may only be used with "insert" and/or "indirect". It
@@ -1099,7 +1112,8 @@ This section provides a description of each keyword and its usage.
         cookie SRV insert indirect nocache maxidle 30m maxlife 8h
   \end{verbatim}
 
-  See also: \kwl{appsession}, \kwl{balance source}, \kwl{capture cookie}, \kwl{server}
+
+See also: \kwl{appsession}, \kwl{balance source}, \kwl{capture cookie}, \kwl{server}
              and \kwl{gnore-persist}.
 
 \subsubsection[default-server]{\kw{default-server} [param*]}
@@ -1121,7 +1135,8 @@ This section provides a description of each keyword and its usage.
         default-server inter 1000 weight 13
   \end{verbatim}
 
-  See also: \kwl{server} and chapter~\ref{chap:server_options} about server options
+
+See also: \kwl{server} and chapter~\ref{chap:server_options} about server options
 
 \subsubsection[default\_backend]{\kw{default\_backend} <backend>}
 \index{default\_backend}
@@ -1147,7 +1162,8 @@ This section provides a description of each keyword and its usage.
         default_backend dynamic
   \end{verbatim}
 
-  See also: \kwl{use\_backend}, \kwl{reqsetbe}, \kwl{reqisetbe}
+
+See also: \kwl{use\_backend}, \kwl{reqsetbe}, \kwl{reqisetbe}
 
 \subsubsection[disabled]{\kw{disabled}}
 \index{disabled}
@@ -1166,7 +1182,8 @@ This section provides a description of each keyword and its usage.
   is possible to disable many instances at once by adding the "disabled"
   keyword in a "defaults" section.
 
-  See also: \kwl{enabled}
+
+See also: \kwl{enabled}
 
 \subsubsection[dispatch]{\kw{dispatch} <address>:<port>}
 \index{dispatch}
@@ -1192,7 +1209,8 @@ This section provides a description of each keyword and its usage.
   syntax, it has also been used for simple TCP relays. It is recommended not to
   use it for more clarity, and to use the "server" directive instead.
 
-  See also: \kwl{server}
+
+See also: \kwl{server}
 
 \subsubsection[enabled]{\kw{enabled}}
 \index{enabled}
@@ -1205,7 +1223,8 @@ This section provides a description of each keyword and its usage.
   The "enabled" keyword is used to explicitly enable an instance, when the
   defaults has been set to "disabled". This is very rarely used.
 
-  See also: \kwl{disabled}
+
+See also: \kwl{disabled}
 
 \subsubsection[errorfile]{\kw{errorfile} <code> <file>}
 \index{errorfile}
@@ -1249,7 +1268,8 @@ This section provides a description of each keyword and its usage.
   simple method for developing those files consists in associating them to the
   403 status code and interrogating a blocked URL.
 
-  See also: \kwl{errorloc}, \kwl{errorloc302}, \kwl{errorloc303}
+
+See also: \kwl{errorloc}, \kwl{errorloc302}, \kwl{errorloc303}
 
   Example:
   \begin{verbatim}
@@ -1293,7 +1313,8 @@ This section provides a description of each keyword and its usage.
   status code, indicating to the client that the URL must be fetched with a GET
   request.
 
-  See also: \kwl{errorfile}, \kwl{errorloc303}
+
+See also: \kwl{errorfile}, \kwl{errorloc303}
 
 \subsubsection[errorloc303]{\kw{errorloc303} <code> <url>}
 \index{errorloc303}
@@ -1328,7 +1349,8 @@ This section provides a description of each keyword and its usage.
   possible that some very old browsers designed before HTTP/1.1 do not support
   it, but no such problem has been reported till now.
 
-  See also: \kwl{errorfile}, \kwl{errorloc}, \kwl{errorloc302}
+
+See also: \kwl{errorfile}, \kwl{errorloc}, \kwl{errorloc302}
 
 \subsubsection[force-persist]{\kw{force-persist} { if | unless } <condition>}
 \index{force-persist}
@@ -1357,7 +1379,8 @@ This section provides a description of each keyword and its usage.
   "unless" condition is met. The final redispatch is always disabled when this
   is used.
 
-  See also: \kwl{option redispatch}, \kwl{ignore-persist}, \kwl{persist},
+
+See also: \kwl{option redispatch}, \kwl{ignore-persist}, \kwl{persist},
              and chapter~\ref{chap:using_acl} about ACL usage.
 
 \subsubsection[fullconn]{\kw{fullconn} <conns>}
@@ -1399,7 +1422,8 @@ This section provides a description of each keyword and its usage.
         server     srv2   dyn2:80 minconn 100 maxconn 1000
   \end{verbatim}
 
-  See also: \kwl{maxconn}, \kwl{server}
+
+See also: \kwl{maxconn}, \kwl{server}
 
 \subsubsection[grace]{\kw{grace} <time>}
 \index{grace}
@@ -1473,7 +1497,8 @@ This section provides a description of each keyword and its usage.
 
   The default hash type is "map-based" and is recommended for most usages.
 
-  See also: \kwl{balance}, \kwl{server}
+
+See also: \kwl{balance}, \kwl{server}
 
 \subsubsection[http-check disable-on-404]{\kw{http-check disable-on-404}}
 \index{http-check disable-on-404}
@@ -1496,7 +1521,8 @@ This section provides a description of each keyword and its usage.
   is used with \kwl{http-check expect}, then it has precedence over it so that 404
   responses will still be considered as soft-stop.
 
-  See also: \kwl{option httpchk}, \kwl{http-check expect}
+
+See also: \kwl{option httpchk}, \kwl{http-check expect}
 
 \subsubsection[http-check expect]{\kw{http-check expect} [!] <match> <pattern>}
 \index{http-check expect}
@@ -1593,7 +1619,8 @@ This section provides a description of each keyword and its usage.
          http-check expect rstring <!--tag:[0-9a-f]*</html>
   \end{verbatim}
 
-  See also: \kwl{httpchk}, \kwl{http-check disable-on-404}
+
+See also: \kwl{httpchk}, \kwl{http-check disable-on-404}
 
 \subsubsection[http-check send-state]{\kw{http-check send-state}}
 \index{http-check send-state}
@@ -1648,7 +1675,8 @@ This section provides a description of each keyword and its usage.
            scur=13/22; qcur=0
   \end{verbatim}
 
-  See also: \kwl{option httpchk}, \kwl{http-check disable-on-404}
+
+See also: \kwl{option httpchk}, \kwl{http-check disable-on-404}
 
 \subsubsection[http-request]{\kw{http-request} \{ allow | deny | auth [realm <realm>] \} [ \{ if | unless \} <condition> ]}
 \index{http-request}
@@ -1686,7 +1714,8 @@ This section provides a description of each keyword and its usage.
         http-request auth unless auth_ok
 \end{verbatim}
 
-  See also: \kwl{stats http-request}, section~\ref{sec:userlists} about userlists and chapter~\ref{chap:using_acl}
+
+See also: \kwl{stats http-request}, section~\ref{sec:userlists} about userlists and chapter~\ref{chap:using_acl}
              about ACL usage.
 
 \subsubsection[http-send-name-header]{\kw{http-send-name-header} [<header>]}
@@ -1706,7 +1735,8 @@ This section provides a description of each keyword and its usage.
   server to be added to the headers of an HTTP request.  The name
   is added with the header string proved.
 
-  See also: \kwl{server}
+
+See also: \kwl{server}
 
 \subsubsection[id]{\kw{id} <value>}
 \index{id}
@@ -1747,7 +1777,8 @@ This section provides a description of each keyword and its usage.
   The persistence is ignored when an "if" condition is met, or unless an
   "unless" condition is met.
 
-  See also: \kwl{force-persist}, \kwl{cookie}, and chapter~\ref{chap:using_acl} about ACL usage.
+
+See also: \kwl{force-persist}, \kwl{cookie}, and chapter~\ref{chap:using_acl} about ACL usage.
 
 \subsubsection[log global]{\kw{log global}}
 \subsubsection[log]{\kw{log} <address> <facility> [<level> [<minlevel>]]}
@@ -1854,7 +1885,8 @@ This section provides a description of each keyword and its usage.
 
    Allows you to custom a log line.
 
-   See also:~\nameref{subsec:custom_log_format} (\ref{subsec:custom_log_format})
+
+See also:~\nameref{subsec:custom_log_format} (\ref{subsec:custom_log_format})
 
 \subsubsection[maxconn]{\kw{maxconn} <conns>}
 \index{maxconn}
@@ -1886,7 +1918,8 @@ This section provides a description of each keyword and its usage.
   are not sized to accept such loads, and for this reason it is generally wise
   to assign them some reasonable connection limits.
 
-  See also: \kwl{server}, global section's \kwl{maxconn}, \kwl{fullconn}
+
+See also: \kwl{server}, global section's \kwl{maxconn}, \kwl{fullconn}
 
 \subsubsection[mode]{\kw{mode} \{ tcp | http | health \}}
 \index{mode}
@@ -1929,7 +1962,8 @@ This section provides a description of each keyword and its usage.
          mode http
 \end{verbatim}
 
-  See also: \kwl{monitor}, \kwl{monitor-net}
+
+See also: \kwl{monitor}, \kwl{monitor-net}
 
 \subsubsection[monitor fail]{\kw{monitor fail} \{ if | unless \} <condition>}
 \index{monitor fail}
@@ -1974,7 +2008,8 @@ This section provides a description of each keyword and its usage.
         monitor fail  if site_dead
 \end{verbatim}
 
-  See also: \kwl{monitor-net}, \kwl{monitor-uri}, \kwl{errorfile}, \kwl{errorloc}
+
+See also: \kwl{monitor-net}, \kwl{monitor-uri}, \kwl{errorfile}, \kwl{errorloc}
 
 \subsubsection[monitor-net]{\kw{monitor-net} <source>}
 \index{monitor-net}
@@ -2019,7 +2054,8 @@ This section provides a description of each keyword and its usage.
         monitor-net 192.168.0.252/31
 \end{verbatim}
 
-  See also: \kwl{monitor fail}, \kwl{monitor-uri}
+
+See also: \kwl{monitor fail}, \kwl{monitor-uri}
 
 \subsubsection[monitor-uri]{\kw{monitor-uri} <uri>}
 \index{monitor-uri}
@@ -2058,7 +2094,8 @@ This section provides a description of each keyword and its usage.
         monitor-uri /haproxy_test
 \end{verbatim}
 
-  See also: \kwl{monitor fail}, \kwl{monitor-net}
+
+See also: \kwl{monitor fail}, \kwl{monitor-net}
 
 \subsubsection[abortonclose]{option \kw{abortonclose}}
 \subsubsection*{no option abortonclose}
@@ -2105,7 +2142,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{timeout queue} and server's \kwl{maxconn} and \kwl{maxqueue} parameters
+
+See also: \kwl{timeout queue} and server's \kwl{maxconn} and \kwl{maxqueue} parameters
 
 \subsubsection[accept-invalid-http-request]{option \kw{accept-invalid-http-request}}
 \subsubsection*{no option accept-invalid-http-request}
@@ -2146,7 +2184,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option accept-invalid-http-response} and \kwl{show errors} on the
+
+See also: \kwl{option accept-invalid-http-response} and \kwl{show errors} on the
              stats socket.
 
 \subsubsection[accept-invalid-http-response]{option \kw{accept-invalid-http-response}}
@@ -2182,7 +2221,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option accept-invalid-http-request} and \kwl{show errors} on the
+
+See also: \kwl{option accept-invalid-http-request} and \kwl{show errors} on the
              stats socket.
 
 \subsubsection[allbackups]{option \kw{allbackups}}
@@ -2302,7 +2342,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option srvtcpka}, \kwl{option tcpka}
+
+See also: \kwl{option srvtcpka}, \kwl{option tcpka}
 
 \subsubsection[contstats]{option \kwl{contstats}}
 
@@ -2345,7 +2386,8 @@ This section provides a description of each keyword and its usage.
   complex issues is in the normal logs which will not be logged here. If you
   need to separate logs, see the "log-separate-errors" option instead.
 
-  See also: \kwl{log}, \kwl{dontlognull}, \kwl{log-separate-errors} and chapter~\ref{chap:logging} about
+
+See also: \kwl{log}, \kwl{dontlognull}, \kwl{log-separate-errors} and chapter~\ref{chap:logging} about
              logging.
 
 \subsubsection[dontlognull]{option \kw{dontlognull}}
@@ -2374,7 +2416,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{log}, \kwl{monitor-net}, \kwl{monitor-uri} and chapter~\ref{chap:logging} about logging.
+
+See also: \kwl{log}, \kwl{monitor-net}, \kwl{monitor-uri} and chapter~\ref{chap:logging} about logging.
 
 \subsubsection[forceclose]{option \kw{forceclose}}
 \subsubsection*{no option forceclose}
@@ -2407,7 +2450,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option httpclose} and \kwl{option http-pretend-keepalive}
+
+See also: \kwl{option httpclose} and \kwl{option http-pretend-keepalive}
 
 \subsubsection[forwardfor]{option \kw{forwardfor} [ except <network> ] [ header <name> ] [ if-none ]}
 \index{forwardfor}
@@ -2481,7 +2525,8 @@ This section provides a description of each keyword and its usage.
         option forwardfor header X-Client
 \end{verbatim}
 
-  See also: \kwl{option httpclose}, \kwl{option http-server-close},
+
+See also: \kwl{option httpclose}, \kwl{option http-server-close},
              "option forceclose"
 
 \subsubsection[http-no-delay]{option \kw{http-no-delay}}
@@ -2563,7 +2608,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option forceclose} and \kwl{option http-server-close}
+
+See also: \kwl{option forceclose} and \kwl{option http-server-close}
 
 \subsubsection[http-server-close]{option \kw{http-server-close}}
 \subsubsection*{no option http-server-close}
@@ -2605,7 +2651,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option forceclose}, \kwl{option http-pretend-keepalive},
+
+See also: \kwl{option forceclose}, \kwl{option http-pretend-keepalive},
              \kwl{httpclose} and section~\ref{sec:http_transaction} "\nameref{sec:http_transaction}".
 
 \subsubsection[http-use-proxy-header]{option \kw{http-use-proxy-header}}
@@ -2642,7 +2689,8 @@ This section provides a description of each keyword and its usage.
 
   This option should normally never be used, except in front of a proxy.
 
-  See also: \kwl{option httpclose}, \kwl{option forceclose} and \kwl{option http-server-close}.
+
+See also: \kwl{option httpclose}, \kwl{option forceclose} and \kwl{option http-server-close}.
 
 
 \subsubsection[httpchk]{option \kw{httpchk}}
@@ -2697,7 +2745,8 @@ This section provides a description of each keyword and its usage.
           server apache1 192.168.1.1:443 check port 80
 \end{verbatim}
 
-  See also: \kwl{option ssl-hello-chk}, \kwl{option smtpchk}, \kwl{option mysql-check},
+
+See also: \kwl{option ssl-hello-chk}, \kwl{option smtpchk}, \kwl{option mysql-check},
              "option pgsql-check", "http-check" and the "check", "port" and
              "inter" server options.
 
@@ -2737,7 +2786,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option forceclose}, \kwl{option http-server-close} and
+
+See also: \kwl{option forceclose}, \kwl{option http-server-close} and
              "1.1. The HTTP transaction model".
 
 \subsubsection[httplog]{option \kw{httplog} [ clf ]}
@@ -2772,7 +2822,8 @@ This section provides a description of each keyword and its usage.
   only "option httplog" will automatically clear the 'clf' mode if it was set
   by default.
 
-  See also:  chapter~\ref{chap:logging} about logging.
+
+See also:  chapter~\ref{chap:logging} about logging.
 
 \subsubsection[http\_proxy]{option \kw{http\_proxy}}
 \subsubsection*{no option http\_proxy}
@@ -2808,7 +2859,8 @@ This section provides a description of each keyword and its usage.
         option http_proxy
 \end{verbatim}
 
-  See also: \kwl{option httpclose}
+
+See also: \kwl{option httpclose}
 
 \subsubsection[independant-streams]{option \kw{independant-streams}}
 \subsubsection*{no option independant-streams}
@@ -2844,7 +2896,8 @@ This section provides a description of each keyword and its usage.
   data sent to the server. Doing so will typically break large HTTP posts from
   slow lines, so use it with caution.
 
-  See also: \kwl{timeout client}, \kwl{timeout server} and \kwl{timeout tunnel}
+
+See also: \kwl{timeout client}, \kwl{timeout server} and \kwl{timeout tunnel}
 
 \subsubsection[ldap-check]{option \kw{ldap-check}}
 
@@ -2873,7 +2926,8 @@ This section provides a description of each keyword and its usage.
         option ldap-check
 \end{verbatim}
 
-  See also: \kwl{option httpchk}
+
+See also: \kwl{option httpchk}
 
 
 \subsubsection{option \kw{log-health-checks}}
@@ -2895,7 +2949,8 @@ This section provides a description of each keyword and its usage.
   If health check logging is enabled no health check status is printed
   when servers is set up UP/DOWN/ENABLED/DISABLED.
 
-  See also: \kwl{log} and chapter~\ref{chap:logging} about logging.
+
+See also: \kwl{log} and chapter~\ref{chap:logging} about logging.
 
 \subsubsection[log-separate-errors]{option \kw{log-separate-errors}}
 \subsubsection*{no option log-separate-errors}
@@ -2919,7 +2974,8 @@ This section provides a description of each keyword and its usage.
   second may log normal traffic to a rotating buffer and only archive smaller
   error logs.
 
-  See also: \kwl{log}, \kwl{dontlognull}, \kwl{dontlog-normal} and chapter~\ref{chap:logging} about
+
+See also: \kwl{log}, \kwl{dontlognull}, \kwl{dontlog-normal} and chapter~\ref{chap:logging} about
              logging.
 
 \subsubsection[logasap]{option \kw{logasap}}
@@ -2958,7 +3014,8 @@ This section provides a description of each keyword and its usage.
           "GET /image.iso HTTP/1.0"
 \end{verbatim}
 
-  See also: \kwl{option httplog}, \kwl{capture response header}, and chapter~\ref{chap:logging} about
+
+See also: \kwl{option httplog}, \kwl{capture response header}, and chapter~\ref{chap:logging} about
              logging.
 
 \subsubsection[mysql-check]{option \kw{mysql-check} [ user <username> ]}
@@ -3009,7 +3066,8 @@ This section provides a description of each keyword and its usage.
   which requires the cttproxy feature to be compiled in, and the MySQL server
   to route the client via the machine hosting haproxy.
 
-  See also: \kwl{option httpchk}
+
+See also: \kwl{option httpchk}
 
 \subsubsection[pgsql-check]{option \kw{pgsql-check} [ user <username> ]}
 
@@ -3030,7 +3088,8 @@ This section provides a description of each keyword and its usage.
   test which does not produce error nor aborted connect on the server.
   This check is identical with the "mysql-check".
 
-  See also: \kwl{option httpchk}
+
+See also: \kwl{option httpchk}
 
 \subsubsection[nolinger]{option \kw{nolinger}}
 \subsubsection*{no option nolinger}
@@ -3132,7 +3191,8 @@ This section provides a description of each keyword and its usage.
         option originalto header X-Client-Dst
 \end{verbatim}
 
-  See also: \kwl{option httpclose}, \kwl{option http-server-close},
+
+See also: \kwl{option httpclose}, \kwl{option http-server-close},
              "option forceclose"
 
 \subsubsection[persist]{option \kw{persist}}
@@ -3160,7 +3220,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option redispatch}, \kwl{retries}, \kwl{force-persist}
+
+See also: \kwl{option redispatch}, \kwl{retries}, \kwl{force-persist}
 
 \subsubsection[redispatch]{option \kw{redispatch}}
 \subsubsection*{no option redispatch}
@@ -3190,7 +3251,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{redispatch}, \kwl{retries}, \kwl{force-persist}
+
+See also: \kwl{redispatch}, \kwl{retries}, \kwl{force-persist}
 
 \subsubsection[redis-check]{option \kw{redis-check}}
 
@@ -3212,7 +3274,8 @@ This section provides a description of each keyword and its usage.
         option redis-check
 \end{verbatim}
 
-  See also: \kwl{option httpchk}
+
+See also: \kwl{option httpchk}
 
 \subsubsection[smtpchk]{option \kw{smtpchk}}
 \subsubsection*{option smtpchk <hello> <domain>}
@@ -3257,7 +3320,8 @@ This section provides a description of each keyword and its usage.
         option smtpchk HELO mydomain.org
 \end{verbatim}
 
-  See also: \kwl{option httpchk}, \kwl{source}
+
+See also: \kwl{option httpchk}, \kwl{source}
 
 \subsubsection[socket-stats]{option \kw{socket-stats}}
 \subsubsection*{no option socket-stats}
@@ -3310,7 +3374,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option splice-request}, \kwl{option splice-response}, and global
+
+See also: \kwl{option splice-request}, \kwl{option splice-response}, and global
              options "nosplice" and "maxpipes"
 
 \subsubsection[splice-request]{option \kw{splice-request}}
@@ -3341,7 +3406,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option splice-auto}, \kwl{option splice-response}, and global options
+
+See also: \kwl{option splice-auto}, \kwl{option splice-response}, and global options
              "nosplice" and "maxpipes"
 
 \subsubsection[splice-response]{option \kw{splice-response}}
@@ -3372,7 +3438,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option splice-auto}, \kwl{option splice-request}, and global options
+
+See also: \kwl{option splice-auto}, \kwl{option splice-request}, and global options
              \kw{nosplice} and \kw{maxpipes}.
 
 \subsubsection[srvtcpka]{option \kw{srvtcpka}}
@@ -3411,7 +3478,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option clitcpka}, \kwl{option tcpka}
+
+See also: \kwl{option clitcpka}, \kwl{option tcpka}
 
 \subsubsection[ssl-hello-chk]{option \kw{ssl-hello-chk}}
 
@@ -3435,7 +3503,8 @@ This section provides a description of each keyword and its usage.
   and most servers tested do not even log the requests containing only hello
   messages, which is appreciable.
 
-  See also: \kwl{option httpchk}
+
+See also: \kwl{option httpchk}
 
 \subsubsection[tcp-smart-accept]{option \kw{tcp-smart-accept}}
 \subsubsection*{no option tcp-smart-accept}
@@ -3473,7 +3542,8 @@ This section provides a description of each keyword and its usage.
   of doubt, consider setting it back to automatic values by prepending the
   "default" keyword before it, or disabling it using the "no" keyword.
 
-  See also: \kwl{option tcp-smart-connect}
+
+See also: \kwl{option tcp-smart-connect}
 
 \subsubsection[tcp-smart-accept]{option \kw{tcp-smart-connect}}
 \subsubsection*{no option tcp-smart-connect}
@@ -3503,7 +3573,8 @@ This section provides a description of each keyword and its usage.
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-  See also: \kwl{option tcp-smart-accept}
+
+See also: \kwl{option tcp-smart-accept}
 
 \subsubsection[tcpka]{option \kw{tcpka}}
 \index{tcpka}
@@ -3541,7 +3612,8 @@ This section provides a description of each keyword and its usage.
   \kwl{option srvtcpka} when the configuration is split between frontends and
   backends.
 
-  See also: \kwl{option clitcpka}, \kwl{option srvtcpka}
+
+See also: \kwl{option clitcpka}, \kwl{option srvtcpka}
 
 \subsubsection[tcplog]{option \kw{tcplog}}
 
@@ -3564,7 +3636,8 @@ This section provides a description of each keyword and its usage.
 
   This option may be set either in the frontend or the backend.
 
-  See also: \kwl{option httplog}, andchapter~\ref{chap:logging} about logging.
+
+See also: \kwl{option httplog}, andchapter~\ref{chap:logging} about logging.
 
 \subsubsection[transparent]{option \kw{transparent}}
 \subsubsection*{no option transparent}
@@ -3588,7 +3661,8 @@ This section provides a description of each keyword and its usage.
   Note that contrary to a common belief, this option does NOT make HAProxy
   present the client's IP to the server when establishing the connection.
 
-  See also: the \kwl{usesrc} argument of the \kwl{source} keyword, and the
+
+See also: the \kwl{usesrc} argument of the \kwl{source} keyword, and the
             \kw{transparent} option of the \kw{bind} keyword.
 
 \subsubsection{persist \kw{rdp-cookie}}
@@ -3639,7 +3713,8 @@ This section provides a description of each keyword and its usage.
             server srv2 1.1.1.2:3389
   \end{verbatim}
 
-  See also: \kwl{balance rdp-cookie}, \kwl{tcp-request}, the \kwl{req\_rdp\_cookie} ACL and
+
+See also: \kwl{balance rdp-cookie}, \kwl{tcp-request}, the \kwl{req\_rdp\_cookie} ACL and
   the rdp\_cookie pattern fetch function.
 
 \subsubsection[rate-limit sessions]{\kw{rate-limit sessions} <rate>}
@@ -3680,7 +3755,8 @@ This section provides a description of each keyword and its usage.
          but its sockets appear as "WAITING" in the statistics if the
          \kw{socket-stats} option is enabled.
 
-  See also: the \kwl{backlog} keyword and the \kwl{fe\_sess\_rate} ACL criterion.
+
+See also: the \kwl{backlog} keyword and the \kwl{fe\_sess\_rate} ACL criterion.
 
 \subsubsection[redirect location] {\kw{redirect location} <to> [code <code>] <option> [{if | unless} <condition>]}
 \subsubsection[redirect prefix] {\kw{redirect prefix} <to> [code <code>] <option> [{if | unless} <condition>]}
@@ -3798,7 +3874,8 @@ This section provides a description of each keyword and its usage.
   This form is deprecated, do not use it in any new configuration, use the new
   \kwl{option redispatch} instead.
 
-  See also: \kwl{option redispatch}
+
+See also: \kwl{option redispatch}
 
 \subsubsection[reqadd]{\kw{reqadd}  <string> [ \{if | unless\} <cond> ]}
 
@@ -3834,7 +3911,8 @@ This section provides a description of each keyword and its usage.
      reqadd      X-Proto:\ SSL  if is-ssl
 \end{verbatim}
 
-  See also: \kwl{rspadd}, chapter~\ref{chap:header_manipulation} about HTTP header manipulation,
+
+See also: \kwl{rspadd}, chapter~\ref{chap:header_manipulation} about HTTP header manipulation,
             and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[reqallow]{\kw{reqallow}  <search> [ \{if | unless\} <cond> ]}
@@ -3877,7 +3955,8 @@ This section provides a description of each keyword and its usage.
      reqideny  ^Host:\ .*\.local
 \end{verbatim}
 
-  See also: \kwl{reqdeny}, \kwl{block}, chapter~\ref{chap:header_manipulation} about HTTP header manipulation, and
+
+See also: \kwl{reqdeny}, \kwl{block}, chapter~\ref{chap:header_manipulation} about HTTP header manipulation, and
             chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[reqdel]{reqdel  <search> [ \{if | unless\} <cond>]}
@@ -3919,7 +3998,8 @@ This section provides a description of each keyword and its usage.
      reqidel ^Cookie:.*SERVER=
 \end{verbatim}
 
-  See also: \kwl{reqadd}, \kwl{reqrep}, \kwl{rspdel}, section 6 about HTTP header
+
+See also: \kwl{reqadd}, \kwl{reqrep}, \kwl{rspdel}, section 6 about HTTP header
             manipulation, and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[reqdeny]{reqdeny  <search> [ \{if | unless\} <cond> ]}
@@ -3966,7 +4046,8 @@ This section provides a description of each keyword and its usage.
      reqiallow ^Host:\ www\.
 \end{verbatim}
 
-  See also: \kwl{reqallow}, \kwl{rspdeny}, \kwl{block}, chapter~\ref{chap:header_manipulation} about HTTP header
+
+See also: \kwl{reqallow}, \kwl{rspdeny}, \kwl{block}, chapter~\ref{chap:header_manipulation} about HTTP header
             manipulation, and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[reqpass]{reqpass  <search> [ \{if | unless\} <cond>] }
@@ -4008,7 +4089,8 @@ This section provides a description of each keyword and its usage.
      reqiallow ^Host:\ www\.
   \end{verbatim}
 
-  See also: \kwl{reqallow}, \kwl{reqdeny}, \kwl{block}, chapter~\ref{chap:header_manipulation} about HTTP header
+
+See also: \kwl{reqallow}, \kwl{reqdeny}, \kwl{block}, chapter~\ref{chap:header_manipulation} about HTTP header
             manipulation, and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[reqrep]{reqrep <search> <string> [ \{if | unless\} <cond> ]}
@@ -4057,7 +4139,8 @@ This section provides a description of each keyword and its usage.
      reqirep ^Host:\ www.mydomain.com   Host:\ www
   \end{verbatim}
 
-  See also: \kwl{reqadd}, \kwl{reqdel}, \kwl{rsprep}, chapter~\ref{chap:header_manipulation} about HTTP header
+
+See also: \kwl{reqadd}, \kwl{reqdel}, \kwl{rsprep}, chapter~\ref{chap:header_manipulation} about HTTP header
             manipulation, and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[reqtarpit]{reqtarpit  <search> [ \{if | unless\} <cond> ]}
@@ -4108,7 +4191,8 @@ This section provides a description of each keyword and its usage.
      reqitarpit . if badguys
   \end{verbatim}
 
-  See also: \kwl{reqallow}, \kwl{reqdeny}, \kwl{reqpass}, chapter~\ref{chap:header_manipulation} about HTTP header
+
+See also: \kwl{reqallow}, \kwl{reqdeny}, \kwl{reqpass}, chapter~\ref{chap:header_manipulation} about HTTP header
             manipulation, and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[retries]{\kw{retries} <value>}
@@ -4135,7 +4219,8 @@ This section provides a description of each keyword and its usage.
   When \kwl{option redispatch} is set, the last retry may be performed on another
   server even if a cookie references a different server.
 
-  See also: \kwl{option redispatch}
+
+See also: \kwl{option redispatch}
 
 \subsubsection[rspadd]{\kw{rspadd} <string> [ \{if | unless\} <cond>] }
 \index{rspadd}
@@ -4161,7 +4246,8 @@ This section provides a description of each keyword and its usage.
   and not to traffic generated by HAProxy, such as health-checks or error
   responses.
 
-  See also: \kwl{reqadd}, chapter~\ref{chap:header_manipulation} about HTTP header manipulation,
+
+See also: \kwl{reqadd}, chapter~\ref{chap:header_manipulation} about HTTP header manipulation,
   and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[rspdel]{\kw{rspdel} <search> [ \{if | unless\} <cond> ]}
@@ -4201,7 +4287,8 @@ This section provides a description of each keyword and its usage.
      reqidel ^Server:.*
   \end{verbatim}
 
-  See also: \kwl{rspadd}, \kwl{rsprep}, \kwl{reqdel}, chapter~\ref{chap:header_manipulation} about HTTP header
+
+See also: \kwl{rspadd}, \kwl{rsprep}, \kwl{reqdel}, chapter~\ref{chap:header_manipulation} about HTTP header
             manipulation, and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[rspdeny] {\kw{rspdeny} <search> [ \{if | unless\} <cond> ]}
@@ -4245,7 +4332,8 @@ This section provides a description of each keyword and its usage.
      rspideny  ^Content-type:\.*/ms-word
   \end{verbatim}
 
-  See also: \kwl{reqdeny}, \kwl{acl}, \kwl{block}, chapter~\ref{chap:header_manipulation} about HTTP header manipulation
+
+See also: \kwl{reqdeny}, \kwl{acl}, \kwl{block}, chapter~\ref{chap:header_manipulation} about HTTP header manipulation
             and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[rsprep]{\kw{rsprep} <search> <string> [ \{if | unless\} <cond> ]}
@@ -4292,7 +4380,8 @@ This section provides a description of each keyword and its usage.
      rspirep ^Location:\ 127.0.0.1:8080    Location:\ www.mydomain.com
   \end{verbatim}
 
-  See also: \kwl{rspadd}, \kwl{rspdel}, \kwl{reqrep}, chapter~\ref{chap:header_manipulation}
+
+See also: \kwl{rspadd}, \kwl{rspdel}, \kwl{reqrep}, chapter~\ref{chap:header_manipulation}
   about HTTP header manipulation, and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[server]{server <name> <address>[:[port]] [param*]}
@@ -4337,7 +4426,8 @@ This section provides a description of each keyword and its usage.
         server second 10.1.1.2:1080 cookie second check inter 1000
   \end{verbatim}
 
-  See also: \kwl{default-server}, \kwl{http-send-name-header} and chapter~\ref{chap:server_options} about
+
+See also: \kwl{default-server}, \kwl{http-send-name-header} and chapter~\ref{chap:server_options} about
              server options
 
 \subsubsection[source]{\kw{source} <addr>[:<port>] [usesrc \{ <addr2>[:<port2>] | client | clientip \} ]}
@@ -4483,7 +4573,8 @@ This section provides a description of each keyword and its usage.
             source 0.0.0.0 usesrc hdr_ip(x-forwarded-for,-1)
   \end{verbatim}
 
-  See also: the \kwl{source} server option in chapter~\ref{chap:server_options}, the Tproxy patches for
+
+See also: the \kwl{source} server option in chapter~\ref{chap:server_options}, the Tproxy patches for
              the Linux kernel on \site{www.balabit.com}, the \kwl{bind} keyword.
 
 \subsubsection[srvtimeout]{\kw{srvtimeout} <timeout> (deprecated)}
@@ -4527,7 +4618,8 @@ This section provides a description of each keyword and its usage.
   This parameter is provided for compatibility but is currently deprecated.
   Please use "timeout server" instead.
 
-  See also: \kwl{timeout server}, \kwl{timeout tunnel}, \kwl{timeout client} and
+
+See also: \kwl{timeout server}, \kwl{timeout tunnel}, \kwl{timeout client} and
              \kwl{clitimeout}.
 
 \subsubsection[stats admin]{\kw{stats admin} \{ if | unless \} <cond>}
@@ -4583,7 +4675,8 @@ This section provides a description of each keyword and its usage.
         stats admin if AUTH_ADMIN
   \end{verbatim}
 
-  See also: \kwl{stats enable}, \kwl{stats auth}, \kwl{stats http-request}, \kwl{nbproc},
+
+See also: \kwl{stats enable}, \kwl{stats auth}, \kwl{stats http-request}, \kwl{nbproc},
             \kwl{bind-process}, section~\ref{sec:userlists} about userlists and chapter~\ref{chap:using_acl} about
              ACL usage.
 
@@ -4640,7 +4733,8 @@ This section provides a description of each keyword and its usage.
         stats refresh 5s
    \end{verbatim}
 
-  See also: \kwl{stats enable}, \kwl{stats realm}, \kwl{stats scope}, \kwl{stats uri}
+
+See also: \kwl{stats enable}, \kwl{stats realm}, \kwl{stats scope}, \kwl{stats uri}
 
 \subsubsection[stats enable]{\kw{stats enable}}
 
@@ -4687,7 +4781,8 @@ This section provides a description of each keyword and its usage.
         stats refresh 5s
   \end{verbatim}
 
-  See also: \kwl{stats auth}, \kwl{stats realm}, \kwl{stats uri}
+
+See also: \kwl{stats auth}, \kwl{stats realm}, \kwl{stats uri}
 
 
 \subsubsection[stats hide-version]{\kw{stats hide-version}}
@@ -4731,7 +4826,8 @@ This section provides a description of each keyword and its usage.
         stats refresh 5s
    \end{verbatim}
 
-  See also: \kwl{stats auth}, \kwl{stats enable}, \kwl{stats realm}, \kwl{stats uri}
+
+See also: \kwl{stats auth}, \kwl{stats enable}, \kwl{stats realm}, \kwl{stats uri}
 
 \subsubsection[stats http-request]{\kw{stats http-request} \{ allow | deny | auth [realm <realm>] \} [ \{ if | unless \} <condition> ]}
 \index{stats http-request}
@@ -4750,7 +4846,8 @@ This section provides a description of each keyword and its usage.
   There is no fixed limit to the number of http-request statements per
   instance.
 
-  See also: \kwl{http-request}, section~\ref{sec:userlists} about userlists and chapter~\ref{chap:using_acl}
+
+See also: \kwl{http-request}, section~\ref{sec:userlists} about userlists and chapter~\ref{chap:using_acl}
              about ACL usage.
 
 \subsubsection[stats realm]{\kw{stats realm} <realm>}
@@ -4797,7 +4894,8 @@ This section provides a description of each keyword and its usage.
         stats refresh 5s
    \end{verbatim}
 
-  See also: \kwl{stats auth}, \kwl{stats enable}, \kwl{stats uri}
+
+See also: \kwl{stats auth}, \kwl{stats enable}, \kwl{stats uri}
 
 \subsubsection[stats refresh]{\kwl{stats refresh} <delay>}
 \index{stats refresh}
@@ -4846,7 +4944,8 @@ This section provides a description of each keyword and its usage.
         stats refresh 5s
    \end{verbatim}
 
-  See also: \kwl{stats auth}, \kwl{stats enable}, \kwl{stats realm}, \kwl{stats uri}
+
+See also: \kwl{stats auth}, \kwl{stats enable}, \kwl{stats realm}, \kwl{stats uri}
 
 \subsubsection[stats scope]{\kw{stats scope} \{ <name> | "." \}}
 \index{stats scope}
@@ -4894,7 +4993,8 @@ This section provides a description of each keyword and its usage.
         stats refresh 5s
   \end{verbatim}
 
-  See also: \kwl{stats auth}, \kwl{stats enable}, \kwl{stats realm}, \kwl{stats uri}
+
+See also: \kwl{stats auth}, \kwl{stats enable}, \kwl{stats realm}, \kwl{stats uri}
 
 \subsubsection[stats show-desc]{\kw{stats show-desc} [ <desc> ]}
 
@@ -4926,7 +5026,8 @@ This section provides a description of each keyword and its usage.
         stats refresh   5s
   \end{verbatim}
 
-  See also: \kwl{show-node}, \kwl{stats enable}, \kwl{stats uri} and \kwl{description} in
+
+See also: \kwl{show-node}, \kwl{stats enable}, \kwl{stats uri} and \kwl{description} in
             global section.
 
 \subsubsection[show-legends]{stats \kw{show-legends}}
@@ -4948,7 +5049,8 @@ This section provides a description of each keyword and its usage.
   recommended to set all other settings in order to avoid relying on default
   unobvious parameters.  Default behavior is not to show this information.
 
-  See also: \kwl{stats enable}, \kwl{stats uri}.
+
+See also: \kwl{stats enable}, \kwl{stats uri}.
 
 
 \subsubsection[stats show-node]{\kw{stats show-node} [ <name> ]}
@@ -4981,7 +5083,8 @@ This section provides a description of each keyword and its usage.
         stats refresh   5s
   \end{verbatim}
 
-  See also: \kwl{show-desc}, \kwl{stats enable}, \kwl{stats uri}, and \kwl{node} in global
+
+See also: \kwl{show-desc}, \kwl{stats enable}, \kwl{stats uri}, and \kwl{node} in global
             section.
 
 \subsubsection[stats uri]{\kw{stats uri} <prefix>}
@@ -5040,7 +5143,8 @@ This section provides a description of each keyword and its usage.
         stats refresh 5s
   \end{verbatim}
 
-  See also: \kwl{stats auth}, \kwl{stats enable}, \kwl{stats realm}
+
+See also: \kwl{stats auth}, \kwl{stats enable}, \kwl{stats realm}
 
 \subsubsection[stick match]{\kw{stick match} <pattern> [table <table>] [ \{if | unless\} <cond>]}
 \index{stick match}
@@ -5117,7 +5221,8 @@ This section provides a description of each keyword and its usage.
         server s2 192.168.1.1:25
   \end{verbatim}
 
-  See also: \kwl{stick-table}, \kwl{stick on}, \kwl{nbproc}, \kwl{bind-process} and chapter~\ref{chap:using_acl}
+
+See also: \kwl{stick-table}, \kwl{stick on}, \kwl{nbproc}, \kwl{bind-process} and chapter~\ref{chap:using_acl}
              about ACLs and pattern extraction.
 
 
@@ -5165,7 +5270,8 @@ This section provides a description of each keyword and its usage.
         server s2 192.168.1.1:443
    \end{verbatim}
 
-  See also: \kwl{stick match}, \kwl{stick store-request}, \kwl{nbproc} and \kwl{bind-process}.
+
+See also: \kwl{stick match}, \kwl{stick store-request}, \kwl{nbproc} and \kwl{bind-process}.
 
 
 \subsubsection[stick store-request]{\kw{stick store-request} <pattern> [table <table>] [ \{if | unless\} <condition> ]}
@@ -5252,7 +5358,8 @@ This section provides a description of each keyword and its usage.
         server s2 192.168.1.1:25
    \end{verbatim}
 
-  See also: \kwl{stick-table}, \kwl{stick on}, \kwl{nbproc}, \kwl{bind-process} and chapter~\ref{chap:using_acl}
+
+See also: \kwl{stick-table}, \kwl{stick on}, \kwl{nbproc}, \kwl{bind-process} and chapter~\ref{chap:using_acl}
              about ACLs and pattern extraction.
 
 \subsubsection[stick-table type]{\kw{stick-table type} \{ ip | integer | string [len <length>] | binary [len <length>] \} size <size> [expire <expire>] [nopurge] [peers <peersect>] [store <data\_type>]*}
@@ -5473,7 +5580,8 @@ This section provides a description of each keyword and its usage.
         stick-table type ip size 1m expire 5m store gpc0,conn_rate(30s)
   \end{verbatim}
 
-  See also: \kwl{stick match}, \kwl{stick on}, \kwl{stick store-request}, section~\ref{sec:time_format}
+
+See also: \kwl{stick match}, \kwl{stick on}, \kwl{stick store-request}, section~\ref{sec:time_format}
              about time format and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[stick store-response]{\kw{stick store-response} <pattern> [table <table>] [ \{if | unless\} <condition> ]}
@@ -5565,7 +5673,8 @@ This section provides a description of each keyword and its usage.
         server s2 192.168.1.1:443
   \end{verbatim}
 
-  See also: \kwl{stick-table}, \kwl{stick on}, and chapter~\ref{chap:using_acl} about ACLs and pattern
+
+See also: \kwl{stick-table}, \kwl{stick on}, and chapter~\ref{chap:using_acl} about ACLs and pattern
              extraction.
 
 \subsubsection[tcp-request connection]{\kw{tcp-request connection} <action> [ \{if | unless\} <condition> ]}
@@ -5679,7 +5788,8 @@ This section provides a description of each keyword and its usage.
 
   See chapter~\ref{chap:using_acl} about ACL usage.
 
-  See also: \kwl{tcp-request content}, \kwl{stick-table}
+
+See also: \kwl{tcp-request content}, \kwl{stick-table}
 
 \subsubsection[tcp-request content]{\kw{tcp-request content} <action> [ \{if | unless\} <condition> ]}
 \index{tcp-request content}
@@ -5792,7 +5902,8 @@ This section provides a description of each keyword and its usage.
 
   See chapter~\ref{chap:using_acl} about ACL usage.
 
-  See also: \kwl{tcp-request connection}, \kwl{tcp-request inspect-delay}
+
+See also: \kwl{tcp-request connection}, \kwl{tcp-request inspect-delay}
 
 \subsubsection[tcp-request inspect-delay]{\kw{tcp-request} inspect-delay <timeout>}
 \index{tcp-request inspect-delay}
@@ -5842,7 +5953,8 @@ This section provides a description of each keyword and its usage.
   closes the connection or if the buffer is full, the delay immediately expires
   since the contents will not be able to change anymore.
 
-  See also: \kwl{tcp-request content accept}, \kwl{tcp-request content reject},
+
+See also: \kwl{tcp-request content accept}, \kwl{tcp-request content reject},
             \kwl{timeout client}.
 
 \subsubsection[tcp-response content]{\kw{tcp-response content} <action> [ \{if | unless\} <condition> ]}
@@ -5899,7 +6011,8 @@ This section provides a description of each keyword and its usage.
 
   See chapter~\ref{chap:using_acl} about ACL usage.
 
-  See also: \kwl{tcp-request content}, \kwl{tcp-response inspect-delay}
+
+See also: \kwl{tcp-request content}, \kwl{tcp-response inspect-delay}
 
 \subsubsection[tcp-response]{\kw{tcp-response inspect-delay} <timeout>}
 
@@ -5916,7 +6029,8 @@ This section provides a description of each keyword and its usage.
               as explained at the top of this document.
   \end{description}
 
-  See also: \kwl{tcp-response content}, \kwl{tcp-request inspect-delay}.
+
+See also: \kwl{tcp-response content}, \kwl{tcp-request inspect-delay}.
 
 \subsubsection[timeout check]{\kw{timeout check} <timeout>}
 \index{timeout check}
@@ -5952,7 +6066,8 @@ This section provides a description of each keyword and its usage.
   "defaults" sections. This is in fact one of the easiest solutions not to
   forget about it.
 
-  See also: \kwl{timeout connect}, \kwl{timeout queue}, \kwl{timeout server},
+
+See also: \kwl{timeout connect}, \kwl{timeout queue}, \kwl{timeout server},
             \kwl{timeout tarpit"}.
 
 \subsubsection[timeout client]{\kw{timeout client} <timeout>}
@@ -5997,7 +6112,8 @@ This section provides a description of each keyword and its usage.
   to use it to write new configurations. The form "timeout clitimeout" is
   provided only by backwards compatibility but its use is strongly discouraged.
 
-  See also: \kwl{clitimeout}, \kwl{timeout server}, \kwl{timeout tunnel}.
+
+See also: \kwl{clitimeout}, \kwl{timeout server}, \kwl{timeout tunnel}.
 
 \subsubsection[timeout connect]{\kw{timeout connect} <timeout>}
 \subsubsection[timeout contimeout]{\kw{timeout connect} <timeout> (deprecated)}
@@ -6033,7 +6149,8 @@ This section provides a description of each keyword and its usage.
   to use it to write new configurations. The form "timeout contimeout" is
   provided only by backwards compatibility but its use is strongly discouraged.
 
-  See also: \kwl{timeout check}, \kwl{timeout queue}, \kwl{timeout server}, \kwl{contimeout},
+
+See also: \kwl{timeout check}, \kwl{timeout queue}, \kwl{timeout server}, \kwl{contimeout},
             "timeout tarpit".
 
 \subsubsection[timeout http-keep-alive]{\kw{timeout http-keep-alive} <timeout>}
@@ -6079,7 +6196,8 @@ This section provides a description of each keyword and its usage.
   set in the frontend to take effect, unless the frontend is in TCP mode, in
   which case the HTTP backend's timeout will be used.
 
-  See also: \kwl{timeout http-request}, \kwl{timeout client}.
+
+See also: \kwl{timeout http-request}, \kwl{timeout client}.
 
 \subsubsection[timeout http-request]{\kw{timeout http-request} <timeout>}
 \index{timeout http-request}
@@ -6120,7 +6238,8 @@ This section provides a description of each keyword and its usage.
   effect, unless the frontend is in TCP mode, in which case the HTTP backend's
   timeout will be used.
 
-  See also: \kwl{timeout http-keep-alive}, \kwl{timeout client}.
+
+See also: \kwl{timeout http-keep-alive}, \kwl{timeout client}.
 
 \subsubsection[timeout queue]{\kw{timeout queue} <timeout>}
 
@@ -6146,7 +6265,8 @@ This section provides a description of each keyword and its usage.
   connection timeout ("timeout connect") is used, for backwards compatibility
   with older versions with no "timeout queue" parameter.
 
-  See also: \kwl{timeout connect}, \kwl{contimeout}.
+
+See also: \kwl{timeout connect}, \kwl{contimeout}.
 
 \subsubsection[timeout server]{\kw{timeout server} <timeout>}
 \subsubsection[timeout srvtimeout]{\kw{timeout srvtimeout} <timeout> (deprecated)}
@@ -6195,7 +6315,8 @@ This section provides a description of each keyword and its usage.
   to use it to write new configurations. The form "timeout srvtimeout" is
   provided only by backwards compatibility but its use is strongly discouraged.
 
-  See also: \kwl{srvtimeout}, \kwl{timeout client} and \kwl{timeout tunnel}.
+
+See also: \kwl{srvtimeout}, \kwl{timeout client} and \kwl{timeout tunnel}.
 
 \subsubsection[timeout tarpit]{\kw{timeout tarpit} <timeout>}
 \index{timeout tarpit}
@@ -6221,7 +6342,8 @@ This section provides a description of each keyword and its usage.
   ("timeout connect") is used, for backwards compatibility with older versions
   with no "timeout tarpit" parameter.
 
-  See also: \kwl{timeout connect}, \kwl{contimeout}.
+
+See also: \kwl{timeout connect}, \kwl{contimeout}.
 
 \subsubsection[timeout tunnel]{\kw{timeout tunnel} <timeout>}
 \index{timeout tunnel}
@@ -6268,7 +6390,8 @@ This section provides a description of each keyword and its usage.
             timeout tunnel  1h    # timeout to use with WebSocket and CONNECT
   \end{verbatim}
 
-  See also: \kwl{timeout client}, \kwl{timeout server}.
+
+See also: \kwl{timeout client}, \kwl{timeout server}.
 
 \subsubsection[transparent]{\kw{transparent} (deprecated)}
 \index{transparent}
@@ -6293,7 +6416,8 @@ This section provides a description of each keyword and its usage.
   Note that contrary to a common belief, this option does NOT make HAProxy
   present the client's IP to the server when establishing the connection.
 
-  See also: \kwl{option transparent}
+
+See also: \kwl{option transparent}
 
 \subsubsection[unique-id-format]{\kw{unique-id-format} <string>}
 \index{unique-id-format}
@@ -6333,7 +6457,8 @@ This section provides a description of each keyword and its usage.
                7F000001:8296_7F00001E:1F90_4F7B0A69_0003:790A
   \end{verbatim}
 
-  See also: \kwl{unique-id-header}
+
+See also: \kwl{unique-id-header}
 
 \subsubsection[unique-id-header]{\kw{unique-id-header} <name>}
 \index{unique-id-header}
@@ -6359,7 +6484,8 @@ This section provides a description of each keyword and its usage.
 
            X-Unique-ID: 7F000001:8296_7F00001E:1F90_4F7B0A69_0003:790A
 \end{verbatim}
-    See also: \kwl{unique-id-format}
+
+See also: \kwl{unique-id-format}
 
 \subsubsection[use\_backend]{\kw{use\_backend} <backend> \{ if | unless \} <condition>}
 
@@ -6400,7 +6526,8 @@ This section provides a description of each keyword and its usage.
   a complete HTTP request to get in. This feature is useful when a frontend
   must decode several protocols on a unique port, one of them being HTTP.
 
-  See also: \kwl{default\_backend}, \kwl{tcp-request}, and chapter~\ref{chap:using_acl} about ACLs.
+
+See also: \kwl{default\_backend}, \kwl{tcp-request}, and chapter~\ref{chap:using_acl} about ACLs.
 
 \subsubsection[use-server]{\kw{use-server} <server> \{ if | unless \} <condition>}
 \index{use-server}
@@ -6458,4 +6585,5 @@ This section provides a description of each keyword and its usage.
      server  default 192.168.0.2:443 check
   \end{verbatim}
 
-  See also: \kwl{use\_backend}, chapter~\ref{chap:server_options} about server and chapter~\ref{chap:using_acl} about ACLs.
+
+See also: \kwl{use\_backend}, chapter~\ref{chap:server_options} about server and chapter~\ref{chap:using_acl} about ACLs.
