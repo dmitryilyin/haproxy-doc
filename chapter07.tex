@@ -181,17 +181,17 @@ A first set of criteria applies to information which does not require any
 analysis of the request or response contents. Those generally include TCP/IP
 addresses and ports, as well as internal values independent on the stream.
 
-\subsubsection[always\_false]{always\_false}
+\subsubsection[always\_false]{\kw{always\_false}}
 \index{always\_false}
   This one never matches. All values and flags are ignored. It may be used as
   a temporary replacement for another one when adjusting configurations.
 
-\subsubsection[always\_true]{always\_true}
+\subsubsection[always\_true]{\kw{always\_true}}
 \index{always\_true}
   This one always matches. All values and flags are ignored. It may be used as
   a temporary replacement for another one when adjusting configurations.
 
-\subsubsection[avg\_queue]{avg\_queue <integer>}
+\subsubsection[avg\_queue]{\kw{avg\_queue} <integer>}
 \subsubsection*{avg\_queue(<backend>) <integer>}
 \index{avg\_queue}
   Returns the total number of queued connections of the designated backend
@@ -206,7 +206,7 @@ addresses and ports, as well as internal values independent on the stream.
   new traffic to another backend if in better shape. See also the "queue",
   "be\_conn", and "be\_sess\_rate" criteria.
 
-\subsubsection[be\_conn]{be\_conn <integer>}
+\subsubsection[be\_conn]{\kw{be\_conn} <integer>}
 \subsubsection*{be\_conn(<backend>) <integer>}
 \index{be\_conn}
   Applies to the number of currently established connections on the backend,
@@ -215,12 +215,12 @@ addresses and ports, as well as internal values independent on the stream.
   backend. It can be used to use a specific farm when the nominal one is full.
   See also the "fe\_conn", "queue" and "be\_sess\_rate" criteria.
 
-\subsubsection[be\_id]{be\_id <integer>}
+\subsubsection[be\_id]{\kw{be\_id} <integer>}
 \index{be\_id}
   Applies to the backend's id. Can be used in frontends to check from which
   backend it was called.
 
-\subsubsection[be\_sess\_rate]{be\_sess\_rate <integer>}
+\subsubsection[be\_sess\_rate]{\kw{be\_sess\_rate} <integer>}
 \subsubsection*{be\_sess\_rate(<backend>) <integer>}
 \index{be\_sess\_rate}
   Returns true when the sessions creation rate on the backend matches the
@@ -238,7 +238,7 @@ addresses and ports, as well as internal values independent on the stream.
             redirect location /denied.html if being_scanned
   \end{verbatim}
 
-\subsubsection[connslots]{connslots <integer>}
+\subsubsection[connslots]{\kw{connslots} <integer>}
 \subsubsection*{connslots(<backend>) <integer>}
 \index{connslots}
   The basic idea here is to be able to measure the number of connection "slots"
@@ -256,17 +256,18 @@ addresses and ports, as well as internal values independent on the stream.
   actually *down*, this acl is more fine-grained and looks into the number of
   available connection slots as well. See also "queue" and "avg\_queue".
 
-  \emph{Other caveats and notes:} at this point in time, the code does not take care
+  \begin{note}{Other caveats and notes:} at this point in time, the code does not take care
   of dynamic connections. Also, if any of the server maxconn, or maxqueue is 0,
   then this acl clearly does not make sense, in which case the value returned
   will be -1.
+  \end{note}
 
-\subsubsection[dst]{dst <ip\_address>}
+\subsubsection[dst]{\kw{dst} <ip\_address>}
 \index{dst}
   Applies to the local IPv4 or IPv6 address the client connected to. It can be
   used to switch to a different backend for some alternative addresses.
 
-\subsubsection[dst\_conn]{dst\_conn <integer>}
+\subsubsection[dst\_conn]{\kw{dst\_conn} <integer>}
 \index{dst\_conn}
   Applies to the number of currently established connections on the same socket
   including the one being evaluated. It can be used to either return a sorry
@@ -275,12 +276,12 @@ addresses and ports, as well as internal values independent on the stream.
   different limits to different listening ports or addresses. See also the
   "fe\_conn" and "be\_conn" criteria.
 
-\subsubsection[dst\_port]{dst\_port <integer>}
+\subsubsection[dst\_port]{\kw{dst\_port} <integer>}
 \index{dst\_port}
   Applies to the local port the client connected to. It can be used to switch
   to a different backend for some alternative ports.
 
-\subsubsection[fe_conn]{fe\_conn <integer>}
+\subsubsection[fe_conn]{\kw{fe\_conn} <integer>}
 \subsubsection*{fe\_conn(<frontend>) <integer>}
 \index{fe\_conn}
   Applies to the number of currently established connections on the frontend,
@@ -291,12 +292,12 @@ addresses and ports, as well as internal values independent on the stream.
   considered saturated. See also the "dst\_conn", "be\_conn" and "fe\_sess\_rate"
   criteria.
 
-\subsubsection[fe\_id]{fe\_id <integer>}
+\subsubsection[fe\_id]{\kw{fe\_id} <integer>}
 \index{fe\_id}
   Applies to the frontend's id. Can be used in backends to check from which
   frontend it was called.
 
-\subsubsection[fe\_sess\_rate]{fe\_sess\_rate <integer>}
+\subsubsection[fe\_sess\_rate]{\kw{fe\_sess\_rate} <integer>}
 \subsubsection*{fe\_sess\_rate(<frontend>) <integer>}
 \index{fe\_sess\_rate}
   Returns true when the session creation rate on the current or the named
@@ -322,7 +323,7 @@ addresses and ports, as well as internal values independent on the stream.
             tcp-request content accept if WAIT_END
   \end{verbatim}
 
-\subsubsection[nbsrv]{nbsrv <integer>}
+\subsubsection[nbsrv]{\kw{nbsrv} <integer>}
 \subsubsection*{nbsrv(<backend>) <integer>}
 \index{nbsrv}
   Returns true when the number of usable servers of either the current backend
@@ -331,7 +332,7 @@ addresses and ports, as well as internal values independent on the stream.
   to handle some load. It is useful to report a failure when combined with
   "monitor fail".
 
-\subsubsection[queue]{queue <integer>}
+\subsubsection[queue]{\kw{queue} <integer>}
 \subsubsection*{queue(<backend>) <integer>}
 \index{queue}
   Returns the total number of queued connections of the designated backend,
@@ -342,24 +343,24 @@ addresses and ports, as well as internal values independent on the stream.
   One possible action could be to reject new users but still accept old ones.
   See also the "avg\_queue", "be\_conn", and "be\_sess\_rate" criteria.
 
-\subsubsection[sc1\_bytes\_in\_rate]{sc1\_bytes\_in\_rate}
-\subsubsection[sc2\_bytes\_in\_rate]{sc2\_bytes\_in\_rate}
+\subsubsection[sc1\_bytes\_in\_rate]{\kw{sc1\_bytes\_in\_rate}}
+\subsubsection[sc2\_bytes\_in\_rate]{\kw{sc2\_bytes\_in\_rate}}
 \index{sc1\_bytes\_in\_rate}
 \index{sc2\_bytes\_in\_rate}
   Returns the average client-to-server bytes rate from the currently tracked
   counters, measured in amount of bytes over the period configured in the
   table. See also src\_bytes\_in\_rate.
 
-\subsubsection[sc1\_bytes\_out\_rate]{sc1\_bytes\_out\_rate}
-\subsubsection[sc2\_bytes\_out\_rate]{sc2\_bytes\_out\_rate}
+\subsubsection[sc1\_bytes\_out\_rate]{\kw{sc1\_bytes\_out\_rate}}
+\subsubsection[sc2\_bytes\_out\_rate]{\kw{sc2\_bytes\_out\_rate}}
 \index{sc1\_bytes\_out\_rate}
 \index{sc2\_bytes\_out\_rate}
   Returns the average server-to-client bytes rate from the currently tracked
   counters, measured in amount of bytes over the period configured in the
   table. See also src\_bytes\_out\_rate.
 
-\subsubsection[sc1\_clr\_gpc0]{sc1\_clr\_gpc0}
-\subsubsection[sc2\_clr\_gpc0]{sc2\_clr\_gpc0}
+\subsubsection[sc1\_clr\_gpc0]{\kw{sc1\_clr\_gpc0}}
+\subsubsection[sc2\_clr\_gpc0]{\kw{sc2\_clr\_gpc0}}
 \index{sc1\_clr\_gpc0}
 \index{sc2\_clr\_gpc0}
   Clears the first General Purpose Counter associated to the currently tracked
@@ -379,46 +380,46 @@ addresses and ports, as well as internal values independent on the stream.
         tcp-request connection reject if abuse kill
   \end{verbatim}
 
-\subsubsection[sc1\_conn\_cnt]{sc1\_conn\_cnt}
-\subsubsection[sc2\_conn\_cnt]{sc2\_conn\_cnt}
+\subsubsection[sc1\_conn\_cnt]{\kw{sc1\_conn\_cnt}}
+\subsubsection[sc2\_conn\_cnt]{\kw{sc2\_conn\_cnt}}
 \index{sc1\_conn\_cnt}
 \index{sc2\_conn\_cnt}
   Returns the cumulated number of incoming connections from currently tracked
   counters. See also src\_conn\_cnt.
 
-\subsubsection[sc1\_conn\_cur]{sc1\_conn\_cur}
-\subsubsection[sc2\_conn\_cur]{sc2\_conn\_cur}
+\subsubsection[sc1\_conn\_cur]{\kw{sc1\_conn\_cur}}
+\subsubsection[sc2\_conn\_cur]{\kw{sc2\_conn\_cur}}
 \index{sc1\_conn\_cur}
 \index{sc2\_conn\_cur}
   Returns the current amount of concurrent connections tracking the same
   tracked counters. This number is automatically incremented when tracking
   begins and decremented when tracking stops. See also src\_conn\_cur.
 
-\subsubsection[sc1\_conn\_rate]{sc1\_conn\_rate}
-\subsubsection[sc2\_conn\_rate]{sc2\_conn\_rate}
+\subsubsection[sc1\_conn\_rate]{\kw{sc1\_conn\_rate}}
+\subsubsection[sc2\_conn\_rate]{\kw{sc2\_conn\_rate}}
 \index{sc1\_conn\_rate}
 \index{sc2\_conn\_rate}
   Returns the average connection rate from the currently tracked counters,
   measured in amount of connections over the period configured in the table.
   See also src\_conn\_rate.
 
-\subsubsection[sc1\_get\_gpc0]{sc1\_get\_gpc0}
-\subsubsection[sc2\_get\_gpc0]{sc2\_get\_gpc0}
+\subsubsection[sc1\_get\_gpc0]{\kw{sc1\_get\_gpc0}}
+\subsubsection[sc2\_get\_gpc0]{\kw{sc2\_get\_gpc0}}
 \index{sc1\_get\_gpc0}
 \index{sc2\_get\_gpc0}
   Returns the value of the first General Purpose Counter associated to the
   currently tracked counters. See also src\_get\_gpc0 and sc1/sc2\_inc\_gpc0.
 
-\subsubsection[sc1\_http\_err\_cnt]{sc1\_http\_err\_cnt}
-\subsubsection[sc2\_http\_err\_cnt]{sc2\_http\_err\_cnt}
+\subsubsection[sc1\_http\_err\_cnt]{\kw{sc1\_http\_err\_cnt}}
+\subsubsection[sc2\_http\_err\_cnt]{\kw{sc2\_http\_err\_cnt}}
 \index{sc1\_http\_err\_cnt}
 \index{sc2\_http\_err\_cnt}
   Returns the cumulated number of HTTP errors from the currently tracked
   counters. This includes the both request errors and 4xx error responses.
   See also src\_http\_err\_cnt.
 
-\subsubsection[sc1\_http\_err\_rate]{sc1\_http\_err\_rate}
-\subsubsection[sc2\_http\_err\_rate]{sc2\_http\_err\_rate}
+\subsubsection[sc1\_http\_err\_rate]{\kw{sc1\_http\_err\_rate}}
+\subsubsection[sc2\_http\_err\_rate]{\kw{sc2\_http\_err\_rate}}
 \index{sc1\_http\_err\_rate}
 \index{sc2\_http\_err\_rate}
   Returns the average rate of HTTP errors from the currently tracked counters,
@@ -426,16 +427,16 @@ addresses and ports, as well as internal values independent on the stream.
   includes the both request errors and 4xx error responses. See also
   src\_http\_err\_rate.
 
-\subsubsection[sc1\_http\_req\_cnt]{sc1\_http\_req\_cnt}
-\subsubsection[sc2\_http\_req\_cnt]{sc2\_http\_req\_cnt}
+\subsubsection[sc1\_http\_req\_cnt]{\kw{sc1\_http\_req\_cnt}}
+\subsubsection[sc2\_http\_req\_cnt]{\kw{sc2\_http\_req\_cnt}}
 \index{sc1\_http\_req\_cnt}
 \index{sc2\_http\_req\_cnt}
   Returns the cumulated number of HTTP requests from the currently tracked
   counters. This includes every started request, valid or not. See also
   src\_http\_req\_cnt.
 
-\subsubsection[sc1\_http\_req\_rate]{sc1\_http\_req\_rate}
-\subsubsection[sc2\_http\_req\_rate]{sc2\_http\_req\_rate}
+\subsubsection[sc1\_http\_req\_rate]{\kw{sc1\_http\_req\_rate}}
+\subsubsection[sc2\_http\_req\_rate]{\kw{sc2\_http\_req\_rate}}
 \index{sc1\_http\_req\_rate}
 \index{sc2\_http\_req\_rate}
   Returns the average rate of HTTP requests from the currently tracked
@@ -443,8 +444,8 @@ addresses and ports, as well as internal values independent on the stream.
   the table. This includes every started request, valid or not. See also
   src\_http\_req\_rate.
 
-\subsubsection[sc1\_inc\_gpc0]{sc1\_inc\_gpc0}
-\subsubsection[sc2\_inc\_gpc0]{sc2\_inc\_gpc0}
+\subsubsection[sc1\_inc\_gpc0]{\kw{sc1\_inc\_gpc0}}
+\subsubsection[sc2\_inc\_gpc0]{\kw{sc2\_inc\_gpc0}}
 \index{sc1\_inc\_gpc0}
 \index{sc2\_inc\_gpc0}
   Increments the first General Purpose Counter associated to the currently
@@ -459,8 +460,8 @@ addresses and ports, as well as internal values independent on the stream.
         tcp-request connection reject if abuse kill
   \end{verbatim}
 
-\subsubsection[sc1\_kbytes\_in]{sc1\_kbytes\_in}
-\subsubsection[sc2\_kbytes\_in]{sc2\_kbytes\_in}
+\subsubsection[sc1\_kbytes\_in]{\kw{sc1\_kbytes\_in}}
+\subsubsection[sc2\_kbytes\_in]{\kw{sc2\_kbytes\_in}}
 \index{sc1\_kbytes\_in}
 \index{sc2\_kbytes\_in}
   Returns the amount of client-to-server data from the currently tracked
@@ -468,8 +469,8 @@ addresses and ports, as well as internal values independent on the stream.
   test is currently performed on 32-bit integers, which limits values to 4
   terabytes. See also src\_kbytes\_in.
 
-\subsubsection[sc1\_kbytes\_out]{sc1\_kbytes\_out}
-\subsubsection[sc2\_kbytes\_out]{sc2\_kbytes\_out}
+\subsubsection[sc1\_kbytes\_out]{\kw{sc1\_kbytes\_out}}
+\subsubsection[sc2\_kbytes\_out]{\kw{sc2\_kbytes\_out}}
 \index{sc1\_kbytes\_out}
 \index{sc2\_kbytes\_out}
   Returns the amount of server-to-client data from the currently tracked
@@ -477,8 +478,8 @@ addresses and ports, as well as internal values independent on the stream.
   test is currently performed on 32-bit integers, which limits values to 4
   terabytes. See also src\_kbytes\_out.
 
-\subsubsection[sc1\_sess\_cnt]{sc1\_sess\_cnt}
-\subsubsection[sc2\_sess\_cnt]{sc2\_sess\_cnt}
+\subsubsection[sc1\_sess\_cnt]{\kw{sc1\_sess\_cnt}}
+\subsubsection[sc2\_sess\_cnt]{\kw{sc2\_sess\_cnt}}
 \index{sc1\_sess\_cnt}
 \index{sc2\_sess\_cnt}
   Returns the cumulated number of incoming connections that were transformed
@@ -488,8 +489,8 @@ addresses and ports, as well as internal values independent on the stream.
   backend sessions if some HTTP keep-alive is performend over the connection
   with the client. See also src\_sess\_cnt.
 
-\subsubsection[sc1\_sess\_rate]{sc1\_sess\_rate}
-\subsubsection[sc2\_sess\_rate]{sc2\_sess\_rate}
+\subsubsection[sc1\_sess\_rate]{\kw{sc1\_sess\_rate}}
+\subsubsection[sc2\_sess\_rate]{\kw{sc2\_sess\_rate}}
 \index{sc1\_sess\_rate}
 \index{sc2\_sess\_rate}
   Returns the average session rate from the currently tracked counters,
@@ -499,17 +500,17 @@ addresses and ports, as well as internal values independent on the stream.
   connection could result in many backend sessions if some HTTP keep-alive is
   performed over the connection with the client. See also src\_sess\_rate.
 
-\subsubsection[so\_id]{so\_id <integer>}
+\subsubsection[so\_id]{\kw{so\_id} <integer>}
 \index{so\_id}
   Applies to the socket's id. Useful in frontends with many bind keywords.
 
-\subsubsection[src]{src <ip\_address>}
+\subsubsection[src]{\kw{src} <ip\_address>}
 \index{src}
   Applies to the client's IPv4 or IPv6 address. It is usually used to limit
   access to certain resources such as statistics. Note that it is the TCP-level
   source address which is used, and not the address of a client behind a proxy.
 
-\subsubsection[src\_bytes\_in\_rate]{src\_bytes\_in\_rate <integer>}
+\subsubsection[src\_bytes\_in\_rate]{\kw{src\_bytes\_in\_rate} <integer>}
 \subsubsection*{src\_bytes\_in\_rate(<table>) <integer>}
 \index{src\_bytes\_in\_rate}
   Returns the average bytes rate from the connection's source IPv4 address in
@@ -517,7 +518,7 @@ addresses and ports, as well as internal values independent on the stream.
   amount of bytes over the period configured in the table. If the address is
   not found, zero is returned. See also sc1/sc2\_bytes\_in\_rate.
 
-\subsubsection[src\_bytes\_out\_rate]{src\_bytes\_out\_rate <integer>}
+\subsubsection[src\_bytes\_out\_rate]{\kw{src\_bytes\_out\_rate} <integer>}
 \subsubsection*{src\_bytes\_out\_rate(<table>) <integer>}
 \index{src\_bytes\_out\_rate}
   Returns the average bytes rate to the connection's source IPv4 address in the
@@ -525,7 +526,7 @@ addresses and ports, as well as internal values independent on the stream.
   amount of bytes over the period configured in the table. If the address is
   not found, zero is returned. See also sc1/sc2\_bytes\_out\_rate.
 
-\subsubsection[src\_clr\_gpc0]{src\_clr\_gpc0 <integer>}
+\subsubsection[src\_clr\_gpc0]{\kw{src\_clr\_gpc0} <integer>}
 \subsubsection*{src\_clr\_gpc0(<table>) <integer>}
 \index{src\_clr\_gpc0}
   Clears the first General Purpose Counter associated to the connection's
@@ -545,7 +546,7 @@ addresses and ports, as well as internal values independent on the stream.
         tcp-request connection reject if abuse kill
 \end{verbatim}
 
-\subsubsection[src\_conn\_cnt]{src\_conn\_cnt <integer>}
+\subsubsection[src\_conn\_cnt]{\kw{src\_conn\_cnt} <integer>}
 \subsubsection*{src\_conn\_cnt(<table>) <integer>}
 \index{src\_conn\_cnt}
   Returns the cumulated number of connections initiated from the current
@@ -553,7 +554,7 @@ addresses and ports, as well as internal values independent on the stream.
   the designated stick-table. If the address is not found, zero is returned.
   See also sc1/sc2\_conn\_cnt.
 
-\subsubsection[src\_conn\_cur]{src\_conn\_cur <integer>}
+\subsubsection[src\_conn\_cur]{\kw{src\_conn\_cur} <integer>}
 \subsubsection*{src\_conn\_cur(<table>) <integer>}
 
 \index{src\_conn\_cur}
@@ -563,7 +564,7 @@ addresses and ports, as well as internal values independent on the stream.
   or in the designated stick-table. If the address is not found, zero is
   returned. See also sc1/sc2\_conn\_cur.
 
-\subsubsection[src\_conn\_rate]{src\_conn\_rate <integer>}
+\subsubsection[src\_conn\_rate]{\kw{src\_conn\_rate} <integer>}
 \subsubsection*{src\_conn\_rate(<table>) <integer>}
 \index{src\_conn\_rate}
   Returns the average connection rate from the connection's source IPv4 address
@@ -571,32 +572,35 @@ addresses and ports, as well as internal values independent on the stream.
   in amount of connections over the period configured in the table. If the
   address is not found, zero is returned. See also sc1/sc2\_conn\_rate.
 
-\subsubsection[src\_get\_gpc0]{src\_get\_gpc0 <integer>}
+\subsubsection[src\_get\_gpc0]{\kw{src\_get\_gpc0} <integer>}
 \subsubsection*{src\_get\_gpc0(<table>) <integer>}
 \index{src\_get\_gpc0}
+
   Returns the value of the first General Purpose Counter associated to the
   connection's source IPv4 address in the current proxy's stick-table or in
   the designated stick-table. If the address is not found, zero is returned.
   See also sc1/sc2\_get\_gpc0 and src\_inc\_gpc0.
 
-\subsubsection[src\_http\_err\_cnt]{src\_http\_err\_cnt <integer>}
+\subsubsection[src\_http\_err\_cnt]{\kw{src\_http\_err\_cnt} <integer>}
 \subsubsection*{src\_http\_err\_cnt(<table>) <integer>}
 \index{src\_http\_err\_cnt}
+
   Returns the cumulated number of HTTP errors from the current connection's
   source IPv4 address in the current proxy's stick-table or in the designated
   stick-table. This includes the both request errors and 4xx error responses.
   If the address is not found, zero is returned. See also sc1/sc2\_http\_err\_cnt.
 
-\subsubsection[src\_http\_err\_rate]{src\_http\_err\_rate <integer>}
-\subsubsection{src\_http\_err\_rate(<table>) <integer>}
+\subsubsection[src\_http\_err\_rate]{\kw{src\_http\_err\_rate} <integer>}
+\subsubsection*{src\_http\_err\_rate(<table>) <integer>}
 \index{src\_http\_err\_rate}
+
   Returns the average rate of HTTP errors from the current connection's source
   IPv4 address in the current proxy's stick-table or in the designated stick-
   table, measured in amount of errors over the period configured in the table.
   This includes the both request errors and 4xx error responses. If the address
   is not found, zero is returned. See also sc1/sc2\_http\_err\_rate.
 
-\subsubsection[src\_http\_req\_cnt]{src\_http\_req\_cnt <integer>}
+\subsubsection[src\_http\_req\_cnt]{\kw{src\_http\_req\_cnt} <integer>}
 \subsubsection*{src\_http\_req\_cnt(<table>) <integer>}
 \index{src\_http\_req\_cnt}
   Returns the cumulated number of HTTP requests from the current connection's
@@ -604,7 +608,7 @@ addresses and ports, as well as internal values independent on the stream.
   stick-table. This includes every started request, valid or not. If the
   address is not found, zero is returned. See also sc1/sc2\_http\_req\_cnt.
 
-\subsubsection[src\_http\_req\_rate]{src\_http\_req\_rate <integer>}
+\subsubsection[src\_http\_req\_rate]{\kw{src\_http\_req\_rate} <integer>}
 \subsubsection*{src\_http\_req\_rate(<table>) <integer>}
   Returns the average rate of HTTP requests from the current connection's
   source IPv4 address in the current proxy's stick-table or in the designated
@@ -612,8 +616,8 @@ addresses and ports, as well as internal values independent on the stream.
   table. This includes every started request, valid or not. If the address is
   not found, zero is returned. See also sc1/sc2\_http\_req\_rate.
 
-\subsubsection[src\_inc\_gpc0]{src\_inc\_gpc0 <integer>}
-\subsubsection{src\_inc\_gpc0(<table>) <integer>}
+\subsubsection[src\_inc\_gpc0]{\kw{src\_inc\_gpc0} <integer>}
+\subsubsection*{src\_inc\_gpc0(<table>) <integer>}
 \index{src\_inc\_gpc0}
   Increments the first General Purpose Counter associated to the connection's
   source IPv4 address in the current proxy's stick-table or in the designated
@@ -627,56 +631,65 @@ addresses and ports, as well as internal values independent on the stream.
         tcp-request connection reject if abuse kill
   \end{verbatim}
 
-\subsubsection[src\_kbytes\_in]{src\_kbytes\_in <integer>}
+\subsubsection[src\_kbytes\_in]{\kw{src\_kbytes\_in} <integer>}
 \subsubsection*{src\_kbytes\_in(<table>) <integer>}
 \index{src\_kbytes\_in}
-  Returns the amount of data received from the connection's source IPv4 address
-  in the current proxy's stick-table or in the designated stick-table, measured
-  in kilobytes over the period configured in the table. If the address is not
-  found, zero is returned. The test is currently performed on 32-bit integers,
-  which limits values to 4 terabytes. See also sc1/sc2\_kbytes\_in.
 
-\subsubsection[src\_kbytes\_out]{src\_kbytes\_out src\_kbytes\_out <integer>}
+Returns the amount of data received from the connection's source IPv4 address
+in the current proxy's stick-table or in the designated stick-table, measured
+in kilobytes over the period configured in the table. If the address is not
+found, zero is returned. The test is currently performed on 32-bit integers,
+which limits values to 4 terabytes. See also sc1/sc2\_kbytes\_in.
+
+\subsubsection[src\_kbytes\_out]{\kw{src\_kbytes\_out} <integer>}
 \subsubsection*{src\_kbytes\_out(<table>) <integer>}
 \index{src\_kbytes\_out}
-  Returns the amount of data sent to the connection's source IPv4 address in
-  the current proxy's stick-table or in the designated stick-table, measured
-  in kilobytes over the period configured in the table. If the address is not
-  found, zero is returned. The test is currently performed on 32-bit integers,
-  which limits values to 4 terabytes. See also sc1/sc2\_kbytes\_out.
 
-\subsubsection[src\_port]{src\_port <integer>}
+Returns the amount of data sent to the connection's source IPv4 address in
+the current proxy's stick-table or in the designated stick-table, measured
+in kilobytes over the period configured in the table. If the address is not
+found, zero is returned. The test is currently performed on 32-bit integers,
+which limits values to 4 terabytes. See also sc1/sc2\_kbytes\_out.
+
+\subsubsection[src\_port]{\kw{src\_port} <integer>}
 \index{src\_port}
+
   Applies to the client's TCP source port. This has a very limited usage.
 
-\subsubsection[src\_sess\_cnt]{src\_sess\_cnt <integer>}
+\subsubsection[src\_sess\_cnt]{\kw{src\_sess\_cnt} <integer>}
 \subsubsection*{src\_sess\_cnt(<table>) <integer>}
 \index{src\_sess\_cnt}
-  Returns the cumulated number of connections initiated from the current
-  connection's source IPv4 address in the current proxy's stick-table or in the
-  designated stick-table, that were transformed into sessions, which means that
-  they were accepted by "tcp-request" rules. If the address is not found, zero
-  is returned. See also sc1/sc2\_sess\_cnt.
 
-\subsubsection[src\_sess\_rate]{src\_sess\_rate <integer>}
+Returns the cumulated number of connections initiated from the current
+connection's source IPv4 address in the current proxy's stick-table or in the
+designated stick-table, that were transformed into sessions, which means that
+they were accepted by "tcp-request" rules. If the address is not found, zero
+is returned. See also sc1/sc2\_sess\_cnt.
+
+\subsubsection[src\_sess\_rate]{\kw{src\_sess\_rate} <integer>}
 \subsubsection*{src\_sess\_rate(<table>) <integer>}
 \index{src\_sess\_rate}
-  Returns the average session rate from the connection's source IPv4 address in
-  the current proxy's stick-table or in the designated stick-table, measured in
-  amount of sessions over the period configured in the table. A session is a
-  connection that got past the early "tcp-request" rules. If the address is not
-  found, zero is returned. See also sc1/sc2\_sess\_rate.
 
-\subsubsection[src\_updt\_conn\_cnt]{src\_updt\_conn\_cnt <integer>}
+Returns the average session rate from the connection's source IPv4 address in
+the current proxy's stick-table or in the designated stick-table, measured in
+amount of sessions over the period configured in the table. A session is a
+connection that got past the early "tcp-request" rules. If the address is not
+found, zero is returned. See also sc1/sc2\_sess\_rate.
+
+\subsubsection[src\_updt\_conn\_cnt]{\kw{src\_updt\_conn\_cnt} <integer>}
 \subsubsection*{src\_updt\_conn\_cnt(<table>) <integer>}
 \index{src\_updt\_conn\_cnt}
-  Creates or updates the entry associated to the source IPv4 address in the
-  current proxy's stick-table or in the designated stick-table. This table
-  must be configured to store the "conn\_cnt" data type, otherwise the match
-  will be ignored. The current count is incremented by one, and the expiration
-  timer refreshed. The updated count is returned, so this match can't return
-  zero. This is used to reject service abusers based on their source address.
-  Note: it is recommended to use the more complete "track-counters" instead.
+
+Creates or updates the entry associated to the source IPv4 address in the
+current proxy's stick-table or in the designated stick-table. This table
+must be configured to store the "conn\_cnt" data type, otherwise the match
+will be ignored. The current count is incremented by one, and the expiration
+timer refreshed. The updated count is returned, so this match can't return
+zero. This is used to reject service abusers based on their source address.
+
+\begin{note}{Note:}
+It is recommended to use the more complete "track-counters" instead.
+\end{note}
 
   Example:
   \begin{verbatim}
@@ -692,54 +705,62 @@ addresses and ports, as well as internal values independent on the stream.
             server local 127.0.0.1:22
   \end{verbatim}
 
-\subsubsection[srv\_conn]{srv\_conn(<backend>/<server>) <integer>}
+\subsubsection[srv\_conn]{\kw{srv\_conn} (<backend>/<server>) <integer>}
 \index{srv\_conn}
-  Applies to the number of currently established connections on the server,
-  possibly including the connection being evaluated.
-  It can be used to use a specific farm when one server is full.
-  See also the "fe\_conn", "be\_conn" and "queue" criteria.
 
-\subsubsection[srv\_id]{srv\_id <integer>}
-  Applies to the server's id. Can be used in frontends or backends.
+Applies to the number of currently established connections on the server,
+possibly including the connection being evaluated.
+It can be used to use a specific farm when one server is full.
+See also the "fe\_conn", "be\_conn" and "queue" criteria.
 
-\subsubsection[srv\_is\_up]{srv\_is\_up(<server>)}
+\subsubsection[srv\_id]{\kw{srv\_id} <integer>}
+
+Applies to the server's id. Can be used in frontends or backends.
+
+\subsubsection[srv\_is\_up]{\kw{srv\_is\_up} (<server>)}
 \subsubsection*{srv\_is\_up(<backend>/<server>)}
-  Returns true when the designated server is UP, and false when it is either
-  DOWN or in maintenance mode. If <backend> is omitted, then the server is
-  looked up in the current backend. The function takes no arguments since it
-  is used as a boolean. It is mainly used to take action based on an external
-  status reported via a health check (eg: a geographical site's availability).
-  Another possible use which is more of a hack consists in using dummy servers
-  as boolean variables that can be enabled or disabled from the CLI, so that
-  rules depending on those ACLs can be tweaked in realtime.
 
-\subsubsection[table\_avl]{table\_avl <integer>}
+Returns true when the designated server is UP, and false when it is either
+DOWN or in maintenance mode. If <backend> is omitted, then the server is
+looked up in the current backend. The function takes no arguments since it
+is used as a boolean. It is mainly used to take action based on an external
+status reported via a health check (eg: a geographical site's availability).
+Another possible use which is more of a hack consists in using dummy servers
+as boolean variables that can be enabled or disabled from the CLI, so that
+rules depending on those ACLs can be tweaked in realtime.
+
+\subsubsection[table\_avl]{\kw{table\_avl} <integer>}
 \subsubsection*{table\_avl(<table>) <integer>}
-  Returns the total number of available entries in the current proxy's
-  stick-table or in the designated stick-table. See also table\_cnt.
 
-\subsubsection[table\_cnt]{table\_cnt <integer>}
+Returns the total number of available entries in the current proxy's
+stick-table or in the designated stick-table. See also table\_cnt.
+
+\subsubsection[table\_cnt]{\kw{table\_cnt} <integer>}
 \subsubsection*{table\_cnt(<table>) <integer>}
-  Returns the total number of entries currently in use in the current proxy's
-  stick-table or in the designated stick-table. See also src\_conn\_cnt and
-  table\_avl for other entry counting methods.
+
+Returns the total number of entries currently in use in the current proxy's
+stick-table or in the designated stick-table. See also src\_conn\_cnt and
+table\_avl for other entry counting methods.
 
 \subsection{Matching contents at Layer 4 (also called Layer 6)}
+\label{sec:matching_layer4}
 
 A second set of criteria depends on data found in buffers, but which can change
 during analysis. This requires that some data has been buffered, for instance
 through TCP request content inspection. Please see the "tcp-request content"
 keyword for more detailed information on the subject.
 
-\subsubsection[rep\_ssl\_hello\_type]{rep\_ssl\_hello\_type <integer>}
+\subsubsection[rep\_ssl\_hello\_type]{\kw{rep\_ssl\_hello\_type} <integer>}
 \index{rep\_ssl\_hello\_type}
+
   Returns true when data in the response buffer looks like a complete SSL (v3
   or superior) hello message and handshake type is equal to <integer>.
   This test was designed to be used with TCP response content inspection: a
   SSL session ID may be fetched.
 
-\subsubsection[req\_len]{req\_len <integer>}
+\subsubsection[req\_len]{\kw{req\_len} <integer>}
 \index{req\_len}
+
   Returns true when the length of the data in the request buffer matches the
   specified range. It is important to understand that this test does not
   return false as long as the buffer is changing. This means that a check with
@@ -748,17 +769,19 @@ keyword for more detailed information on the subject.
   return false only when haproxy is certain that no more data will come in.
   This test was designed to be used with TCP request content inspection.
 
-\subsubsection[req\_proto\_http]{req\_proto\_http}
+\subsubsection[req\_proto\_http]{\kw{req\_proto\_http}}
 \index{req\_proto\_http}
+
   Returns true when data in the request buffer look like HTTP and correctly
   parses as such. It is the same parser as the common HTTP request parser which
   is used so there should be no surprises. This test can be used for instance
   to direct HTTP traffic to a given port and HTTPS traffic to another one
   using TCP request content inspection rules.
 
-\subsubsection[req\_rdp\_cookie]{req\_rdp\_cookie <string>}
+\subsubsection[req\_rdp\_cookie]{\kw{req\_rdp\_cookie} <string>}
 \subsubsection*{req\_rdp\_cookie(<name>) <string>}
 \index{req\_rdp\_cookie}
+
   Returns true when data in the request buffer look like the RDP protocol, and
   a cookie is present and equal to <string>. By default, any cookie name is
   checked, but a specific cookie name can be specified in parenthesis. The
@@ -768,24 +791,27 @@ keyword for more detailed information on the subject.
   connecting to the server if properly configured on the client. This can be
   used to restrict access to certain servers to certain users.
 
-\subsubsection[req\_rdp\_cookie\_cnt]{req\_rdp\_cookie\_cnt <integer>}
+\subsubsection[req\_rdp\_cookie\_cnt]{\kw{req\_rdp\_cookie\_cnt} <integer>}
 \subsubsection*{req\_rdp\_cookie\_cnt(<name>) <integer>}
 \index{req\_rdp\_cookie\_cnt}
+
   Returns true when the data in the request buffer look like the RDP protocol
   and the number of RDP cookies matches the specified range (typically zero or
   one). Optionally a specific cookie name can be checked. This is a simple way
   of detecting the RDP protocol, as clients generally send the MSTS or MSTSHASH
   cookies.
 
-\subsubsection[req\_ssl\_hello\_type]{req\_ssl\_hello\_type <integer>}
+\subsubsection[req\_ssl\_hello\_type]{\kw{req\_ssl\_hello\_type} <integer>}
 \index{req\_ssl\_hello\_type}
+
   Returns true when data in the request buffer looks like a complete SSL (v3
   or superior) hello message and handshake type is equal to <integer>.
   This test was designed to be used with TCP request content inspection: an
   SSL session ID may be fetched.
 
-\subsubsection[req\_ssl\_sni]{req\_ssl\_sni <string>}
+\subsubsection[req\_ssl\_sni]{\kw{req\_ssl\_sni} <string>}
 \index{req\_ssl\_sni}
+
   Returns true when data in the request buffer looks like a complete SSL (v3
   or superior) client hello message with a Server Name Indication TLS extension
   (SNI) matching <string>. SNI normally contains the name of the host the
@@ -804,8 +830,9 @@ keyword for more detailed information on the subject.
      default_backend bk_sorry_page  
   \end{verbatim}
 
-\subsubsection[req\_ssl\_ver]{req\_ssl\_ver <decimal>}
+\subsubsection[req\_ssl\_ver]{\kw{req\_ssl\_ver} <decimal>}
 \index{req\_ssl\_ver}
+
   Returns true when data in the request buffer look like SSL, with a protocol
   version matching the specified range. Both SSLv2 hello messages and SSLv3
   messages are supported. The test tries to be strict enough to avoid being
@@ -814,7 +841,9 @@ keyword for more detailed information on the subject.
   that TLSv1 is announced as SSL version 3.1. This test was designed to be used
   with TCP request content inspection.
 
-\subsubsection[wait\_end]{wait\_end}
+\subsubsection[wait\_end]{\kw{wait\_end}}
+\index{wait_end}
+
   Waits for the end of the analysis period to return true. This may be used in
   conjunction with content analysis to avoid returning a wrong verdict early.
   It may also be used to delay some actions, such as a delayed reject for some
@@ -840,18 +869,20 @@ keyword for more detailed information on the subject.
   \end{verbatim}
 
 \subsection{Matching at Layer 7}
+\label{subsec:matching_level7}
 
 A third set of criteria applies to information which can be found at the
 application layer (layer 7). Those require that a full HTTP request has been
 read, and are only evaluated then. They may require slightly more CPU resources
 than the layer 4 ones, but not much since the request and response are indexed.
 
-\subsubsection[cook]{cook(<name>) <string>}
+\subsubsection[cook]{\kw{cook}(<name>) <string>}
 \index{cook}
+
   All "cook*" matching criteria inspect all "Cookie" headers to find a cookie
   with the name between parenthesis. If multiple occurrences of the cookie are
   found in the request, they will all be evaluated. Spaces around the name and
-  the value are ignored as requested by the Cookie specification (RFC6265). The
+  the value are ignored as requested by the Cookie specification \rfc{6265}. The
   cookie name is case-sensitive. Use the scook() variant for response cookies
   sent by the server.
 
@@ -862,74 +893,84 @@ than the layer 4 ones, but not much since the request and response are indexed.
        cook(profile) silver gold
   \end{verbatim}
 
-\subsubsection[cook\_beg]{cook\_beg(<name>) <string>}
+\subsubsection[cook\_beg]{\\kw{cook\_beg}(<name>) <string>}
 \index{cook\_beg}
+
   Returns true if any of the request cookies <name> begins with one of the
   strings. See "cook" for more information on cookie matching. Use the
   scook\_beg() variant for response cookies sent by the server.
 
-\subsubsection[cook\_cnt]{cook\_cnt(<name>) <integer>}
+\subsubsection[cook\_cnt]{\kw{cook\_cnt}(<name>) <integer>}
 \index{cook\_cnt}
+
   Returns true when the number of occurrences of the specified cookie matches
   the values or ranges specified. This is used to detect presence, absence or
   abuse of a specific cookie. See "cook" for more information on header
   matching. Use the scook\_cnt() variant for response cookies sent by the
   server.
 
-\subsubsection[cook\_dir]{cook\_dir(<name>) <string>}
+\subsubsection[cook\_dir]{\kw{cook\_dir}(<name>) <string>}
 \index{cook\_dir}
+
   Returns true if any of the request cookies <name> contains one of the strings
   either isolated or delimited by slashes. This is used to perform filename or
   directory name matching, though it generally is of limited use with cookies.
   See "cook" for more information on cookie matching. Use the scook\_dir()
   variant for response cookies sent by the server.
 
-\subsubsection[cook\_dom]{cook\_dom(<name>) <string>}
+\subsubsection[cook\_dom]{\kw{cook\_dom}(<name>) <string>}
 \index{cook\_dom}
+
   Returns true if any of the request cookies <name> contains one of the strings
   either isolated or delimited by dots. This is used to perform domain name
   matching. See "cook" for more information on cookie matching. Use the
   scook\_dom() variant for response cookies sent by the server.
 
-\subsubsection[cook\_end]{cook\_end(<name>) <string>}
+\subsubsection[cook\_end]{\kw{cook\_end}(<name>) <string>}
 \index{cook\_end}
+
   Returns true if any of the request cookies <name> ends with one of the
   strings. See "cook" for more information on cookie matching. Use the
   scook\_end() variant for response cookies sent by the server.
 
-\subsubsection[cook\_len]{cook\_len(<name>) <integer>}
+\subsubsection[cook\_len]{\kw{cook\_len}(<name>) <integer>}
 \index{cook\_len}
+
   Returns true if any of the request cookies <name> has a length which matches
   the values or ranges specified. This may be used to detect empty or too large
   cookie values. Note that an absent cookie does not match a zero-length test.
   See "cook" for more information on cookie matching. Use the scook\_len()
   variant for response cookies sent by the server.
 
-\subsubsection[cook\_reg]{cook\_reg(<name>) <regex>}
+\subsubsection[cook\_reg]{\kw{cook\_reg}(<name>) <regex>}
 \index{cook\_reg}
+
   Returns true if any of the request cookies <name> matches any of the regular
   expressions. It can be used at any time, but it is important to remember that
   regex matching is slower than other methods. See also other "cook\_" criteria,
   as well as "cook" for more information on cookie matching. Use the
   scook\_reg() variant for response cookies sent by the server.
 
-\subsubsection[cook\_sub]{cook\_sub(<name>) <string>}
+\subsubsection[cook\_sub]{\kw{cook\_sub}(<name>) <string>}
 \index{cook\_sub}
+
   Returns true if any of the request cookies <name> contains at least one of
   the strings. See "cook" for more information on cookie matching. Use the
   scook\_sub() variant for response cookies sent by the server.
 
-\subsubsection[cook\_val]{cook\_val(<name>) <integer>}
+\subsubsection[cook\_val]{\kw{cook\_val}(<name>) <integer>}
 \index{cook\_val}
+
   Returns true if any of the request cookies <name> starts with a number which
   matches the values or ranges specified. This may be used to select a server
   based on application-specific cookies. Note that an absent cookie does not
   match any value. See "cook" for more information on cookie matching. Use the
   scook\_val() variant for response cookies sent by the server.
 
-\subsubsection[hdr]{hdr <string>}
+\subsubsection[hdr]{\kw{hdr} <string>}
 \subsubsection*{hdr(<header>[,<occ>]) <string>}
 \index{hdr}
+
   \emph{Note:} all the "hdr*" matching criteria either apply to all headers, or to a
   particular header whose name is passed between parenthesis and without any
   space. The header name is not case-sensitive. The header matching complies
@@ -947,16 +988,18 @@ than the layer 4 ones, but not much since the request and response are indexed.
     hdr(Connection) -i close
   \end{verbatim}
      
-\subsubsection[hdr\_beg]{hdr\_beg <string>}
-\subsubsection{hdr\_beg(<header>[,<occ>]) <string>}
+\subsubsection[hdr\_beg]{\kw{hdr\_beg} <string>}
+\subsubsection*{hdr\_beg(<header>[,<occ>]) <string>}
 \index{hdr\_beg}
+
   Returns true when one of the headers begins with one of the strings. See
   "hdr" for more information on header matching. Use the shdr\_beg() variant for
   response headers sent by the server.
 
-\subsubsection[hdr\_cnt]{hdr\_cnt <integer>}
+\subsubsection[hdr\_cnt]{\kw{hdr\_cnt} <integer>}
 \subsubsection*{hdr\_cnt(<header>) <integer>}
 \index{hdr\_cnt}
+
   Returns true when the number of occurrence of the specified header matches
   the values or ranges specified. It is important to remember that one header
   line may count as several headers if it has several values. This is used to
@@ -965,75 +1008,84 @@ than the layer 4 ones, but not much since the request and response are indexed.
   of certain headers. See "hdr" for more information on header matching. Use
   the shdr\_cnt() variant for response headers sent by the server.
 
-\subsubsection[hdr\_dir]{hdr\_dir <string>}
+\subsubsection[hdr\_dir]{\kw{hdr\_dir} <string>}
 \subsubsection*{hdr\_dir(<header>[,<occ>]) <string>}
 \index{hdr\_dir}
+
   Returns true when one of the headers contains one of the strings either
   isolated or delimited by slashes. This is used to perform filename or
   directory name matching, and may be used with Referer. See "hdr" for more
   information on header matching. Use the shdr\_dir() variant for response
   headers sent by the server.
 
-\subsubsection[hdr\_dom]{hdr\_dom <string>}
+\subsubsection[hdr\_dom]{\kw{hdr\_dom} <string>}
 \subsubsection*{hdr\_dom(<header>[,<occ>]) <string>}
 \index{hdr\_dom}
+
   Returns true when one of the headers contains one of the strings either
   isolated or delimited by dots. This is used to perform domain name matching,
   and may be used with the Host header. See "hdr" for more information on
   header matching. Use the shdr\_dom() variant for response headers sent by the
   server.
 
-\subsubsection[hdr\_end]{hdr\_end <string>}
+\subsubsection[hdr\_end]{\kw{hdr\_end} <string>}
 \subsubsection*{hdr\_end(<header>[,<occ>]) <string>}
 \index{hdr\_end}
+
   Returns true when one of the headers ends with one of the strings. See "hdr"
   for more information on header matching. Use the shdr\_end() variant for
   response headers sent by the server.
 
-\subsubsection[hdr\_ip]{hdr\_ip <address>}
+\subsubsection[hdr\_ip]{\kw{hdr\_ip} <address>}
 \subsubsection*{hdr\_ip(<header>[,<occ>]) <address>}
 \index{hdr\_ip}
+
   Returns true when one of the headers' values contains an IPv4 or IPv6 address
   matching <address>. This is mainly used with headers such as X-Forwarded-For
   or X-Client-IP. See "hdr" for more information on header matching. Use the
   shdr\_ip() variant for response headers sent by the server.
 
-\subsubsection[hdr\_len]{hdr\_len <integer>}
+\subsubsection[hdr\_len]{\kw{hdr\_len} <integer>}
 \subsubsection*{hdr\_len(<header>[,<occ>]) <integer>}
 \index{hdr\_len}
+
   Returns true when at least one of the headers has a length which matches the
   values or ranges specified. This may be used to detect empty or too large
   headers. See "hdr" for more information on header matching. Use the
   shdr\_len() variant for response headers sent by the server.
 
-\subsubsection[hdr\_reg]{hdr\_reg <regex>}
+\subsubsection[hdr\_reg]{\kw{hdr\_reg} <regex>}
 \subsubsection*{hdr\_reg(<header>[,<occ>]) <regex>}
 \index{hdr\_reg}
+
   Returns true it one of the headers matches one of the regular expressions. It
   can be used at any time, but it is important to remember that regex matching
   is slower than other methods. See also other "hdr\_" criteria, as well as
   "hdr" for more information on header matching. Use the shdr\_reg() variant for
   response headers sent by the server.
 
-\subsubsection[hdr\_sub]{hdr\_sub <string>}
+\subsubsection[hdr\_sub]{\kw{hdr\_sub} <string>}
 \subsubsection*{hdr\_sub(<header>[,<occ>]) <string>}
 \index{hdr\_sub}
+
   Returns true when one of the headers contains one of the strings. See "hdr"
   for more information on header matching. Use the shdr\_sub() variant for
   response headers sent by the server.
 
-\subsubsection[hdr\_val]{hdr\_val <integer>}
-\subsubsection{hdr\_val(<header>[,<occ>]) <integer>}
+\subsubsection[hdr\_val]{\kw{hdr\_val} <integer>}
+\subsubsection*{hdr\_val(<header>[,<occ>]) <integer>}
 \index{hdr\_val}
+
   Returns true when one of the headers starts with a number which matches the
   values or ranges specified. This may be used to limit content-length to
   acceptable values for example. See "hdr" for more information on header
   matching. Use the shdr\_val() variant for response headers sent by the server.
 
-\subsubsection[http\_auth]{http\_auth(<userlist>)}
+\subsubsection[http\_auth]{\kw{http\_auth}(<userlist>)}
 \subsubsection[http\_auth\_group]{http\_auth\_group(<userlist>) <group> [<group>]*}
 \index{http\_auth}
 \index{http\_auth\_group}
+
   Returns true when authentication data received from the client matches
   username \& password stored on the userlist. It is also possible to
   use http\_auth\_group to check if the user is assigned to at least one
@@ -1041,201 +1093,236 @@ than the layer 4 ones, but not much since the request and response are indexed.
 
   Currently only http basic auth is supported.
 
-\subsubsection[http\_first\_req]{http\_first\_req}
+\subsubsection[http\_first\_req]{\kw{http\_first\_req}}
 \index{http\_first\_req}
+
   Returns true when the request being processed is the first one of the
   connection. This can be used to add or remove headers that may be missing
   from some requests when a request is not the first one, or even to perform
   some specific ACL checks only on the first request.
 
-\subsubsection[method]{method <string>}
+\subsubsection[method]{\kw{method} <string>}
 \index{method}
+
   Applies to the method in the HTTP request, eg: "GET". Some predefined ACL
   already check for most common methods.
 
-\subsubsection[path]{path <string>}
+\subsubsection[path]{\kw{path} <string>}
 \index{path}
+
   Returns true when the path part of the request, which starts at the first
   slash and ends before the question mark, equals one of the strings. It may be
-  used to match known files, such as \verb|/favicon.ico|.
+  used to match known files, such as \cmd{/favicon.ico}.
 
-\subsubsection[path\_beg]{path\_beg <string>}
+\subsubsection[path\_beg]{\kw{path\_beg} <string>}
 \index{path\_beg}
+
   Returns true when the path begins with one of the strings. This can be used
   to send certain directory names to alternative backends.
 
-\subsubsection[path\_dir]{path\_dir <string>}
+\subsubsection[path\_dir]{\kw{path\_dir} <string>}
 \index{path\_dir}
+
   Returns true when one of the strings is found isolated or delimited with
   slashes in the path. This is used to perform filename or directory name
   matching without the risk of wrong match due to colliding prefixes. See also
   "url\_dir" and "path\_sub".
 
-\subsubsection[path\_dom]{path\_dom <string>}
+\subsubsection[path\_dom]{\kw{path\_dom} <string>}
 \index{path\_dom}
+
   Returns true when one of the strings is found isolated or delimited with dots
   in the path. This may be used to perform domain name matching in proxy
   requests. See also "path\_sub" and "url\_dom".
 
-\subsubsection[path\_end]{path\_end <string>}
+\subsubsection[path\_end]{\kw{path\_end} <string>}
 \index{path\_end}
+
   Returns true when the path ends with one of the strings. This may be used to
   control file name extension.
 
-\subsubsection[path\_len]{path\_len <integer>}
+\subsubsection[path\_len]{\kw{path\_len} <integer>}
 \index{path\_len}
+
   Returns true when the path length matches the values or ranges specified.
   This may be used to detect abusive requests for instance.
 
-\subsubsection[path\_reg]{path\_reg <regex>}
+\subsubsection[path\_reg]{\kw{path\_reg} <regex>}
 \index{path\_reg}
+
   Returns true when the path matches one of the regular expressions. It can be
   used any time, but it is important to remember that regex matching is slower
   than other methods. See also "url\_reg" and all "path\_" criteria.
 
-\subsubsection[path\_sub]{path\_sub <string>}
+\subsubsection[path\_sub]{\kw{path\_sub} <string>}
 \index{path\_sub}
+
   Returns true when the path contains one of the strings. It can be used to
-  detect particular patterns in paths, such as "\verb|../|" for example. See also
+  detect particular patterns in paths, such as \cmd{../} for example. See also
   "path\_dir".
 
-\subsubsection[payload]{payload(<offset>,<length>) <string>}
+\subsubsection[payload]{\kw{payload}(<offset>,<length>) <string>}
 \index{payload}
+
   Returns true if the block of <length> bytes, starting at byte <offset> in the
   request or response buffer (depending on the rule) exactly matches one of the
   strings.
 
-\subsubsection[payload\_lv]{payload\_lv(<offset1>,<length>[,<offset2>])}
+\subsubsection[payload\_lv]{\kw{payload\_lv}(<offset1>,<length>[,<offset2>])}
 \index{payload\_lv}
+
   Returns true if the block whose size is specified at <offset1> for <length>
   bytes, and which starts at <offset2> if specified or just after the length in
   the request or response buffer (depending on the rule) exactly matches one of
   the strings. The <offset2> parameter also supports relative offsets if
   prepended with a '+' or '-' sign.
 
-\subsubsection[req\_ver]{req\_ver <string>}
+\subsubsection[req\_ver]{\kw{req\_ver} <string>}
+\index{req\_ver}
+
   Applies to the version string in the HTTP request, eg: "1.0". Some predefined
   ACL already check for versions 1.0 and 1.1.
 
-\subsubsection[status]{status <integer>}
+\subsubsection[status]{\kw{status} <integer>}
 \index{status}
+
   Applies to the HTTP status code in the HTTP response, eg: "302". It can be
   used to act on responses depending on status ranges, for instance, remove
   any Location header if the response is not a 3xx.
 
-\subsubsection[url]{url <string>}
+\subsubsection[url]{\kw{url} <string>}
 \index{url}
+
   Applies to the whole URL passed in the request. The only real use is to match
   "*", for which there already is a predefined ACL.
 
-\subsubsection[url\_beg]{url\_beg <string>}
+\subsubsection[url\_beg]{\kw{url\_beg} <string>}
 \index{url\_beg}
+
   Returns true when the URL begins with one of the strings. This can be used to
   check whether a URL begins with a slash or with a protocol scheme.
 
-\subsubsection[url\_dir]{url\_dir <string>}
+\subsubsection[url\_dir]{\kw{url\_dir} <string>}
 \index{url\_dir}
+
   Returns true when one of the strings is found isolated or delimited with
   slashes in the URL. This is used to perform filename or directory name
   matching without the risk of wrong match due to colliding prefixes. See also
   "path\_dir" and "url\_sub".
 
-\subsubsection[url\_dom]{url\_dom <string>}
+\subsubsection[url\_dom]{\kw{url\_dom} <string>}
 \index{url\_dom}
+
   Returns true when one of the strings is found isolated or delimited with dots
   in the URL. This is used to perform domain name matching without the risk of
   wrong match due to colliding prefixes. See also "url\_sub".
 
-\subsubsection[url\_end]{url\_end <string>}
+\subsubsection[url\_end]{\kw{url\_end} <string>}
 \index{url\_end}
+
   Returns true when the URL ends with one of the strings. It has very limited
   use. "path\_end" should be used instead for filename matching.
 
-\subsubsection[url\_ip]{url\_ip <address>}
+\subsubsection[url\_ip]{\kw{url\_ip} <address>}
 \index{url\_ip}
+
   Applies to the IPv4 or IPv6 address specified in the absolute URI in an HTTP
   request. It can be used to prevent access to certain resources such as local
   network. It is useful with option "http\_proxy".
 
-\subsubsection[url\_len]{url\_len <integer>}
+\subsubsection[url\_len]{\kw{url\_len} <integer>}
 \index{url\_len}
+
   Returns true when the url length matches the values or ranges specified. This
   may be used to detect abusive requests for instance.
 
-\subsubsection[url\_port]{url\_port <integer>}
+\subsubsection[url\_port]{\kw{url\_port} <integer>}
 \index{url\_port}
+
   Applies to the port specified in the absolute URI in an HTTP request. It can
   be used to prevent access to certain resources. It is useful with option
   "http\_proxy". Note that if the port is not specified in the request, port 80
   is assumed.
 
-\subsubsection[url\_reg]{url\_reg <regex>}
+\subsubsection[url\_reg]{\kw{url\_reg} <regex>}
 \index{url\_reg}
+
   Returns true when the URL matches one of the regular expressions. It can be
   used any time, but it is important to remember that regex matching is slower
   than other methods. See also "path\_reg" and all "url\_" criteria.
 
-\subsubsection[url\_sub]{url\_sub <string>}
+\subsubsection[url\_sub]{\kw{url\_sub} <string>}
 \index{url\_sub}
+
   Returns true when the URL contains one of the strings. It can be used to
   detect particular patterns in query strings for example. See also "path\_sub".
 
-\subsubsection[urlp]{urlp(<name>) <string>}
+\subsubsection[urlp]{\kw{urlp}(<name>) <string>}
 \index{urlp}
+
   \emph{Note:} all "urlp*" matching criteria apply to the first occurrence of the
   parameter <name> in the query string. The parameter name is case-sensitive.
 
   The "urlp" matching criteria returns true if the designated URL parameter
   matches any of the strings. This can be used to check for exact values.
 
-\subsubsection[urlp\_beg]{urlp\_beg(<name>) <string>}
+\subsubsection[urlp\_beg]{\kw{urlp\_beg}(<name>) <string>}
 \index{urlp\_beg}
+
   Returns true when the URL parameter "<name>" begins with one of the strings.
   This can be used to check whether a URL begins with a slash or with a
   protocol scheme.
 
-\subsubsection[urlp\_dir]{urlp\_dir(<name>) <string>}
+\subsubsection[urlp\_dir]{\kw{urlp\_dir}(<name>) <string>}
 \index{urlp\_dir}
+
   Returns true when the URL parameter "<name>" contains one of the strings
   either isolated or delimited with slashes. This is used to perform filename
   or directory name matching in a specific URL parameter without the risk of
   wrong match due to colliding prefixes. See also "path\_dir" and "urlp\_sub".
 
-\subsubsection[urlp\_dom]{urlp\_dom(<name>) <string>}
+\subsubsection[urlp\_dom]{\kw{urlp\_dom}(<name>) <string>}
 \index{urlp\_dom}
+
   Returns true when one of the strings is found isolated or delimited with dots
   in the URL parameter "<name>". This is used to perform domain name matching
   in a specific URL parameter without the risk of wrong match due to colliding
   prefixes. See also "urlp\_sub".
 
-\subsubsection[urlp\_end]{urlp\_end(<name>) <string>}
+\subsubsection[urlp\_end]{\kw{urlp\_end}(<name>) <string>}
 \index{urlp\_end}
+
   Returns true when the URL parameter "<name>" ends with one of the strings.
 
-\subsubsection[urlp\_ip]{urlp\_ip(<name>) <address>}
+\subsubsection[urlp\_ip]{\kw{urlp\_ip}(<name>) <address>}
 \index{urlp\_ip}
+
   Returns true when the URL parameter "<name>" contains an IPv4 or IPv6 address
   which matches one of the specified addresses.
 
-\subsubsection[urlp\_len]{urlp\_len(<name>) <integer>}
+\subsubsection[urlp\_len]{\kw{urlp\_len}(<name>) <integer>}
 \index{urlp\_len}
+
   Returns true when the URL parameter "<name>" has a length matching the values
   or ranges specified. This is used to detect abusive requests for instance.
 
-\subsubsection[urlp\_reg]{urlp\_reg(<name>) <regex>}
+\subsubsection[urlp\_reg]{\kw{urlp\_reg}(<name>) <regex>}
 \index{urlp\_reg}
+
   Returns true when the URL parameter "<name>" matches one of the regular
   expressions. It can be used any time, but it is important to remember that
   regex matching is slower than other methods. See also "path\_reg" and all
   "urlp\_" criteria.
 
-\subsubsection[urlp\_sub]{urlp\_sub(<name>) <string>}
+\subsubsection[urlp\_sub]{\kw{urlp\_sub}(<name>) <string>}
 \index{urlp\_sub}
+
   Returns true when the URL parameter "<name>" contains one of the strings. It
   can be used to detect particular patterns in query strings for example. See
   also "path\_sub" and other "urlp\_" criteria.
 
 \section{Pre-defined ACLs}
+\label{sec:pre_definded_acl}
 
 Some predefined ACLs are hard-coded so that they do not have to be declared in
 every frontend which needs them. They all have their names in upper case in
@@ -1267,15 +1354,16 @@ WAIT\_END      & wait\_end                    & wait for end of content analysis
 \end{tabular}
 
 \section{Using ACLs to form conditions}
-
+\label{sec:acl_from_conditions}
 \index{ACL Conditions}
+
 Some actions are only performed upon a valid condition. A condition is a
-combination of ACLs with operators. 3 operators are supported :
+combination of ACLs with operators. 3 operators are supported:
 
 \begin{itemize}
 \item[-] AND (implicit)
-\item[-] OR  (explicit with the "or" keyword or the "||" operator)
-\item[-] Negation with the exclamation mark ("!")
+\item[-] OR  (explicit with the "or" keyword or the \chr{||} operator)
+\item[-] Negation with the exclamation mark \chr{!}
 \end{itemize}
 
 A condition is formed as a disjunctive form:
@@ -1352,9 +1440,10 @@ good use is the following:
         monitor fail if { nbsrv(dynamic) lt 2 } || { nbsrv(static) lt 2 }
    \end{verbatim}
 
-See section 4.2 for detailed help on the "block" and "use\_backend" keywords.
+See section~\ref{sec:keywords_reference} for detailed help on the "block" and "use\_backend" keywords.
 
 \section{Pattern extraction}
+\label{sec:pattern_extraction}
 
 The stickiness features relies on pattern extraction in the request and
 response. Sometimes the data needs to be converted first before being stored,

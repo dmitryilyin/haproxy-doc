@@ -226,7 +226,7 @@ milliseconds, or be suffixed by a time unit among { us, ms, s, m, h, d }.
 By default, the stats socket is limited to 10 concurrent connections. It is
 possible to change this value with "stats maxconn".
 
-\subsubsection[uid]{uid <number>}
+\subsubsection[uid]{\kw{uid} <number>}
 \index{uid}
 
 Changes the process' user ID to <number>. It is recommended that the user ID
@@ -512,14 +512,14 @@ it is required to create at least one userlist and to define users.
 Creates new userlist with name <listname>. Many independent userlists can be
 used to store authentication \& authorization data for independent customers.
 
-\subsubsection[group]{group <groupname> [users <user>,<user>,(...)]}
+\subsubsection[group]{\kw{group} <groupname> [users <user>,<user>,(...)]}
 \index{group}
 
 Adds group <groupname> to the current userlist. It is also possible to
 attach users to this group by using a comma separated list of names
 proceeded by "users" keyword.
 
-\subsubsection[user]{user <username> [password | insecure-password <password>]
+\subsubsection[user]{\kw{user} <username> [password | insecure-password <password>]
   [groups <group>, (...)]}
 \index{user}
 
@@ -571,7 +571,7 @@ tables.
 Creates a new peer list with name <peersect>. It is an independant section,
 which is referenced by one or more stick-tables.
 
-\subsubsection[peer]{peer <peername> <ip>:<port>}
+\subsubsection[peer]{\kw{peer} <peername> <ip>:<port>}
 \index{peer}
 
 Defines a peer inside a peers section.

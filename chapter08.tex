@@ -1,4 +1,5 @@
 \chapter{Logging}
+\label{chap:logging}
 
 One of HAProxy's strong points certainly lies is its precise logs. It probably
 provides the finest level of information available for such a product, which is
@@ -28,6 +29,7 @@ real time, and the security team might analyze the activity logs with one hour
 delay.
 
 \section{Log levels}
+\label{sec:log_levels}
 
 TCP and HTTP connections can be logged with information such as the date, time,
 source IP address, destination address, connection duration, response times,
@@ -240,7 +242,7 @@ Detailed fields description :
     limits have been reached. For instance, if actconn is close to 512 when
     multiple connection errors occur, chances are high that the system limits
     the process to use a maximum of 1024 file descriptors and that all of them
-    are used. See section 3 "Global parameters" to find how to tune the system.
+    are used. See chapter~\ref{chap:global_parameters} "~\nameref{chap:global_parameters}" to find how to tune the system.
 
   - "feconn" is the total number of concurrent connections on the frontend when
     the session was logged. It is useful to estimate the amount of resource
@@ -303,6 +305,7 @@ Detailed fields description :
 \end{verbatim}
 
 \subsection{HTTP log format}
+\label{subsec:http_log_format}
 
 \begin{verbatim}
 The HTTP format is the most complete and the best suited for HTTP proxies. It
@@ -460,7 +463,7 @@ Detailed fields description :
     limits have been reached. For instance, if actconn is close to 512 or 1024
     when multiple connection errors occur, chances are high that the system
     limits the process to use a maximum of 1024 file descriptors and that all
-    of them are used. See section 3 "Global parameters" to find how to tune the
+    of them are used. See chapter~\ref{chap:global_parameters} "~\nameref{chap:global_parameters}" to find how to tune the
     system.
 
   - "feconn" is the total number of concurrent connections on the frontend when
@@ -551,6 +554,7 @@ Detailed fields description :
 \end{verbatim}
 
 \subsection{Custom log format}
+\label{subsec:custom_log_format}
 
 \begin{verbatim}
 The directive log-format allows you to custom the logs in http mode and tcp
@@ -1199,11 +1203,11 @@ performed since no quote may appear anywhere else in the logs.
 \begin{verbatim}
 Cookie capture simplifies the tracking a complete user session. This can be
 achieved using the "capture cookie" statement in the frontend. Please refer to
-section 4.2 for more details. Only one cookie can be captured, and the same
+section~\ref{sec:keywords_reference} for more details. Only one cookie can be captured, and the same
 cookie will simultaneously be checked in the request ("Cookie:" header) and in
 the response ("Set-Cookie:" header). The respective values will be reported in
 the HTTP logs at the "captured_request_cookie" and "captured_response_cookie"
-locations (see section 8.2.3 about HTTP log format). When either cookie is
+locations (see section~\ref{subsec:http_log_format} about HTTP log format). When either cookie is
 not seen, a dash ('-') replaces the value. This way, it's easy to detect when a
 user switches to a new session for example, because the server will reassign it
 a new cookie. It is also possible to detect if a server unexpectedly sets a
@@ -1227,7 +1231,7 @@ server asked the cache to behave, or an object location during a redirection.
 
 Header captures are performed using the "capture request header" and "capture
 response header" statements in the frontend. Please consult their definition in
-section 4.2 for more details.
+section~\ref{sec:keywords_reference} for more details.
 
 It is possible to include both request headers and response headers at the same
 time. Non-existent headers are logged as empty strings, and if one header

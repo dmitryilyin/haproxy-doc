@@ -1835,7 +1835,7 @@ first one to match the cookie.
 The load-balancers will spread the load across 4 local web servers, and
 use the JSESSIONID provided by the application to provide server persistence
 using the new 'prefix' method. Soft-stop will also be implemented as described
-in section 4 above. Moreover, these proxies will provide their own maintenance
+in chapter~\ref{chap:proxies} above. Moreover, these proxies will provide their own maintenance
 soft-stop. Port 80 will be used for application traffic, while port 81 will
 only be used for health-checks and locally rerouted to port 80. A grace time
 will be specified to service on port 80, but not on port 81. This way, a soft

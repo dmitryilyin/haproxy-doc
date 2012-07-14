@@ -100,19 +100,25 @@ It is important to understand that when multiple haproxy processes are started
 on the same sockets, any process may pick up the request and will output its
 own stats.
 
-\subsubsection[clear counters]{clear counters}
+\subsubsection[clear counters]{\kw{clear counters}}
+\index{clear counters}
+
   Clear the max values of the statistics counters in each proxy (frontend \&
   backend) and in each server. The cumulated counters are not affected. This
   can be used to get clean counters after an incident, without having to
   restart nor to clear traffic counters. This command is restricted and can
   only be issued on sockets configured for levels "operator" or "admin".
 
-\subsubsection[clear counters all]{clear counters all}
+\subsubsection[clear counters all]{\kw{clear counters all}}
+\index{clear counters all}
+
   Clear all statistics counters in each proxy (frontend \& backend) and in each
   server. This has the same effect as restarting. This command is restricted
   and can only be issued on sockets configured for level "admin".
 
-\subsubsection[clear table]{clear table <table> [ data.<type> <operator> <value> ] | [ key <key> ]}
+\subsubsection[clear table]{\kw{clear table} <table> [ data.<type> <operator> <value> ] | [ key <key> ]}
+\index{clear table}
+
   Remove entries from the stick-table <table>.
 
   This is typically used to unblock some users complaining they have been
@@ -125,7 +131,7 @@ own stats.
   In the case where no options arguments are given all entries will be removed.
 
   When the "data." form is used entries matching a filter applied using the
-  stored data (see "stick-table" in section 4.2) are removed.  A stored data
+  stored data (see "stick-table" in section~\ref{sec:keywords_reference}) are removed.  A stored data
   type must be specified in <type>, and this data type must be stored in the
   table otherwise an error is reported. The data is compared according to
   <operator> with the 64-bit integer <value>.  Operators are the same as with
@@ -163,8 +169,11 @@ own stats.
         $ echo "show table http_proxy" | socat stdio /tmp/sock1
     >>> # table: http_proxy, type: ip, size:204800, used:1
  \end{verbatim}
+%$
 
-\subsubsection[disable frontend]{disable frontend <frontend>}
+\subsubsection[disable frontend]{\kw{disable frontend} <frontend>}
+\index{disable frontend}
+
   Mark the frontend as temporarily stopped. This corresponds to the mode which
   is used during a soft restart : the frontend releases the port but can be
   enabled again if needed. This should be used with care as some non-Linux OSes
@@ -175,12 +184,14 @@ own stats.
   on the stats page.
 
   The frontend may be specified either by its name or by its numeric ID,
-  prefixed with a sharp ('\#').
+  prefixed with a sharp \chr{\#}.
 
   This command is restricted and can only be issued on sockets configured for
   level "admin".
 
-\subsubsection[disable server]{disable server <backend>/<server>}
+\subsubsection[disable server]{\kw{disable server} <backend>/<server>}
+\index{disable server}
+
   Mark the server DOWN for maintenance. In this mode, no more checks will be
   performed on the server until it leaves maintenance.
   If the server is tracked by other servers, those servers will be set to DOWN
@@ -190,12 +201,14 @@ own stats.
   "MAINT" status, its tracking servers with the "MAINT(via)" one.
 
   Both the backend and the server may be specified either by their name or by
-  their numeric ID, prefixed with a sharp ('\#').
+  their numeric ID, prefixed with a sharp \chr{\#}.
 
   This command is restricted and can only be issued on sockets configured for
   level "admin".
 
-\subsubsection[enable frontend]{enable frontend <frontend>}
+\subsubsection[enable frontend]{\kw{enable} frontend <frontend>}
+\index{enable frontend}
+
   Resume a frontend which was temporarily stopped. It is possible that some of
   the listening ports won't be able to bind anymore (eg: if another process
   took them since the 'disable frontend' operation). If this happens, an error
@@ -203,56 +216,70 @@ own stats.
   which was disabled.
 
   The frontend may be specified either by its name or by its numeric ID,
-  prefixed with a sharp ('\#').
+  prefixed with a sharp \chr{\#}.
 
   This command is restricted and can only be issued on sockets configured for
   level "admin".
 
-\subsubsection[enable server]{enable server <backend>/<server>}
+\subsubsection[enable server]{\kw{enable server} <backend>/<server>}
+\index{enable server}
+
   If the server was previously marked as DOWN for maintenance, this marks the
   server UP and checks are re-enabled.
 
   Both the backend and the server may be specified either by their name or by
-  their numeric ID, prefixed with a sharp ('\#').
+  their numeric ID, prefixed with a sharp \chr{\#}.
 
   This command is restricted and can only be issued on sockets configured for
   level "admin".
 
-\subsubsection[get weight]{get weight <backend>/<server>}
+\subsubsection[get weight]{\kw{get weight} <backend>/<server>}
+\index{get weight}
+
   Report the current weight and the initial weight of server <server> in
   backend <backend> or an error if either doesn't exist. The initial weight is
   the one that appears in the configuration file. Both are normally equal
   unless the current weight has been changed. Both the backend and the server
   may be specified either by their name or by their numeric ID, prefixed with a
-  sharp ('\verb|#|').
+  sharp \chr{\#}.
 
-\subsubsection[help]{help}
+\subsubsection[help]{\kw{help}}
+\index{help}
+
   Print the list of known keywords and their basic usage. The same help screen
   is also displayed for unknown commands.
 
-\subsubsection[prompt]{prompt}
+\subsubsection[prompt]{\kw{prompt}}
+\index{prompt}
+
   Toggle the prompt at the beginning of the line and enter or leave interactive
   mode. In interactive mode, the connection is not closed after a command
   completes. Instead, the prompt will appear again, indicating the user that
   the interpreter is waiting for a new command. The prompt consists in a right
-  angle bracket followed by a space '\verb|> |'. This mode is particularly convenient
+  angle bracket followed by a space \chr{> }. This mode is particularly convenient
   when one wants to periodically check information such as stats or errors.
   It is also a good idea to enter interactive mode before issuing a "help"
   command.
 
-\subsubsection[quit]{quit}
+\subsubsection[quit]{\kw{quit}}
+\index{quit}
+
   Close the connection when in interactive mode.
 
-\subsubsection[set maxconn frontend]{set maxconn frontend <frontend> <value>}
+\subsubsection[set maxconn frontend]{\kw{set maxconn frontend} <frontend> <value>}
+\index{set maxconn frontend}
+
   Dynamically change the specified frontend's maxconn setting. Any non-null
   positive value is allowed, but setting values larger than the global maxconn
   does not make much sense. If the limit is increased and connections were
   pending, they will immediately be accepted. If it is lowered to a value below
   the current number of connections, new connections acceptation will be
   delayed until the threshold is reached. The frontend might be specified by
-  either its name or its numeric ID prefixed with a sharp ('\verb|#|').
+  either its name or its numeric ID prefixed with a sharp \chr{\#}.
 
-\subsubsection[set maxconn global]{set maxconn global <maxconn>}
+\subsubsection[set maxconn global]{\kw{set maxconn global} <maxconn>}
+\index{set maxconn global}
+
   Dynamically change the global maxconn setting within the range defined by the
   initial global maxconn setting. If it is increased and connections were
   pending, they will immediately be accepted. If it is lowered to a value below
@@ -260,20 +287,26 @@ own stats.
   delayed until the threshold is reached. A value of zero restores the initial
   setting.
 
-\subsubsection[set rate-limit connections global]{set rate-limit connections global <value>}
+\subsubsection[set rate-limit connections global]{\kw{set rate-limit connections global} <value>}
+\index{set rate-limit connections global}
+
   Change the process-wide connection rate limit, which is set by the global
   'maxconnrate' setting. A value of zero disables the limitation. This limit
   applies to all frontends and the change has an immediate effect. The value
   is passed in number of connections per second.
 
-\subsubsection[set timeout cli]{set timeout cli <delay>}
+\subsubsection[set timeout cli]{\kw{set timeout cli} <delay>}
+\index{set timeout cli}
+
   Change the CLI interface timeout for current connection. This can be useful
   during long debugging sessions where the user needs to constantly inspect
   some indicators without being disconnected. The delay is passed in seconds.
 
-\subsubsection[set weight]{set weight <backend>/<server> <weight>[\%]}
+\subsubsection[set weight]{\kw{set weight} <backend>/<server> <weight>[\%]}
+\index{set weight}
+
   Change a server's weight to the value passed in argument. If the value ends
-  with the ('\verb|%|') sign, then the new weight will be relative to the initially
+  with the \chr{\%} sign, then the new weight will be relative to the initially
   configured weight. Relative weights are only permitted between 0 and 100\%,
   and absolute weights are permitted between 0 and 256. Servers which are part
   of a farm running a static load-balancing algorithm have stricter limitations
@@ -285,9 +318,11 @@ own stats.
   again after the update by setting it back to 100\%. This command is restricted
   and can only be issued on sockets configured for level "admin". Both the
   backend and the server may be specified either by their name or by their
-  numeric ID, prefixed with a sharp ('\verb|#|').
+  numeric ID, prefixed with a sharp \chr{\#}.
 
-\subsubsection[show errors]{show errors [<iid>]}
+\subsubsection[show errors]{\kw{show errors} [<iid>]}
+\index{show errors}
+
   Dump last known request and response errors collected by frontends and
   backends. If <iid> is specified, the limit the dump to errors concerning
   either frontend or backend whose ID is <iid>. This command is restricted
@@ -334,6 +369,7 @@ own stats.
           00204+ minal\r\n
           00211  \r\n
   \end{verbatim}
+%$
 
     In the example above, we see that the backend "http-in" which has internal
     ID 2 has blocked an invalid response from its server s2 which has internal
@@ -343,15 +379,21 @@ own stats.
     is the slash ('\verb|/|') in header name "header/bizarre", which is not a valid
     HTTP character for a header name.
 
-\subsubsection[show info]{show info}
+\subsubsection[show info]{\kw{show info}}
+\index{show info}
+
   Dump info about haproxy status on current process.
 
-\subsubsection[show sess]{show sess}
+\subsubsection[show sess]{\kw{show sess}}
+\index{show sess}
+
   Dump all known sessions. Avoid doing this on slow connections as this can
   be huge. This command is restricted and can only be issued on sockets
   configured for levels "operator" or "admin".
 
-\subsubsection[show sess]{show sess <id>}
+\subsubsection[show sess <id>]{\kw{show sess <id>}}
+\index{show sess <id>}
+
   Display a lot of internal information about the specified session identifier.
   This identifier is the first field at the beginning of the lines in the dumps
   of "show sess" (it corresponds to the session pointer). Those information are
@@ -359,9 +401,12 @@ own stats.
   complex bug. The output format is intentionally not documented so that it can
   freely evolve depending on demands.
 
-\subsubsection[show stat]{show stat [<iid> <type> <sid>]}
+\subsubsection[show stat]{\kw{show stat} [<iid> <type> <sid>]}
+\index{show stat}
+
   Dump statistics in the CSV format. By passing <id>, <type> and <sid>, it is
   possible to dump only selected items:
+  
   \begin{itemize}
   \item[-] <iid> is a proxy ID, -1 to dump everything
   \item[-] <type> selects the type of dumpable objects : 1 for frontends, 2 for
@@ -390,6 +435,7 @@ own stats.
         (...)
         www1,BACKEND,0,0,0,0,1000,0,0,0,0,0,,0,0,0,0,UP,1,1,0,,0,250, (...)
     \end{verbatim}
+    %$
 
     Here, two commands have been issued at once. That way it's easy to find
     which process the stats apply to in multi-process mode. Notice the empty
@@ -397,27 +443,32 @@ own stats.
     A similar empty line appears at the end of the second block (stats) so that
     the reader knows the output has not been truncated.
 
-\subsubsection[show table]{show table}
+\subsubsection[show table]{\kw{show table}}
+\index{show table}
+
   Dump general information on all known stick-tables. Their name is returned
   (the name of the proxy which holds them), their type (currently zero, always
   IP), their size in maximum possible number of entries, and the number of
   entries currently in use.
 
-  Example :
+  Example:
   \begin{verbatim}
         $ echo "show table" | socat stdio /tmp/sock1
     >>> # table: front_pub, type: ip, size:204800, used:171454
     >>> # table: back_rdp, type: ip, size:204800, used:0
   \end{verbatim}
+%$
 
-\subsubsection[show table]{show table <name> [ data.<type> <operator> <value> ] | [ key <key> ]}
+\subsubsection[show table <name>]{\kw{show table <name>} [ data.<type> <operator> <value> ] | [ key <key> ]}
+\index{show table <name>}
+
   Dump contents of stick-table <name>. In this mode, a first line of generic
   information about the table is reported as with "show table", then all
   entries are dumped. Since this can be quite heavy, it is possible to specify
   a filter in order to specify what entries to display.
 
   When the "data." form is used the filter applies to the stored data (see
-  "stick-table" in section 4.2).  A stored data type must be specified
+  "stick-table" in section~\ref{sec:keywords_reference}).  A stored data type must be specified
   in <type>, and this data type must be stored in the table otherwise an
   error is reported. The data is compared according to <operator> with the
   64-bit integer <value>.  Operators are the same as with the ACLs:
@@ -479,7 +530,9 @@ own stats.
           ( or | awk '/key/{ print a[split($2,a,"=")]; }' )
   \end{verbatim}
 
-\subsubsection[shutdown frontend]{shutdown frontend <frontend>}
+\subsubsection[shutdown frontend]{\kw{shutdown frontend} <frontend>}
+\index{shutdown frontend}
+
   Completely delete the specified frontend. All the ports it was bound to will
   be released. It will not be possible to enable the frontend anymore after
   this operation. This is intended to be used in environments where stopping a
@@ -489,12 +542,14 @@ own stats.
   once it is terminated.
 
   The frontend may be specified either by its name or by its numeric ID,
-  prefixed with a sharp ('\#').
+  prefixed with a sharp \chr{\#}.
 
   This command is restricted and can only be issued on sockets configured for
   level "admin".
 
-\subsubsection[shutdown session]{shutdown session <id>}
+\subsubsection[shutdown session <id>]{\kw{shutdown session <id>}}
+\index{shutdown session <id>}
+
   Immediately terminate the session matching the specified session identifier.
   This identifier is the first field at the beginning of the lines in the dumps
   of "show sess" (it corresponds to the session pointer). This can be used to
@@ -502,7 +557,9 @@ own stats.
   endless transfer is ongoing. Such terminated sessions are reported with a 'K'
   flag in the logs.
 
-\subsubsection[shutdown sessions]{shutdown sessions <backend>/<server>}
+\subsubsection[shutdown sessions <backend>/<server>]{\kw{shutdown sessions <backend>/<server>}}
+\index{shutdown sessions <backend>/<server>}
+
   Immediately terminate all the sessions attached to the specified server. This
   can be used to terminate long-running sessions after a server is put into
   maintenance mode, for instance. Such terminated sessions are reported with a
