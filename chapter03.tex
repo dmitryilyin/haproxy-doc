@@ -1,11 +1,11 @@
 \chapter{Global parameters}
 \label{chap:global_parameters}
 
-Parameters in the \cfgsec{global} section are process-wide and often OS-specific. They
+Parameters in the "global" section are process-wide and often OS-specific. They
 are generally set once for all and do not need being changed once correct. Some
 of them have command-line equivalents.
 
-The following keywords are supported in the \cfgsec{global} section:
+The following keywords are supported in the "global" section:
 
 \begin{multicols}{2}
 \paragraph*{Process management and security}
@@ -356,8 +356,8 @@ limited to some very recent instances of kernel 2.6. Most versions between
 2.6.25 and 2.6.28 are buggy and will forward corrupted data, so they must not
 be used. This option makes it easier to globally disable kernel splicing in
 case of doubt.
-See also: \optl{splice-auto}, \optl{splice-request} and
-\optl{splice-response}.
+See also: option \kwl{splice-auto}, option \kwl{splice-request} and
+option \kwl{splice-response}.
 
 \subsubsection[spread-checks]{\kw{spread-checks} <0..50, in percent>}
 \index{spread-checks}

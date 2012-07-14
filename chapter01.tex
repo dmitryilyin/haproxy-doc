@@ -138,10 +138,10 @@ By default HAProxy operates in a tunnel-like mode with regards to persistent
 connections: for each connection it processes the first request and forwards
 everything else (including additional requests) to selected server. Once
 established, the connection is persisted both on the client and server
-sides. Use \optl{http-server-close} to preserve client persistent connections
+sides. Use option \kwl{http-server-close} to preserve client persistent connections
 while handling every incoming request individually, dispatching them one after
-another to servers, in HTTP close mode. Use \optl{httpclose} to switch both
-sides to HTTP close mode. The \optl{forceclose} and \optl{http-pretend-keepalive} help working around servers misbehaving in HTTP close
+another to servers, in HTTP close mode. Use option \kwl{httpclose} to switch both
+sides to HTTP close mode. The option \kwl{forceclose} and option \kwl{http-pretend-keepalive} help working around servers misbehaving in HTTP close
 mode.
 
 \section{HTTP request}

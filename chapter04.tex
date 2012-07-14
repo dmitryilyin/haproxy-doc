@@ -2166,7 +2166,7 @@ See also: \kwl{timeout queue} and server's \kwl{maxconn} and \kwl{maxqueue} para
   even if that does not make sense, by specifying this option. Similarly, the
   list of characters allowed to appear in a URI is well defined by \rfc{3986}, and
   chars 0-31, 32 (space), 34 \chr{"}, 60 \chr{<}, 62 \chr{>}, 92 \chr{\bslash},
-  94 \chr{^}, 96 \chr{`}, 123 \chr{\{}, 124 \chr{|}, 125 \chr{\}}, 127 (delete)
+  94 \chr{\^}, 96 \chr{`}, 123 \chr{\{}, 124 \chr{|}, 125 \chr{\}}, 127 (delete)
   and anything above are not allowed at all.
   Haproxy always blocks a number of them (0..32, 127). The
   remaining ones are blocked by default unless this option is enabled.
@@ -2436,7 +2436,7 @@ See also: \kwl{log}, \kwl{monitor-net}, \kwl{monitor-uri} and chapter~\ref{chap:
   causes high number of simultaneous connections on the servers and shows high
   global session times in the logs.
 
-  When this happens, it is possible to use \opt{forceclose}. It will
+  When this happens, it is possible to use option \kwl{forceclose}. It will
   actively close the outgoing server channel as soon as the server has finished
   to respond. This option implicitly enables the \kwl{httpclose} option. Note that
   this option also enables the parsing of the full request and response, which
@@ -2645,8 +2645,8 @@ See also: \kwl{option forceclose} and \kwl{option http-server-close}
   This option may be set both in a frontend and in a backend. It is enabled if
   at least one of the frontend or backend holding a connection has it enabled.
   It is worth noting that \kwl{option forceclose} has precedence over \kwl{option http-server-close}
-  and that combining \kw{http-server-close} with \kw{httpclose}
-  basically achieve the same result as \kw{forceclose}.
+  and that combining \kwl{http-server-close} with \kwl{httpclose}
+  basically achieve the same result as \kwl{forceclose}.
 
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
@@ -2678,7 +2678,7 @@ See also: \kwl{option forceclose}, \kwl{option http-pretend-keepalive},
   that non-standard header if it sees proxied requests. A proxied request is
   defined here as one where the URI begins with neither a \chr{/} nor a \chr{*}. The
   choice of header only affects requests passing through proxies making use of
-  one of the \kwl{httpclose, \kwl{forceclose} and \kwl{http-server-close} options. Note
+  one of the \kwl{httpclose}, \kwl{forceclose} and \kwl{http-server-close} options. Note
   that this option can only be specified in a frontend and will affect the
   request along its whole life.
 
@@ -2688,7 +2688,6 @@ See also: \kwl{option forceclose}, \kwl{option http-pretend-keepalive},
   front of an existing proxy.
 
   This option should normally never be used, except in front of a proxy.
-
 
 See also: \kwl{option httpclose}, \kwl{option forceclose} and \kwl{option http-server-close}.
 
@@ -2916,7 +2915,7 @@ See also: \kwl{timeout client}, \kwl{timeout server} and \kwl{timeout tunnel}
 
   The server is considered valid only when the LDAP response contains success resultCode.
   
-  \site{http://tools.ietf.org/html/rfc4511#section-4.1.9}
+  \rfc{4511}
 
   Logging of bind requests is server dependent see your documentation how to
   configure it.
@@ -2926,11 +2925,9 @@ See also: \kwl{timeout client}, \kwl{timeout server} and \kwl{timeout tunnel}
         option ldap-check
 \end{verbatim}
 
-
 See also: \kwl{option httpchk}
 
-
-\subsubsection{option \kw{log-health-checks}}
+\subsubsection[log-health-checks]{option \kw{log-health-checks}}
 \subsubsection*{no option log-health-checks}
 
 \index{log-health-checks}
@@ -3665,7 +3662,7 @@ See also: \kwl{option httplog}, andchapter~\ref{chap:logging} about logging.
 See also: the \kwl{usesrc} argument of the \kwl{source} keyword, and the
             \kw{transparent} option of the \kw{bind} keyword.
 
-\subsubsection{persist \kw{rdp-cookie}}
+\subsubsection[persist rdp-cookie]{\kw{persist rdp-cookie}}
 \subsubsection*{persist rdp-cookie(<name>)}
 \index{persist rdp-cookie}
 
@@ -4357,7 +4354,7 @@ See also: \kwl{reqdeny}, \kwl{acl}, \kwl{block}, chapter~\ref{chap:header_manipu
 
   \item[<string>] is the complete line to be added. Any space or known delimiter
               must be escaped using a backslash \chr{\bslash}. References to matched
-              pattern groups are possible using the common \chr{\N} form, with N
+              pattern groups are possible using the common \chr{\bslash{}N} form, with N
               being a single digit between 0 and 9. Please refer to section
               6 about HTTP header manipulation for more information.
 
