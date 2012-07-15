@@ -19,3 +19,9 @@ text
 4. Improve look of tabulars
 
 5. Make tabulars and pictures floats with labels
+
+6. Find text that can be written as equalations
+
+7. Check for missind \index entries
+
+8. check for missing \label after sections
