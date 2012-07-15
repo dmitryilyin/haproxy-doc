@@ -1,0 +1,49 @@
+  +---+------+-----------------------------------------------+-------------+
+  | H | var  | field name (8.2.2 and 8.2.3 for description)  | type        |
+  +---+------+-----------------------------------------------+-------------+
+  |   | %o   | special variable, apply flags on all next var |             |
+  +---+------+-----------------------------------------------+-------------+
+  |   | %B   | bytes_read                                    | numeric     |
+  |   | %Ci  | client_ip                                     | IP          |
+  |   | %Cp  | client_port                                   | numeric     |
+  |   | %Bi  | backend_source_ip                             | IP          |
+  |   | %Bp  | backend_source_port                           | numeric     |
+  |   | %Fi  | frontend_ip                                   | IP          |
+  |   | %Fp  | frontend_port                                 | numeric     |
+  |   | %H   | hostname                                      | string      |
+  |   | %ID  | unique-id                                     | string      |
+  |   | %Si  | server_IP                                     | IP          |
+  |   | %Sp  | server_port                                   | numeric     |
+  |   | %T   | gmt_date_time                                 | date        |
+  |   | %Tc  | Tc                                            | numeric     |
+  | * | %Tq  | Tq                                            | numeric     |
+  | * | %Tr  | Tr                                            | numeric     |
+  |   | %Ts  | timestamp                                     | numeric     |
+  |   | %Tt  | Tt                                            | numeric     |
+  |   | %Tw  | Tw                                            | numeric     |
+  |   | %ac  | actconn                                       | numeric     |
+  |   | %b   | backend_name                                  | string      |
+  |   | %bc  | beconn                                        | numeric     |
+  |   | %bq  | backend_queue                                 | numeric     |
+  | * | %cc  | captured_request_cookie                       | string      |
+  | * | %rt  | http_request_counter                          | numeric     |
+  | * | %cs  | captured_response_cookie                      | string      |
+  |   | %f   | frontend_name                                 | string      |
+  |   | %fc  | feconn                                        | numeric     |
+  | * | %hr  | captured_request_headers default style        | string      |
+  | * | %hrl | captured_request_headers CLF style            | string list |
+  | * | %hs  | captured_response_headers default style       | string      |
+  | * | %hsl | captured_response_headers CLF style           | string list |
+  |   | %ms  | accept date milliseconds                      | numeric     |
+  |   | %pid | PID                                           | numeric     |
+  | * | %r   | http_request                                  | string      |
+  |   | %rc  | retries                                       | numeric     |
+  |   | %s   | server_name                                   | string      |
+  |   | %sc  | srv_conn                                      | numeric     |
+  |   | %sq  | srv_queue                                     | numeric     |
+  | * | %st  | status_code                                   | numeric     |
+  |   | %t   | date_time                                     | date        |
+  |   | %ts  | termination_state                             | string      |
+  | * | %tsc | termination_state with cookie status          | string      |
+  +---+------+-----------------------------------------------+-------------+
+

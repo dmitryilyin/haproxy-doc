@@ -2639,7 +2639,7 @@ See also: \kwl{option forceclose} and \kwl{option http-server-close}
   session or not. The accept date reported in the logs corresponds to the end
   of the previous request, and the request time corresponds to the time spent
   waiting for a new request. The keep-alive request time is still bound to the
-  timeout defined by \kw{timeout http-keep-alive} or \kw{timeout http-request} if
+  timeout defined by \kwl{timeout http-keep-alive} or \kwl{timeout http-request} if
   not set.
 
   This option may be set both in a frontend and in a backend. It is enabled if
@@ -3390,7 +3390,7 @@ See also: \kwl{option splice-request}, \kwl{option splice-response}, and global
   will user kernel tcp splicing whenever possible to forward data going from
   the client to the server. It might still use the recv/send scheme if there
   are no spare pipes left. This option requires splicing to be enabled at
-  compile time, and may be globally disabled with the global option \kw{nosplice}.
+  compile time, and may be globally disabled with the global option \kwl{nosplice}.
   Since splice uses pipes, using it requires that there are enough spare pipes.
 
   \emph{Important note:} see "option splice-auto" for usage limitations.
@@ -3422,7 +3422,7 @@ See also: \kwl{option splice-auto}, \kwl{option splice-response}, and global opt
   will user kernel tcp splicing whenever possible to forward data going from
   the server to the client. It might still use the recv/send scheme if there
   are no spare pipes left. This option requires splicing to be enabled at
-  compile time, and may be globally disabled with the global option \kw{nosplice}.
+  compile time, and may be globally disabled with the global option \kwl{nosplice}.
   Since splice uses pipes, using it requires that there are enough spare pipes.
 
   \emph{Important note:} see \kwl{option splice-auto} for usage limitations.
@@ -3437,7 +3437,7 @@ See also: \kwl{option splice-auto}, \kwl{option splice-response}, and global opt
 
 
 See also: \kwl{option splice-auto}, \kwl{option splice-request}, and global options
-             \kw{nosplice} and \kw{maxpipes}.
+             \kwl{nosplice} and \kwl{maxpipes}.
 
 \subsubsection[srvtcpka]{option \kw{srvtcpka}}
 \subsubsection*{no option srvtcpka}
@@ -3660,7 +3660,7 @@ See also: \kwl{option httplog}, andchapter~\ref{chap:logging} about logging.
 
 
 See also: the \kwl{usesrc} argument of the \kwl{source} keyword, and the
-            \kw{transparent} option of the \kw{bind} keyword.
+            \kwl{transparent} option of the \kwl{bind} keyword.
 
 \subsubsection[persist rdp-cookie]{\kw{persist rdp-cookie}}
 \subsubsection*{persist rdp-cookie(<name>)}
@@ -3686,7 +3686,7 @@ See also: the \kwl{usesrc} argument of the \kwl{source} keyword, and the
 
   Note that this only makes sense in a TCP backend, but for this to work, the
   frontend must have waited long enough to ensure that an RDP cookie is present
-  in the request buffer. This is the same requirement as with the \kw{rdp-cookie}
+  in the request buffer. This is the same requirement as with the \kwl{rdp-cookie}
   load-balancing method. Thus it is highly recommended to put all statements in
   a single "listen" section.
 
@@ -3732,7 +3732,7 @@ See also: \kwl{balance rdp-cookie}, \kwl{tcp-request}, the \kwl{req\_rdp\_cookie
   During this time, the pending sessions will be kept in the socket's backlog
   (in system buffers) and haproxy will not even be aware that sessions are
   pending. When applying very low limit on a highly loaded service, it may make
-  sense to increase the socket's backlog using the \kw{backlog} keyword.
+  sense to increase the socket's backlog using the \kwl{backlog} keyword.
 
   This feature is particularly efficient at blocking connection-based attacks
   or service abuse on fragile servers. Since the session rate is measured every
@@ -3750,8 +3750,7 @@ See also: \kwl{balance rdp-cookie}, \kwl{tcp-request}, the \kwl{req\_rdp\_cookie
 
   \emph{Note:} when the maximum rate is reached, the frontend's status is not changed
          but its sockets appear as "WAITING" in the statistics if the
-         \kw{socket-stats} option is enabled.
-
+         \kwl{socket-stats} option is enabled.
 
 See also: the \kwl{backlog} keyword and the \kwl{fe\_sess\_rate} ACL criterion.
 
@@ -4263,7 +4262,7 @@ See also: \kwl{reqadd}, chapter~\ref{chap:header_manipulation} about HTTP header
               parenthesis grouping is supported and no preliminary backslash
               is required. Any space or known delimiter must be escaped using
               a backslash \chr{\bslash}. The pattern applies to a full line at a time.
-              The \kw{rspdel} keyword strictly matches case while \kw{rspidel}
+              The \kwl{rspdel} keyword strictly matches case while \kwl{rspidel}
               ignores case.
 
   \item[<cond>] is an optional matching condition built from ACLs. It makes it
@@ -4304,7 +4303,7 @@ See also: \kwl{rspadd}, \kwl{rsprep}, \kwl{reqdel}, chapter~\ref{chap:header_man
               parenthesis grouping is supported and no preliminary backslash
               is required. Any space or known delimiter must be escaped using
               a backslash \chr{\bslash}. The pattern applies to a full line at a time.
-              The \kw{rspdeny} keyword strictly matches case while \kw{rspideny}
+              The \kwl{rspdeny} keyword strictly matches case while \kwl{rspideny}
               ignores case.
 
   \item[<cond>] is an optional matching condition built from ACLs. It makes it
@@ -4349,7 +4348,7 @@ See also: \kwl{reqdeny}, \kwl{acl}, \kwl{block}, chapter~\ref{chap:header_manipu
               parenthesis grouping is supported and no preliminary backslash
               is required. Any space or known delimiter must be escaped using
               a backslash \chr{\bslash}. The pattern applies to a full line at a time.
-              The \kw{rsprep} keyword strictly matches case while \kw{rspirep}
+              The \kwl{rsprep} keyword strictly matches case while \kwl{rspirep}
               ignores case.
 
   \item[<string>] is the complete line to be added. Any space or known delimiter

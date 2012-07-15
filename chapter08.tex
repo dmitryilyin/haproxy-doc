@@ -132,25 +132,22 @@ It is advised not to use this deprecated format for newer installations as it
 will eventually disappear.
 
 \subsection{TCP log format}
+\label{sec:tcp_log_format}
 
-%-------------------------------------------------------
-
-\begin{verbatim}
-
-The TCP format is used when "option tcplog" is specified in the frontend, and
+The TCP format is used when option \kwl{tcplog} is specified in the frontend, and
 is the recommended format for pure TCP proxies. It provides a lot of precious
 information for troubleshooting. Since this format includes timers and byte
 counts, the log is normally emitted at the end of the session. It can be
-emitted earlier if "option logasap" is specified, which makes sense in most
+emitted earlier if option \kwl{logasap} is specified, which makes sense in most
 environments with long sessions such as remote terminals. Sessions which match
 the "monitor" rules are never logged. It is also possible not to emit logs for
 sessions for which no data were exchanged between the client and the server, by
-specifying "option dontlognull" in the frontend. Successful connections will
-not be logged if "option dontlog-normal" is specified in the frontend. A few
+specifying option \kwl{dontlognull} in the frontend. Successful connections will
+not be logged if option \kwl{dontlog-normal} is specified in the frontend. A few
 fields may slightly vary depending on some configuration options, those are
-marked with a star ('*') after the field name below.
+marked with a star \chr{*} after the field name below.
 
-  Example:
+  \begin{example}{Example:}
         frontend fnt
             mode tcp
             option tcplog
@@ -163,95 +160,115 @@ marked with a star ('*') after the field name below.
     >>> Feb  6 12:12:56 localhost \
           haproxy[14387]: 10.0.1.2:33313 [06/Feb/2009:12:12:51.443] fnt \
           bck/srv1 0/0/5007 212 -- 0/0/0/0/3 0/0
+  \end{example}
 
-  Field   Format                                Extract from the example above
-      1   process_name '[' pid ']:'                            haproxy[14387]:
-      2   client_ip ':' client_port                             10.0.1.2:33313
-      3   '[' accept_date ']'                       [06/Feb/2009:12:12:51.443]
-      4   frontend_name                                                    fnt
-      5   backend_name '/' server_name                                bck/srv1
-      6   Tw '/' Tc '/' Tt*                                           0/0/5007
-      7   bytes_read*                                                      212
-      8   termination_state                                                 --
-      9   actconn '/' feconn '/' beconn '/' srv_conn '/' retries*    0/0/0/0/3
-     10   srv_queue '/' backend_queue                                      0/0
+\begin{tabular}{cll}
+\head{Field} & \head{Format} & \head{From the example above} \\
+\hline
+1  &  process\_name '[' pid ']:'             &               haproxy[14387]: \\
+2  &  client\_ip ':' client\_port            &                 10.0.1.2:33313 \\
+3  &  '[' accept\_date ']'                   &    [06/Feb/2009:12:12:51.443] \\
+4  &  frontend\_name                         &                           fnt \\
+5  &  backend\_name '/' server\_name         &                       bck/srv1 \\
+6  &  Tw '/' Tc '/' Tt*                      &                     0/0/5007 \\
+7  &  bytes\_read*                           &                           212 \\
+8  &  termination\_state                     &                            {-}{-} \\
+9  &  actconn '/' feconn '/' beconn '/' srv\_conn '/' retries*  &  0/0/0/0/3 \\
+10 &  srv\_queue '/' backend\_queue         &                             0/0
+\end{tabular}
 
-Detailed fields description :
-  - "client_ip" is the IP address of the client which initiated the TCP
+Detailed fields description:
+\begin{itemize}
+\item[-]
+    "client\_ip" is the IP address of the client which initiated the TCP
     connection to haproxy. If the connection was accepted on a UNIX socket
     instead, the IP address would be replaced with the word "unix". Note that
     when the connection is accepted on a socket configured with "accept-proxy"
     and the PROXY protocol is correctly used, then the logs will reflect the
     forwarded connection's information.
 
-  - "client_port" is the TCP port of the client which initiated the connection.
+\item[-]
+    "client\_port" is the TCP port of the client which initiated the connection.
     If the connection was accepted on a UNIX socket instead, the port would be
     replaced with the ID of the accepting socket, which is also reported in the
     stats interface.
 
-  - "accept_date" is the exact date when the connection was received by haproxy
+\item[-]
+    "accept\_date" is the exact date when the connection was received by haproxy
     (which might be very slightly different from the date observed on the
     network if there was some queuing in the system's backlog). This is usually
     the same date which may appear in any upstream firewall's log.
 
-  - "frontend_name" is the name of the frontend (or listener) which received
+\item[-]
+    "frontend\_name" is the name of the frontend (or listener) which received
     and processed the connection.
 
-  - "backend_name" is the name of the backend (or listener) which was selected
+\item[-]
+    "backend\_name" is the name of the backend (or listener) which was selected
     to manage the connection to the server. This will be the same as the
     frontend if no switching rule has been applied, which is common for TCP
     applications.
 
-  - "server_name" is the name of the last server to which the connection was
+\item[-]
+    "server\_name" is the name of the last server to which the connection was
     sent, which might differ from the first one if there were connection errors
     and a redispatch occurred. Note that this server belongs to the backend
     which processed the request. If the connection was aborted before reaching
     a server, "<NOSRV>" is indicated instead of a server name.
 
-  - "Tw" is the total time in milliseconds spent waiting in the various queues.
+\item[-]
+    "Tw" is the total time in milliseconds spent waiting in the various queues.
     It can be "-1" if the connection was aborted before reaching the queue.
     See "Timers" below for more details.
 
-  - "Tc" is the total time in milliseconds spent waiting for the connection to
+\item[-]
+    "Tc" is the total time in milliseconds spent waiting for the connection to
     establish to the final server, including retries. It can be "-1" if the
     connection was aborted before a connection could be established. See
     "Timers" below for more details.
 
-  - "Tt" is the total time in milliseconds elapsed between the accept and the
+\item[-]
+   "Tt" is the total time in milliseconds elapsed between the accept and the
     last close. It covers all possible processings. There is one exception, if
-    "option logasap" was specified, then the time counting stops at the moment
+    option \kwl{logasap} was specified, then the time counting stops at the moment
     the log is emitted. In this case, a '+' sign is prepended before the value,
     indicating that the final one will be larger. See "Timers" below for more
     details.
 
-  - "bytes_read" is the total number of bytes transmitted from the server to
-    the client when the log is emitted. If "option logasap" is specified, the
+\item[-]
+    "bytes\_read" is the total number of bytes transmitted from the server to
+    the client when the log is emitted. If option \kwl{logasap} is specified, the
     this value will be prefixed with a '+' sign indicating that the final one
     may be larger. Please note that this value is a 64-bit counter, so log
     analysis tools must be able to handle it without overflowing.
 
-  - "termination_state" is the condition the session was in when the session
+\item[-]
+    "termination\_state" is the condition the session was in when the session
     ended. This indicates the session state, which side caused the end of
     session to happen, and for what reason (timeout, error, ...). The normal
-    flags should be "--", indicating the session was closed by either end with
+    flags should be "{-}{-}", indicating the session was closed by either end with
     no data remaining in buffers. See below "Session state at disconnection"
     for more details.
 
-  - "actconn" is the total number of concurrent connections on the process when
+\item[-]
+    "actconn" is the total number of concurrent connections on the process when
     the session was logged. It it useful to detect when some per-process system
     limits have been reached. For instance, if actconn is close to 512 when
     multiple connection errors occur, chances are high that the system limits
     the process to use a maximum of 1024 file descriptors and that all of them
-    are used. See chapter~\ref{chap:global_parameters} "~\nameref{chap:global_parameters}" to find how to tune the system.
+    are used. See chapter~\ref{chap:global_parameters}
+    "~\nameref{chap:global_parameters}" to find how to tune the system.
 
-  - "feconn" is the total number of concurrent connections on the frontend when
+\item[-]
+    "feconn" is the total number of concurrent connections on the frontend when
     the session was logged. It is useful to estimate the amount of resource
     required to sustain high loads, and to detect when the frontend's "maxconn"
     has been reached. Most often when this value increases by huge jumps, it is
     because there is congestion on the backend servers, but sometimes it can be
     caused by a denial of service attack.
 
-  - "beconn" is the total number of concurrent connections handled by the
+\item[-]
+    "beconn" is the total number of concurrent connections handled by the
     backend when the session was logged. It includes the total number of
     concurrent connections active on servers as well as the number of
     connections pending in queues. It is useful to estimate the amount of
@@ -260,31 +277,34 @@ Detailed fields description :
     congestion on the backend servers, but sometimes it can be caused by a
     denial of service attack.
 
-  - "srv_conn" is the total number of concurrent connections still active on
+\item[-]
+    "srv\_conn" is the total number of concurrent connections still active on
     the server when the session was logged. It can never exceed the server's
     configured "maxconn" parameter. If this value is very often close or equal
     to the server's "maxconn", it means that traffic regulation is involved a
     lot, meaning that either the server's maxconn value is too low, or that
     there aren't enough servers to process the load with an optimal response
-    time. When only one of the server's "srv_conn" is high, it usually means
+    time. When only one of the server's "srv\_conn" is high, it usually means
     that this server has some trouble causing the connections to take longer to
     be processed than on other servers.
 
-  - "retries" is the number of connection retries experienced by this session
+\item[-]
+    "retries" is the number of connection retries experienced by this session
     when trying to connect to the server. It must normally be zero, unless a
     server is being stopped at the same moment the connection was attempted.
     Frequent retries generally indicate either a network problem between
     haproxy and the server, or a misconfigured system backlog on the server
     preventing new connections from being queued. This field may optionally be
-    prefixed with a '+' sign, indicating that the session has experienced a
+    prefixed with a \chr{+} sign, indicating that the session has experienced a
     redispatch after the maximal retry count has been reached on the initial
     server. In this case, the server name appearing in the log is the one the
     connection was redispatched to, and not the first one, though both may
     sometimes be the same in case of hashing for instance. So as a general rule
-    of thumb, when a '+' is present in front of the retry count, this count
+    of thumb, when a \chr{+} is present in front of the retry count, this count
     should not be attributed to the logged server.
 
-  - "srv_queue" is the total number of requests which were processed before
+\item[-]
+    "srv\_queue" is the total number of requests which were processed before
     this one in the server queue. It is zero when the request has not gone
     through the server queue. It makes it possible to estimate the approximate
     server's response time by dividing the time spent in queue by the number of
@@ -293,7 +313,8 @@ Detailed fields description :
     cumulated. A request should not pass through both the server queue and the
     backend queue unless a redispatch occurs.
 
-  - "backend_queue" is the total number of requests which were processed before
+\item[-]
+    "backend\_queue" is the total number of requests which were processed before
     this one in the backend's global queue. It is zero when the request has not
     gone through the global queue. It makes it possible to estimate the average
     queue length, which easily translates into a number of missing servers when
@@ -302,28 +323,27 @@ Detailed fields description :
     and then both positions will be cumulated. A request should not pass
     through both the server queue and the backend queue unless a redispatch
     occurs.
-\end{verbatim}
+\end{itemize}
 
 \subsection{HTTP log format}
 \label{subsec:http_log_format}
 
-\begin{verbatim}
 The HTTP format is the most complete and the best suited for HTTP proxies. It
-is enabled by when "option httplog" is specified in the frontend. It provides
+is enabled by when option \kwl{httplog} is specified in the frontend. It provides
 the same level of information as the TCP format with additional features which
 are specific to the HTTP protocol. Just like the TCP format, the log is usually
-emitted at the end of the session, unless "option logasap" is specified, which
+emitted at the end of the session, unless option \kwl{logasap} is specified, which
 generally only makes sense for download sites. A session which matches the
 "monitor" rules will never logged. It is also possible not to log sessions for
-which no data were sent by the client by specifying "option dontlognull" in the
-frontend. Successful connections will not be logged if "option dontlog-normal"
+which no data were sent by the client by specifying option \kwl{dontlognull} in the
+frontend. Successful connections will not be logged if option \kwl{dontlog-normal}
 is specified in the frontend.
 
 Most fields are shared with the TCP log, some being different. A few fields may
 slightly vary depending on some configuration options. Those ones are marked
-with a star ('*') after the field name below.
+with a star \chr{*} after the field name below.
 
-  Example :
+  \begin{example}{Example:}
         frontend http-in
             mode http
             option httplog
@@ -337,76 +357,89 @@ with a star ('*') after the field name below.
           haproxy[14389]: 10.0.1.2:33317 [06/Feb/2009:12:14:14.655] http-in \
           static/srv1 10/0/30/69/109 200 2750 - - ---- 1/1/1/1/0 0/0 {1wt.eu} \
           {} "GET /index.html HTTP/1.1"
+\end{example}
 
-  Field   Format                                Extract from the example above
-      1   process_name '[' pid ']:'                            haproxy[14389]:
-      2   client_ip ':' client_port                             10.0.1.2:33317
-      3   '[' accept_date ']'                       [06/Feb/2009:12:14:14.655]
-      4   frontend_name                                                http-in
-      5   backend_name '/' server_name                             static/srv1
-      6   Tq '/' Tw '/' Tc '/' Tr '/' Tt*                       10/0/30/69/109
-      7   status_code                                                      200
-      8   bytes_read*                                                     2750
-      9   captured_request_cookie                                            -
-     10   captured_response_cookie                                           -
-     11   termination_state                                               ----
-     12   actconn '/' feconn '/' beconn '/' srv_conn '/' retries*    1/1/1/1/0
-     13   srv_queue '/' backend_queue                                      0/0
-     14   '{' captured_request_headers* '}'                   {haproxy.1wt.eu}
-     15   '{' captured_response_headers* '}'                                {}
-     16   '"' http_request '"'                      "GET /index.html HTTP/1.1"
+\begin{tabular}{cll}
+\head{Field}  & \head{Format}                   & \head{From the example above} \\
+      1  & process\_name '[' pid ']:'             &              haproxy[14389]: \\
+      2  & client\_ip ':' client\_port            &                10.0.1.2:33317 \\
+      3  & '[' accept\_date ']'                   &   [06/Feb/2009:12:14:14.655] \\
+      4  & frontend\_name                                   &            http-in \\
+      5  & backend\_name '/' server\_name                   &         static/srv1 \\
+      6  & Tq '/' Tw '/' Tc '/' Tr '/' Tt*                  &    10/0/30/69/109 \\ 
+      7  & status\_code                                              &       200 \\
+      8  & bytes\_read*                                              &      2750 \\
+      9  & captured\_request\_cookie                                 &          {-} \\
+     10  & captured\_response\_cookie                                &          {-} \\
+     11  & termination\_state                                        &       {-}{-}{-}{-} \\
+     12  & actconn '/' feconn '/' beconn '/' srv\_conn '/' retries*  &  1/1/1/1/0 \\
+     13  & srv\_queue '/' backend\_queue             &                         0/0 \\
+     14  & '\{' captured\_request\_headers* '\}'     &              \{haproxy.1wt.eu\} \\
+     15  & '\{' captured\_response\_headers* '\}'    &                          \{\} \\
+     16  & '"' http\_request '"'                     & "GET /index.html HTTP/1.1" \\
+\end{tabular}
 
-
-Detailed fields description :
-  - "client_ip" is the IP address of the client which initiated the TCP
+Detailed fields description:
+\begin{itemize}
+\item[-]
+    "client\_ip" is the IP address of the client which initiated the TCP
     connection to haproxy. If the connection was accepted on a UNIX socket
     instead, the IP address would be replaced with the word "unix". Note that
     when the connection is accepted on a socket configured with "accept-proxy"
     and the PROXY protocol is correctly used, then the logs will reflect the
     forwarded connection's information.
 
-  - "client_port" is the TCP port of the client which initiated the connection.
+\item[-]
+    "client\_port" is the TCP port of the client which initiated the connection.
     If the connection was accepted on a UNIX socket instead, the port would be
     replaced with the ID of the accepting socket, which is also reported in the
     stats interface.
 
-  - "accept_date" is the exact date when the TCP connection was received by
+\item[-]
+    "accept\_date" is the exact date when the TCP connection was received by
     haproxy (which might be very slightly different from the date observed on
     the network if there was some queuing in the system's backlog). This is
     usually the same date which may appear in any upstream firewall's log. This
     does not depend on the fact that the client has sent the request or not.
 
-  - "frontend_name" is the name of the frontend (or listener) which received
+\item[-]
+    "frontend\_name" is the name of the frontend (or listener) which received
     and processed the connection.
 
-  - "backend_name" is the name of the backend (or listener) which was selected
+\item[-]
+    "backend\_name" is the name of the backend (or listener) which was selected
     to manage the connection to the server. This will be the same as the
     frontend if no switching rule has been applied.
 
-  - "server_name" is the name of the last server to which the connection was
+\item[-]
+    "server\_name" is the name of the last server to which the connection was
     sent, which might differ from the first one if there were connection errors
     and a redispatch occurred. Note that this server belongs to the backend
     which processed the request. If the request was aborted before reaching a
     server, "<NOSRV>" is indicated instead of a server name. If the request was
     intercepted by the stats subsystem, "<STATS>" is indicated instead.
 
-  - "Tq" is the total time in milliseconds spent waiting for the client to send
+\item[-]
+    "Tq" is the total time in milliseconds spent waiting for the client to send
     a full HTTP request, not counting data. It can be "-1" if the connection
     was aborted before a complete request could be received. It should always
     be very small because a request generally fits in one single packet. Large
     times here generally indicate network trouble between the client and
     haproxy. See "Timers" below for more details.
 
-  - "Tw" is the total time in milliseconds spent waiting in the various queues.
+\item[-]
+    "Tw" is the total time in milliseconds spent waiting in the various queues.
     It can be "-1" if the connection was aborted before reaching the queue.
     See "Timers" below for more details.
 
-  - "Tc" is the total time in milliseconds spent waiting for the connection to
+\item[-]
+    "Tc" is the total time in milliseconds spent waiting for the connection to
     establish to the final server, including retries. It can be "-1" if the
     request was aborted before a connection could be established. See "Timers"
     below for more details.
 
-  - "Tr" is the total time in milliseconds spent waiting for the server to send
+\item[-]
+    "Tr" is the total time in milliseconds spent waiting for the server to send
     a full HTTP response, not counting data. It can be "-1" if the request was
     aborted before a complete response could be received. It generally matches
     the server's processing time for the request, though it may be altered by
@@ -414,66 +447,76 @@ Detailed fields description :
     "GET" requests generally indicate an overloaded server. See "Timers" below
     for more details.
 
-  - "Tt" is the total time in milliseconds elapsed between the accept and the
+\item[-]
+    "Tt" is the total time in milliseconds elapsed between the accept and the
     last close. It covers all possible processings. There is one exception, if
-    "option logasap" was specified, then the time counting stops at the moment
-    the log is emitted. In this case, a '+' sign is prepended before the value,
+    option \kwl{logasap} was specified, then the time counting stops at the moment
+    the log is emitted. In this case, a \chr{+} sign is prepended before the value,
     indicating that the final one will be larger. See "Timers" below for more
     details.
 
-  - "status_code" is the HTTP status code returned to the client. This status
+\item[-]
+    "status\_code" is the HTTP status code returned to the client. This status
     is generally set by the server, but it might also be set by haproxy when
     the server cannot be reached or when its response is blocked by haproxy.
 
-  - "bytes_read" is the total number of bytes transmitted to the client when
-    the log is emitted. This does include HTTP headers. If "option logasap" is
-    specified, the this value will be prefixed with a '+' sign indicating that
+\item[-]
+    "bytes\_read" is the total number of bytes transmitted to the client when
+    the log is emitted. This does include HTTP headers. If option \kwl{logasap} is
+    specified, the this value will be prefixed with a \chr{+} sign indicating that
     the final one may be larger. Please note that this value is a 64-bit
     counter, so log analysis tools must be able to handle it without
     overflowing.
 
-  - "captured_request_cookie" is an optional "name=value" entry indicating that
+\item[-]
+    "captured\_request\_cookie" is an optional "name=value" entry indicating that
     the client had this cookie in the request. The cookie name and its maximum
     length are defined by the "capture cookie" statement in the frontend
-    configuration. The field is a single dash ('-') when the option is not
+    configuration. The field is a single dash \chr{-} when the option is not
     set. Only one cookie may be captured, it is generally used to track session
     ID exchanges between a client and a server to detect session crossing
     between clients due to application bugs. For more details, please consult
     the section "Capturing HTTP headers and cookies" below.
 
-  - "captured_response_cookie" is an optional "name=value" entry indicating
+\item[-]
+    "captured\_response\_cookie" is an optional "name=value" entry indicating
     that the server has returned a cookie with its response. The cookie name
     and its maximum length are defined by the "capture cookie" statement in the
-    frontend configuration. The field is a single dash ('-') when the option is
+    frontend configuration. The field is a single dash \chr{-} when the option is
     not set. Only one cookie may be captured, it is generally used to track
     session ID exchanges between a client and a server to detect session
     crossing between clients due to application bugs. For more details, please
     consult the section "Capturing HTTP headers and cookies" below.
 
-  - "termination_state" is the condition the session was in when the session
+\item[-]
+    "termination\_state" is the condition the session was in when the session
     ended. This indicates the session state, which side caused the end of
     session to happen, for what reason (timeout, error, ...), just like in TCP
     logs, and information about persistence operations on cookies in the last
-    two characters. The normal flags should begin with "--", indicating the
+    two characters. The normal flags should begin with \chr{{-}{-}}, indicating the
     session was closed by either end with no data remaining in buffers. See
     below "Session state at disconnection" for more details.
 
-  - "actconn" is the total number of concurrent connections on the process when
+\item[-]
+    "actconn" is the total number of concurrent connections on the process when
     the session was logged. It it useful to detect when some per-process system
     limits have been reached. For instance, if actconn is close to 512 or 1024
     when multiple connection errors occur, chances are high that the system
     limits the process to use a maximum of 1024 file descriptors and that all
-    of them are used. See chapter~\ref{chap:global_parameters} "~\nameref{chap:global_parameters}" to find how to tune the
+    of them are used. See chapter~\ref{chap:global_parameters}
+    "~\nameref{chap:global_parameters}" to find how to tune the
     system.
 
-  - "feconn" is the total number of concurrent connections on the frontend when
+\item[-]
+    "feconn" is the total number of concurrent connections on the frontend when
     the session was logged. It is useful to estimate the amount of resource
     required to sustain high loads, and to detect when the frontend's "maxconn"
     has been reached. Most often when this value increases by huge jumps, it is
     because there is congestion on the backend servers, but sometimes it can be
     caused by a denial of service attack.
 
-  - "beconn" is the total number of concurrent connections handled by the
+\item[-]
+    "beconn" is the total number of concurrent connections handled by the
     backend when the session was logged. It includes the total number of
     concurrent connections active on servers as well as the number of
     connections pending in queues. It is useful to estimate the amount of
@@ -482,31 +525,34 @@ Detailed fields description :
     congestion on the backend servers, but sometimes it can be caused by a
     denial of service attack.
 
-  - "srv_conn" is the total number of concurrent connections still active on
+\item[-]
+    "srv\_conn" is the total number of concurrent connections still active on
     the server when the session was logged. It can never exceed the server's
     configured "maxconn" parameter. If this value is very often close or equal
     to the server's "maxconn", it means that traffic regulation is involved a
     lot, meaning that either the server's maxconn value is too low, or that
     there aren't enough servers to process the load with an optimal response
-    time. When only one of the server's "srv_conn" is high, it usually means
+    time. When only one of the server's "srv\_conn" is high, it usually means
     that this server has some trouble causing the requests to take longer to be
     processed than on other servers.
 
-  - "retries" is the number of connection retries experienced by this session
+\item[-]
+    "retries" is the number of connection retries experienced by this session
     when trying to connect to the server. It must normally be zero, unless a
     server is being stopped at the same moment the connection was attempted.
     Frequent retries generally indicate either a network problem between
     haproxy and the server, or a misconfigured system backlog on the server
     preventing new connections from being queued. This field may optionally be
-    prefixed with a '+' sign, indicating that the session has experienced a
+    prefixed with a \chr{+} sign, indicating that the session has experienced a
     redispatch after the maximal retry count has been reached on the initial
     server. In this case, the server name appearing in the log is the one the
     connection was redispatched to, and not the first one, though both may
     sometimes be the same in case of hashing for instance. So as a general rule
-    of thumb, when a '+' is present in front of the retry count, this count
+    of thumb, when a \chr{+} is present in front of the retry count, this count
     should not be attributed to the logged server.
 
-  - "srv_queue" is the total number of requests which were processed before
+\item[-]
+    "srv\_queue" is the total number of requests which were processed before
     this one in the server queue. It is zero when the request has not gone
     through the server queue. It makes it possible to estimate the approximate
     server's response time by dividing the time spent in queue by the number of
@@ -515,35 +561,39 @@ Detailed fields description :
     cumulated. A request should not pass through both the server queue and the
     backend queue unless a redispatch occurs.
 
-  - "backend_queue" is the total number of requests which were processed before
+\item[-]
+    "backend\_queue" is the total number of requests which were processed before
     this one in the backend's global queue. It is zero when the request has not
     gone through the global queue. It makes it possible to estimate the average
     queue length, which easily translates into a number of missing servers when
-    divided by a server's "maxconn" parameter. It is worth noting that if a
+    divided by a server's \kwl{maxconn} parameter. It is worth noting that if a
     session experiences a redispatch, it may pass twice in the backend's queue,
     and then both positions will be cumulated. A request should not pass
     through both the server queue and the backend queue unless a redispatch
     occurs.
 
-  - "captured_request_headers" is a list of headers captured in the request due
+\item[-]
+    "captured\_request\_headers" is a list of headers captured in the request due
     to the presence of the "capture request header" statement in the frontend.
     Multiple headers can be captured, they will be delimited by a vertical bar
-    ('|'). When no capture is enabled, the braces do not appear, causing a
+    \chr{|}. When no capture is enabled, the braces do not appear, causing a
     shift of remaining fields. It is important to note that this field may
     contain spaces, and that using it requires a smarter log parser than when
     it's not used. Please consult the section "Capturing HTTP headers and
     cookies" below for more details.
 
-  - "captured_response_headers" is a list of headers captured in the response
+\item[-]
+    "captured\_response\_headers" is a list of headers captured in the response
     due to the presence of the "capture response header" statement in the
     frontend. Multiple headers can be captured, they will be delimited by a
-    vertical bar ('|'). When no capture is enabled, the braces do not appear,
+    vertical bar \chr{|}. When no capture is enabled, the braces do not appear,
     causing a shift of remaining fields. It is important to note that this
     field may contain spaces, and that using it requires a smarter log parser
     than when it's not used. Please consult the section "Capturing HTTP headers
     and cookies" below for more details.
 
-  - "http_request" is the complete HTTP request line, including the method,
+\item[-]
+    "http\_request" is the complete HTTP request line, including the method,
     request and HTTP version string. Non-printable characters are encoded (see
     below the section "Non-printable characters"). This is always the last
     field, and it is always delimited by quotes and is the only one which can
@@ -551,33 +601,33 @@ Detailed fields description :
     added before this field. This field might be truncated if the request is
     huge and does not fit in the standard syslog buffer (1024 characters). This
     is the reason why this field must always remain the last one.
-\end{verbatim}
+\end{itemize}
 
 \subsection{Custom log format}
 \label{subsec:custom_log_format}
 
-\begin{verbatim}
-The directive log-format allows you to custom the logs in http mode and tcp
+The directive log\-format allows you to custom the logs in http mode and tcp
 mode. It takes a string as argument.
 
-HAproxy understands some log format variables. % precedes log format variables.
-Variables can take arguments using braces ('{}'), and multiple arguments are
+HAproxy understands some log format variables. \% precedes log format variables.
+Variables can take arguments using braces \chr{\{\}}, and multiple arguments are
 separated by commas within the braces. Flags may be added or removed by
-prefixing them with a '+' or '-' sign.
+prefixing them with a \chr{+} or \chr{-} sign.
 
-Special variable "%o" may be used to propagate its flags to all other
+Special variable \%o may be used to propagate its flags to all other
 variables on the same format string. This is particularly handy with quoted
 string formats ("Q").
 
 Note: spaces must be escaped. A space character is considered as a separator.
 HAproxy will automatically merge consecutive separators.
 
-Flags are :
-  * Q: quote a string
-  * X: hexadecimal represenation (IPs, Ports, %Ts, %rt, %pid)
+Flags are:
+\begin{itemize}
+\item[*] Q: quote a string
+\item[*] X: hexadecimal represenation (IPs, Ports, \%Ts, \%rt, \%pid)
+\end{itemize}
 
-  Example:
-
+\begin{example}{Example:}
     log-format %T\ %t\ Some\ Text
     log-format %{+Q}o\ %t\ %s\ %{-Q}r
 
@@ -596,8 +646,11 @@ and the default TCP format is defined this way :
 
     log-format %Ci:%Cp\ [%t]\ %f\ %b/%s\ %Tw/%Tc/%Tt\ %B\ %ts\ \
                %ac/%fc/%bc/%sc/%rc\ %sq/%bq
+\end{example}
 
-Please refer to the table below for currently defined variables :
+Please refer to the table below for currently defined variables:
+
+
 
   +---+------+-----------------------------------------------+-------------+
   | H | var  | field name (8.2.2 and 8.2.3 for description)  | type        |
