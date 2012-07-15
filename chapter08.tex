@@ -861,8 +861,8 @@ mode, 5 control points are reported under the form "Tq/Tw/Tc/Tr/Tt":
     stroke before the server managed to process the request.
 \item[-]
     Tt: total session duration time, between the moment the proxy accepted it
-    and the moment both ends were closed. The exception is when the "logasap"
-    option is specified. In this case, it only equals (Tq+Tw+Tc+Tr), and is
+    and the moment both ends were closed. The exception is when the \kwl{logasap}
+    option is specified. In this case, it only equals $(Tq+Tw+Tc+Tr)$, and is
     prefixed with a '+' sign. From this field, we can deduce "Td", the data
     transmission time, by substracting other timers when valid:
 
@@ -909,35 +909,35 @@ Most common cases:
     If "Tt" is large even for small byte counts, it generally is because
     neither the client nor the server decides to close the connection, for
     instance because both have agreed on a keep-alive connection mode. In order
-    to solve this issue, it will be needed to specify "option httpclose" on
+    to solve this issue, it will be needed to specify option \kwl{httpclose} on
     either the frontend or the backend. If the problem persists, it means that
     the server ignores the "close" connection mode and expects the client to
-    close. Then it will be required to use "option forceclose". Having the
+    close. Then it will be required to use option \kwl{forceclose}. Having the
     smallest possible 'Tt' is important when connection regulation is used with
-    the "maxconn" option on the servers, since no new connection will be sent
+    the \kwl{maxconn} option on the servers, since no new connection will be sent
     to the server until another one is released.
 \end{itemize}
 
 Other noticeable HTTP log cases ('xx' means any value to be ignored):
 
 \begin{description}
-\item[$Tq/Tw/Tc/Tr/+Tt$]
+\item[Tq/Tw/Tc/Tr/+Tt]
                    The option \kwl{logasap} is present on the frontend and the log
                    was emitted before the data phase. All the timers are valid
                    except "Tt" which is shorter than reality.
 
-\item[$-1/xx/xx/xx/Tt$]
+\item[-1/xx/xx/xx/Tt]
                    The client was not able to send a complete request in time
                    or it aborted too early. Check the session termination flags
                    then \kwl{timeout http-request} and \kwl{timeout client} settings.
 
-\item[$Tq/-1/xx/xx/Tt$]
+\item[Tq/-1/xx/xx/Tt]
                    It was not possible to process the request, maybe because
                    servers were out of order, because the request was invalid
                    or forbidden by ACL rules. Check the session termination
                    flags.
 
-\item[$Tq/Tw/-1/xx/Tt$]
+\item[Tq/Tw/-1/xx/Tt]
                    The connection could not establish on the server. Either it
                    actively refused it or it timed out after $Tt-(Tq+Tw)$ ms.
                    Check the session termination flags, then check the
@@ -945,7 +945,7 @@ Other noticeable HTTP log cases ('xx' means any value to be ignored):
                    return similar-looking patterns, with "Tw" equal to the time
                    the client connection was maintained open.
 
-\item[$Tq/Tw/Tc/-1/Tt$]
+\item[Tq/Tw/Tc/-1/Tt]
                    The server has accepted the connection but did not return
                    a complete response in time, or it closed its connexion
                    unexpectedly after $Tt-(Tq+Tw+Tc)$ ms. Check the session
@@ -1020,7 +1020,7 @@ each of which has a special meaning:
             (HTTP mode only). Nothing was sent to any server.
         \item[Q:]
             the proxy was waiting in the QUEUE for a connection slot. This can
-            only happen when servers have a 'maxconn' parameter set. It can
+            only happen when servers have a \kwl{maxconn} parameter set. It can
             also happen in the global queue after a redispatch consecutive to
             a failed attempt to connect to a dying server. If no redispatch is
             reported, then no connection attempt was made to any server.
@@ -1068,12 +1068,12 @@ each of which has a special meaning:
             server.
         \item[E:]
             the client provided a valid cookie, but with a last date which was
-            older than what is allowed by the "maxidle" cookie parameter, so
+            older than what is allowed by the \kwl{maxidle} cookie parameter, so
             the cookie is consider EXPIRED and is ignored. The request will be
             redispatched just as if there was no cookie.
         \item[O:]
             the client provided a valid cookie, but with a first date which was
-            older than what is allowed by the "maxlife" cookie parameter, so
+            older than what is allowed by the \kwl{maxlife} cookie parameter, so
             the cookie is consider too OLD and is ignored. The request will be
             redispatched just as if there was no cookie.
         \item[U:]
@@ -1097,7 +1097,7 @@ each of which has a special meaning:
             it will still be overwritten and reported as "I" here.
         \item[U:]
             the proxy UPDATED the last date in the cookie that was presented by
-            the client. This can only happen in insert mode with "maxidle". It
+            the client. This can only happen in insert mode with \kwl{maxidle}. It
             happens everytime there is activity at a different date than the
             date indicated in the cookie. If any other change happens, such as
             a redispatch, then the cookie will be marked as inserted instead.
@@ -1105,7 +1105,7 @@ each of which has a special meaning:
             a cookie was PROVIDED by the server and transmitted as-is.
         \item[R:]
             the cookie provided by the server was REWRITTEN by the proxy, which
-            happens in "cookie rewrite" or "cookie prefix" modes.
+            happens in \kwl{cookie rewrite} or \kwl{cookie prefix} modes.
         \item[D:]
             the cookie provided by the server was DELETED by the proxy.
         \item[-:]
@@ -1129,7 +1129,7 @@ easier finding and understanding.
           The client aborted before the connection could be established to the
           server. This can happen when haproxy tries to connect to a recently
           dead (or unchecked) server, and the client aborts while haproxy is
-          waiting for the server to respond or for "timeout connect" to expire.
+          waiting for the server to respond or for \kwl{timeout connect} to expire.
      \item[CD]
           The client unexpectedly aborted during data transfer. This can be
           caused by a browser crash, by an intermediate equipment between the
@@ -1139,14 +1139,14 @@ easier finding and understanding.
           by the client.
      \item[cD]
           The client did not send nor acknowledge any data for as long as the
-          "timeout client" delay. This is often caused by network failures on
+          \kwl{timeout client} delay. This is often caused by network failures on
           the client side, or the client simply leaving the net uncleanly.
      \item[CH]
           The client aborted while waiting for the server to start responding.
           It might be the server taking too long to respond or the client
           clicking the 'Stop' button too fast.
      \item[cH]
-          The "timeout client" stroke while waiting for client data during a
+          The \kwl{timeout client} stroke while waiting for client data during a
           POST request. This is sometimes caused by too large TCP MSS values
           for PPPoE networks which cannot transport full-sized packets. It can
           also happen when client timeout is smaller than server timeout and
@@ -1174,7 +1174,7 @@ easier finding and understanding.
           The client aborted while its session was tarpitted. It is important to
           check if this happens on valid requests, in order to be sure that no
           wrong tarpit rules have been written. If a lot of them happen, it
-          might make sense to lower the "timeout tarpit" value to something
+          might make sense to lower the \kwl{timeout tarpit} value to something
           closer to the average reported "Tw" timer, in order not to consume
           resources for just a few attackers.
      \item[SC]
@@ -1185,7 +1185,7 @@ easier finding and understanding.
           or no ARP response on local network). When this happens in HTTP mode,
           the status code is likely a 502 or 503 here.
      \item[sC]
-          The "timeout connect" stroke before a connection to the server could
+          The \kwl{timeout connect} stroke before a connection to the server could
           complete. When this happens in HTTP mode, the status code is likely a
           503 or 504 here.
      \item[SD]
@@ -1196,7 +1196,7 @@ easier finding and understanding.
           or by a network issue on an intermediate equipment.
      \item[sD]
           The server did not send nor acknowledge any data for as long as the
-          "timeout server" setting during the data phase. This is often caused
+          \kwl{timeout server} setting during the data phase. This is often caused
           by too short timeouts on L4 equipments before the server (firewalls,
           load-balancers, ...), as well as keep-alive sessions maintained
           between the client and the server expiring first on haproxy.
@@ -1209,16 +1209,16 @@ easier finding and understanding.
           Sometimes this might also be caused by an IDS killing the connection
           between haproxy and the server.
      \item[sH]
-          The "timeout server" stroke before the server could return its
+          The \kwl{timeout server} stroke before the server could return its
           response headers. This is the most common anomaly, indicating too
           long transactions, probably caused by server or database saturation.
-          The immediate workaround consists in increasing the "timeout server"
+          The immediate workaround consists in increasing the \kwl{timeout server}
           setting, but it is important to keep in mind that the user experience
           will suffer from these long response times. The only long term
           solution is to fix the application.
      \item[sQ]
           The session spent too much time in queue and has been expired. See
-          the "timeout queue" and "timeout connect" settings to find out how to
+          the \kwl{timeout queue} and \kwl{timeout connect} settings to find out how to
           fix this if it happens too often. If it often happens massively in
           short periods, it may indicate general problems on the affected
           servers due to I/O or database congestion, or saturation caused by
@@ -1226,9 +1226,9 @@ easier finding and understanding.
      \item[PC]
           The proxy refused to establish a connection to the server because the
           process' socket limit has been reached while attempting to connect.
-          The global "maxconn" parameter may be increased in the configuration
+          The global \kwl{maxconn} parameter may be increased in the configuration
           so that it does not happen anymore. This status is very rare and
-          might happen when the global "ulimit-n" parameter is forced by hand.
+          might happen when the global \kwl{ulimit-n} parameter is forced by hand.
      \item[PD]
           The proxy blocked an incorrectly formatted chunked encoded message in
           a request or a response, after the server has emitted its headers. In
@@ -1276,7 +1276,7 @@ re-authenticate. The commonly encountered flags are:
      \item[II]
           A cookie designating an invalid server was provided by the client,
           a valid one was inserted in the response. This typically happens when
-          a "server" entry is removed from the configuraton, since its cookie
+          a \kwl{server} entry is removed from the configuration, since its cookie
           value can be presented by a client when no other server knows it.
      \item[NI]
           No cookie was provided by the client, one was inserted in the
@@ -1290,15 +1290,15 @@ re-authenticate. The commonly encountered flags are:
           A cookie was provided by the client, with a last visit date which is
           not completely up-to-date, so an updated cookie was provided in
           response. This can also happen if there was no date at all, or if
-          there was a date but the "maxidle" parameter was not set, so that the
+          there was a date but the \kwl{maxidle} parameter was not set, so that the
           cookie can be switched to unlimited time.
      \item[EI]
           A cookie was provided by the client, with a last visit date which is
-          too old for the "maxidle" parameter, so the cookie was ignored and a
+          too old for the \kwl{maxidle} parameter, so the cookie was ignored and a
           new cookie was inserted in the response.
      \item[OI]
           A cookie was provided by the client, with a first visit date which is
-          too old for the "maxlife" parameter, so the cookie was ignored and a
+          too old for the \kwl{maxlife} parameter, so the cookie was ignored and a
           new cookie was inserted in the response.
      \item[DI]
           The server designated by the cookie was down, a new server was
