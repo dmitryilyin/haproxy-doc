@@ -1,0 +1,21 @@
+1. 
+
+Fix broken and duplicate \kw and \kwl links.
+
+2.
+
+Make all note blocks as
+\begin{note}{title}
+body
+\end{note}
+
+3.
+
+Make all example blocks as
+\begin{example}{Name}
+text
+\end{example}
+
+4. Improve look of tabulars
+
+5. Make tabulars and pictures floats with labels
