@@ -2097,7 +2097,7 @@ See also: \kwl{monitor fail}, \kwl{monitor-uri}
 
 See also: \kwl{monitor fail}, \kwl{monitor-net}
 
-\subsubsection[abortonclose]{option \kw{abortonclose}}
+\subsubsection[abortonclose]{\kw{option abortonclose}}
 \subsubsection*{no option abortonclose}
 \index{abortonclose}
   
@@ -2145,7 +2145,7 @@ See also: \kwl{monitor fail}, \kwl{monitor-net}
 
 See also: \kwl{timeout queue} and server's \kwl{maxconn} and \kwl{maxqueue} parameters
 
-\subsubsection[accept-invalid-http-request]{option \kw{accept-invalid-http-request}}
+\subsubsection[accept-invalid-http-request]{\kw{option accept-invalid-http-request}}
 \subsubsection*{no option accept-invalid-http-request}
 \index{accept-invalid-http-request}
 
@@ -2188,9 +2188,8 @@ See also: \kwl{timeout queue} and server's \kwl{maxconn} and \kwl{maxqueue} para
 See also: \kwl{option accept-invalid-http-response} and \kwl{show errors} on the
              stats socket.
 
-\subsubsection[accept-invalid-http-response]{option \kw{accept-invalid-http-response}}
+\subsubsection[accept-invalid-http-response]{\kw{option accept-invalid-http-response}}
 \subsubsection*{no option accept-invalid-http-response}
-
 \index{accept-invalid-http-response}
   
   Enable or disable relaxing of HTTP response parsing
@@ -2225,9 +2224,8 @@ See also: \kwl{option accept-invalid-http-response} and \kwl{show errors} on the
 See also: \kwl{option accept-invalid-http-request} and \kwl{show errors} on the
              stats socket.
 
-\subsubsection[allbackups]{option \kw{allbackups}}
+\subsubsection[allbackups]{\kw{option allbackups}}
 \subsubsection*{no option allbackups}
-
 \index{allbackups}
 
   Use either all backup servers at a time or only the first one
@@ -2250,9 +2248,8 @@ See also: \kwl{option accept-invalid-http-request} and \kwl{show errors} on the
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-\subsubsection[checkcache]{option \kw{checkcache}}
+\subsubsection[checkcache]{\kw{option checkcache}}
 \subsubsection*{no option checkcache}
-
 \index{checkcache}
 
   Analyze all server responses and block requests with cacheable cookies
@@ -2306,9 +2303,8 @@ See also: \kwl{option accept-invalid-http-request} and \kwl{show errors} on the
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-\subsubsection[clitcpka]{option \kw{clitcpka}}
+\subsubsection[clitcpka]{\kw{option clitcpka}}
 \subsubsection*{no option clitcpka}
-
 \index{clitcpka}
 
   Enable or disable the sending of TCP keepalive packets on the client side
@@ -2345,8 +2341,7 @@ See also: \kwl{option accept-invalid-http-request} and \kwl{show errors} on the
 
 See also: \kwl{option srvtcpka}, \kwl{option tcpka}
 
-\subsubsection[contstats]{option \kwl{contstats}}
-
+\subsubsection[contstats]{\kwl{option contstats}}
 \index{contstats}
 
   Enable continuous traffic statistics updates
@@ -2363,7 +2358,7 @@ See also: \kwl{option srvtcpka}, \kwl{option tcpka}
   during a whole session. Recounting touches a hotpath directly so
   it is not enabled by default, as it has small performance impact (\~{}0.5\%).
 
-\subsubsection[dontlog-normal]{option \kwl{dontlog-normal}}
+\subsubsection[dontlog-normal]{\kwl{option dontlog-normal}}
 \subsubsection*{dontlog-normal}
 
 \index{dontlog-normal}
@@ -2390,7 +2385,7 @@ See also: \kwl{option srvtcpka}, \kwl{option tcpka}
 See also: \kwl{log}, \kwl{dontlognull}, \kwl{log-separate-errors} and chapter~\ref{chap:logging} about
              logging.
 
-\subsubsection[dontlognull]{option \kw{dontlognull}}
+\subsubsection[dontlognull]{\kw{option dontlognull}}
 \subsubsection*{no option dontlognull}
 
 \index{dontlognull}
@@ -2419,7 +2414,7 @@ See also: \kwl{log}, \kwl{dontlognull}, \kwl{log-separate-errors} and chapter~\r
 
 See also: \kwl{log}, \kwl{monitor-net}, \kwl{monitor-uri} and chapter~\ref{chap:logging} about logging.
 
-\subsubsection[forceclose]{option \kw{forceclose}}
+\subsubsection[forceclose]{\kw{option forceclose}}
 \subsubsection*{no option forceclose}
 
 \index{forceclose}
@@ -2453,7 +2448,7 @@ See also: \kwl{log}, \kwl{monitor-net}, \kwl{monitor-uri} and chapter~\ref{chap:
 
 See also: \kwl{option httpclose} and \kwl{option http-pretend-keepalive}
 
-\subsubsection[forwardfor]{option \kw{forwardfor} [ except <network> ] [ header <name> ] [ if-none ]}
+\subsubsection[forwardfor]{\kw{option forwardfor} [ except <network> ] [ header <name> ] [ if-none ]}
 \index{forwardfor}
 
   Enable insertion of the X-Forwarded-For header to requests sent to servers
@@ -2529,7 +2524,7 @@ See also: \kwl{option httpclose} and \kwl{option http-pretend-keepalive}
 See also: \kwl{option httpclose}, \kwl{option http-server-close},
              "option forceclose"
 
-\subsubsection[http-no-delay]{option \kw{http-no-delay}}
+\subsubsection[http-no-delay]{\kw{option http-no-delay}}
 \subsubsection*{http-no-delay}
 
 \index{http-no-delay}
@@ -2564,7 +2559,7 @@ See also: \kwl{option httpclose}, \kwl{option http-server-close},
   usage and CPU usage, which may significantly lower performance in high
   latency environments.
 
-\subsubsection[http-pretend-keepalive]{option \kw{http-pretend-keepalive}}
+\subsubsection[http-pretend-keepalive]{\kw{option http-pretend-keepalive}}
 \subsubsection*{no option http-pretend-keepalive}
 
 \index{http-pretend-keepalive}
@@ -2611,7 +2606,7 @@ See also: \kwl{option httpclose}, \kwl{option http-server-close},
 
 See also: \kwl{option forceclose} and \kwl{option http-server-close}
 
-\subsubsection[http-server-close]{option \kw{http-server-close}}
+\subsubsection[http-server-close]{\kw{option http-server-close}}
 \subsubsection*{no option http-server-close}
 
 \index{http-server-close}
@@ -2655,7 +2650,7 @@ See also: \kwl{option forceclose} and \kwl{option http-server-close}
 See also: \kwl{option forceclose}, \kwl{option http-pretend-keepalive},
              \kwl{httpclose} and section~\ref{sec:http_transaction} "\nameref{sec:http_transaction}".
 
-\subsubsection[http-use-proxy-header]{option \kw{http-use-proxy-header}}
+\subsubsection[http-use-proxy-header]{\kw{option http-use-proxy-header}}
 \subsubsection*{no option http-use-proxy-header}
 
 \index{http-use-proxy-header}
@@ -2692,7 +2687,7 @@ See also: \kwl{option forceclose}, \kwl{option http-pretend-keepalive},
 See also: \kwl{option httpclose}, \kwl{option forceclose} and \kwl{option http-server-close}.
 
 
-\subsubsection[httpchk]{option \kw{httpchk}}
+\subsubsection[httpchk]{\kw{option httpchk}}
 \subsubsection*{option httpchk <uri>}
 \subsubsection*{option httpchk <method> <uri>}
 \subsubsection*{option httpchk <method> <uri> <version>}
@@ -2749,7 +2744,7 @@ See also: \kwl{option ssl-hello-chk}, \kwl{option smtpchk}, \kwl{option mysql-ch
              "option pgsql-check", "http-check" and the "check", "port" and
              "inter" server options.
 
-\subsubsection[httpclose]{option \kw{httpclose}}
+\subsubsection[httpclose]{\kw{option httpclose}}
 \subsubsection*{no option httpclose}
 
 \index{httpclose}
@@ -2789,7 +2784,7 @@ See also: \kwl{option ssl-hello-chk}, \kwl{option smtpchk}, \kwl{option mysql-ch
 See also: \kwl{option forceclose}, \kwl{option http-server-close} and
              "1.1. The HTTP transaction model".
 
-\subsubsection[httplog]{option \kw{httplog} [ clf ]}
+\subsubsection[httplog]{\kw{option httplog} [ clf ]}
 \index{httplog}
 
   Enable logging of HTTP request, session state and timers
@@ -2824,7 +2819,7 @@ See also: \kwl{option forceclose}, \kwl{option http-server-close} and
 
 See also:  chapter~\ref{chap:logging} about logging.
 
-\subsubsection[http\_proxy]{option \kw{http\_proxy}}
+\subsubsection[http\_proxy]{\kw{option http\_proxy}}
 \subsubsection*{no option http\_proxy}
 \index{http\_proxy}
 
@@ -2861,7 +2856,7 @@ See also:  chapter~\ref{chap:logging} about logging.
 
 See also: \kwl{option httpclose}
 
-\subsubsection[independant-streams]{option \kw{independant-streams}}
+\subsubsection[independant-streams]{\kw{option independant-streams}}
 \subsubsection*{no option independant-streams}
 
 \index{independant-streams}
@@ -2898,7 +2893,7 @@ See also: \kwl{option httpclose}
 
 See also: \kwl{timeout client}, \kwl{timeout server} and \kwl{timeout tunnel}
 
-\subsubsection[ldap-check]{option \kw{ldap-check}}
+\subsubsection[ldap-check]{\kw{option ldap-check}}
 
 \index{ldap-check}
 
@@ -2927,7 +2922,7 @@ See also: \kwl{timeout client}, \kwl{timeout server} and \kwl{timeout tunnel}
 
 See also: \kwl{option httpchk}
 
-\subsubsection[log-health-checks]{option \kw{log-health-checks}}
+\subsubsection[log-health-checks]{\kw{option log-health-checks}}
 \subsubsection*{no option log-health-checks}
 
 \index{log-health-checks}
@@ -2949,7 +2944,7 @@ See also: \kwl{option httpchk}
 
 See also: \kwl{log} and chapter~\ref{chap:logging} about logging.
 
-\subsubsection[log-separate-errors]{option \kw{log-separate-errors}}
+\subsubsection[log-separate-errors]{\kw{option log-separate-errors}}
 \subsubsection*{no option log-separate-errors}
 \index{log-separate-errors}
 
@@ -2975,7 +2970,7 @@ See also: \kwl{log} and chapter~\ref{chap:logging} about logging.
 See also: \kwl{log}, \kwl{dontlognull}, \kwl{dontlog-normal} and chapter~\ref{chap:logging} about
              logging.
 
-\subsubsection[logasap]{option \kw{logasap}}
+\subsubsection[logasap]{\kw{option logasap}}
 \subsubsection*{no option logasap}
 
 \index{logasap}
@@ -3015,7 +3010,7 @@ See also: \kwl{log}, \kwl{dontlognull}, \kwl{dontlog-normal} and chapter~\ref{ch
 See also: \kwl{option httplog}, \kwl{capture response header}, and chapter~\ref{chap:logging} about
              logging.
 
-\subsubsection[mysql-check]{option \kw{mysql-check} [ user <username> ]}
+\subsubsection[mysql-check]{\kw{option mysql-check} [ user <username> ]}
 \index{mysql-check}
 
   Use MySQL health checks for server testing
@@ -3066,7 +3061,7 @@ See also: \kwl{option httplog}, \kwl{capture response header}, and chapter~\ref{
 
 See also: \kwl{option httpchk}
 
-\subsubsection[pgsql-check]{option \kw{pgsql-check} [ user <username> ]}
+\subsubsection[pgsql-check]{\kw{option pgsql-check} [ user <username> ]}
 
 \index{pgsql-check}
 
@@ -3088,7 +3083,7 @@ See also: \kwl{option httpchk}
 
 See also: \kwl{option httpchk}
 
-\subsubsection[nolinger]{option \kw{nolinger}}
+\subsubsection[nolinger]{\kw{option nolinger}}
 \subsubsection*{no option nolinger}
 
 \index{nolinger}
@@ -3123,7 +3118,7 @@ See also: \kwl{option httpchk}
   If this option has been enabled in a "defaults" section, it can be disabled
   in a specific instance by prepending the "no" keyword before it.
 
-\subsubsection[originalto]{option \kw{originalto} [ except <network> ] [ header <name> ]}
+\subsubsection[originalto]{\kw{option originalto} [ except <network> ] [ header <name> ]}
 
 \index{originalto}
 
@@ -3192,7 +3187,7 @@ See also: \kwl{option httpchk}
 See also: \kwl{option httpclose}, \kwl{option http-server-close},
              "option forceclose"
 
-\subsubsection[persist]{option \kw{persist}}
+\subsubsection[persist]{\kw{option persist}}
 \subsubsection*{no option persist}
 
 \index{persist}
@@ -3220,7 +3215,7 @@ See also: \kwl{option httpclose}, \kwl{option http-server-close},
 
 See also: \kwl{option redispatch}, \kwl{retries}, \kwl{force-persist}
 
-\subsubsection[redispatch]{option \kw{redispatch}}
+\subsubsection[redispatch]{\kw{option redispatch}}
 \subsubsection*{no option redispatch}
 
 \index{redispatch}
@@ -3251,7 +3246,7 @@ See also: \kwl{option redispatch}, \kwl{retries}, \kwl{force-persist}
 
 See also: \kwl{redispatch}, \kwl{retries}, \kwl{force-persist}
 
-\subsubsection[redis-check]{option \kw{redis-check}}
+\subsubsection[redis-check]{\kw{option redis-check}}
 
 \index{redis-check}
 
@@ -3274,7 +3269,7 @@ See also: \kwl{redispatch}, \kwl{retries}, \kwl{force-persist}
 
 See also: \kwl{option httpchk}
 
-\subsubsection[smtpchk]{option \kw{smtpchk}}
+\subsubsection[smtpchk]{\kw{option smtpchk}}
 \subsubsection*{option smtpchk <hello> <domain>}
 \index{smtpchk}
 
@@ -3320,7 +3315,7 @@ See also: \kwl{option httpchk}
 
 See also: \kwl{option httpchk}, \kwl{source}
 
-\subsubsection[socket-stats]{option \kw{socket-stats}}
+\subsubsection[socket-stats]{\kw{option socket-stats}}
 \subsubsection*{no option socket-stats}
 
 \index{socket-stats}
@@ -3331,7 +3326,7 @@ See also: \kwl{option httpchk}, \kwl{source}
 
   Arguments: none
 
-\subsubsection[splice-auto]{option \kw{splice-auto}}
+\subsubsection[splice-auto]{\kw{option splice-auto}}
 \subsubsection*{no option splice-auto}
 
 \index{splice-auto}
@@ -3375,7 +3370,7 @@ See also: \kwl{option httpchk}, \kwl{source}
 See also: \kwl{option splice-request}, \kwl{option splice-response}, and global
              options "nosplice" and "maxpipes"
 
-\subsubsection[splice-request]{option \kw{splice-request}}
+\subsubsection[splice-request]{\kw{option splice-request}}
 \subsubsection*{no option splice-request}
 
 \index{splice-request}
@@ -3407,7 +3402,7 @@ See also: \kwl{option splice-request}, \kwl{option splice-response}, and global
 See also: \kwl{option splice-auto}, \kwl{option splice-response}, and global options
              "nosplice" and "maxpipes"
 
-\subsubsection[splice-response]{option \kw{splice-response}}
+\subsubsection[splice-response]{\kw{option splice-response}}
 \subsubsection*{no option splice-response}
 
 \index{splice-response}
@@ -3439,7 +3434,7 @@ See also: \kwl{option splice-auto}, \kwl{option splice-response}, and global opt
 See also: \kwl{option splice-auto}, \kwl{option splice-request}, and global options
              \kwl{nosplice} and \kwl{maxpipes}.
 
-\subsubsection[srvtcpka]{option \kw{srvtcpka}}
+\subsubsection[srvtcpka]{\kw{option srvtcpka}}
 \subsubsection*{no option srvtcpka}
 
 \index{srvtcpka}
@@ -3478,7 +3473,7 @@ See also: \kwl{option splice-auto}, \kwl{option splice-request}, and global opti
 
 See also: \kwl{option clitcpka}, \kwl{option tcpka}
 
-\subsubsection[ssl-hello-chk]{option \kw{ssl-hello-chk}}
+\subsubsection[ssl-hello-chk]{\kw{option ssl-hello-chk}}
 
 \index{ssl-hello-chk}
 
@@ -3503,7 +3498,7 @@ See also: \kwl{option clitcpka}, \kwl{option tcpka}
 
 See also: \kwl{option httpchk}
 
-\subsubsection[tcp-smart-accept]{option \kw{tcp-smart-accept}}
+\subsubsection[tcp-smart-accept]{\kw{option tcp-smart-accept}}
 \subsubsection*{no option tcp-smart-accept}
 
 \index{tcp-smart-accept}
@@ -3542,7 +3537,7 @@ See also: \kwl{option httpchk}
 
 See also: \kwl{option tcp-smart-connect}
 
-\subsubsection[tcp-smart-accept]{option \kw{tcp-smart-connect}}
+\subsubsection[tcp-smart-accept]{\kw{option tcp-smart-connect}}
 \subsubsection*{no option tcp-smart-connect}
 
 \index{tcp-smart-connect}
@@ -3573,7 +3568,7 @@ See also: \kwl{option tcp-smart-connect}
 
 See also: \kwl{option tcp-smart-accept}
 
-\subsubsection[tcpka]{option \kw{tcpka}}
+\subsubsection[tcpka]{\kw{option tcpka}}
 \index{tcpka}
 
   Enable or disable the sending of TCP keepalive packets on both sides
@@ -3612,7 +3607,7 @@ See also: \kwl{option tcp-smart-accept}
 
 See also: \kwl{option clitcpka}, \kwl{option srvtcpka}
 
-\subsubsection[tcplog]{option \kw{tcplog}}
+\subsubsection[tcplog]{\kw{option tcplog}}
 
 \index{tcplog}
 
@@ -3636,7 +3631,7 @@ See also: \kwl{option clitcpka}, \kwl{option srvtcpka}
 
 See also: \kwl{option httplog}, andchapter~\ref{chap:logging} about logging.
 
-\subsubsection[transparent]{option \kw{transparent}}
+\subsubsection[transparent]{\kw{option transparent}}
 \subsubsection*{no option transparent}
 \index{transparent}
 
