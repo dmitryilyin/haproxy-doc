@@ -650,61 +650,102 @@ and the default TCP format is defined this way :
 
 Please refer to the table below for currently defined variables:
 
+\begin{tabular}{|c|l|l|c|}
+\hline
+{H} & var & field name (8.2.2 and 8.2.3 for description) & type \\
+\hline
+{} & \%o & special variable, apply flags on all next var &  \\
+\hline
+{} & \%B & bytes\_read & numeric \\
+\hline
+{} & \%Ci & client\_ip & IP \\
+\hline
+{} & \%Cp & client\_port & numeric \\
+\hline
+{} & \%Bi & backend\_source\_ip & IP \\
+\hline
+{} & \%Bp & backend\_source\_port & numeric \\
+\hline
+{} & \%Fi & frontend\_ip & IP \\
+\hline
+{} & \%Fp & frontend\_port & numeric \\
+\hline
+{} & \%H & hostname & string \\
+\hline
+{} & \%ID & unique-id & string \\
+\hline
+{} & \%Si & server\_IP & IP \\
+\hline
+{} & \%Sp & server\_port & numeric \\
+\hline
+{} & \%T & gmt\_date\_time & date \\
+\hline
+{} & \%Tc & Tc & numeric \\
+\hline
+{*} & \%Tq & Tq & numeric \\
+\hline
+{*} & \%Tr & Tr & numeric \\
+\hline
+{} & \%Ts & timestamp & numeric \\
+\hline
+{} & \%Tt & Tt & numeric \\
+\hline
+{} & \%Tw & Tw & numeric \\
+\hline
+{} & \%ac & actconn & numeric \\
+\hline
+{} & \%b & backend\_name & string \\
+\hline
+{} & \%bc & beconn & numeric \\
+\hline
+{} & \%bq & backend\_queue & numeric \\
+\hline
+{*} & \%cc & captured\_request\_cookie & string \\
+\hline
+{*} & \%rt & http\_request\_counter & numeric \\
+\hline
+{*} & \%cs & captured\_response\_cookie & string \\
+\hline
+{} & \%f & frontend\_name & string \\
+\hline
+{} & \%fc & feconn & numeric \\
+\hline
+{*} & \%hr & captured\_request\_headers default style & string \\
+\hline
+{*} & \%hrl & captured\_request\_headers CLF style & string list \\
+\hline
+{*} & \%hs & captured\_response\_headers default style & string \\
+\hline
+{*} & \%hsl & captured\_response\_headers CLF style & string list \\
+\hline
+{} & \%ms & accept date milliseconds & numeric \\
+\hline
+{} & \%pid & PID & numeric \\
+\hline
+{*} & \%r & http\_request & string \\
+\hline
+{} & \%rc & retries & numeric \\
+\hline
+{} & \%s & server\_name & string \\
+\hline
+{} & \%sc & srv\_conn & numeric \\
+\hline
+{} & \%sq & srv\_queue & numeric \\
+\hline
+{*} & \%st & status\_code & numeric \\
+\hline
+{} & \%t & date\_time & date \\
+\hline
+{} & \%ts & termination\_state & string \\
+\hline
+{*} & \%tsc & termination\_state with cookie status & string \\
+\hline
+\end{tabular}
 
-
-  +---+------+-----------------------------------------------+-------------+
-  | H | var  | field name (8.2.2 and 8.2.3 for description)  | type        |
-  +---+------+-----------------------------------------------+-------------+
-  |   | %o   | special variable, apply flags on all next var |             |
-  +---+------+-----------------------------------------------+-------------+
-  |   | %B   | bytes_read                                    | numeric     |
-  |   | %Ci  | client_ip                                     | IP          |
-  |   | %Cp  | client_port                                   | numeric     |
-  |   | %Bi  | backend_source_ip                             | IP          |
-  |   | %Bp  | backend_source_port                           | numeric     |
-  |   | %Fi  | frontend_ip                                   | IP          |
-  |   | %Fp  | frontend_port                                 | numeric     |
-  |   | %H   | hostname                                      | string      |
-  |   | %ID  | unique-id                                     | string      |
-  |   | %Si  | server_IP                                     | IP          |
-  |   | %Sp  | server_port                                   | numeric     |
-  |   | %T   | gmt_date_time                                 | date        |
-  |   | %Tc  | Tc                                            | numeric     |
-  | * | %Tq  | Tq                                            | numeric     |
-  | * | %Tr  | Tr                                            | numeric     |
-  |   | %Ts  | timestamp                                     | numeric     |
-  |   | %Tt  | Tt                                            | numeric     |
-  |   | %Tw  | Tw                                            | numeric     |
-  |   | %ac  | actconn                                       | numeric     |
-  |   | %b   | backend_name                                  | string      |
-  |   | %bc  | beconn                                        | numeric     |
-  |   | %bq  | backend_queue                                 | numeric     |
-  | * | %cc  | captured_request_cookie                       | string      |
-  | * | %rt  | http_request_counter                          | numeric     |
-  | * | %cs  | captured_response_cookie                      | string      |
-  |   | %f   | frontend_name                                 | string      |
-  |   | %fc  | feconn                                        | numeric     |
-  | * | %hr  | captured_request_headers default style        | string      |
-  | * | %hrl | captured_request_headers CLF style            | string list |
-  | * | %hs  | captured_response_headers default style       | string      |
-  | * | %hsl | captured_response_headers CLF style           | string list |
-  |   | %ms  | accept date milliseconds                      | numeric     |
-  |   | %pid | PID                                           | numeric     |
-  | * | %r   | http_request                                  | string      |
-  |   | %rc  | retries                                       | numeric     |
-  |   | %s   | server_name                                   | string      |
-  |   | %sc  | srv_conn                                      | numeric     |
-  |   | %sq  | srv_queue                                     | numeric     |
-  | * | %st  | status_code                                   | numeric     |
-  |   | %t   | date_time                                     | date        |
-  |   | %ts  | termination_state                             | string      |
-  | * | %tsc | termination_state with cookie status          | string      |
-  +---+------+-----------------------------------------------+-------------+
-
-*: mode http only
-\end{verbatim}
+* - mode http only
 
 \section{Advanced logging options}
+\label{sec:advanced_logging}
 
 Some advanced logging options are often looked for but are not easy to find out
 just by looking at the various options. Here is an entry point for the few
@@ -712,49 +753,52 @@ options which can enable better logging. Please refer to the keywords reference
 for more information about their usage.
 
 \subsection{Disabling logging of external tests}
+\label{subsec:disabling_logging_external_tests}
 
-\begin{verbatim}
 It is quite common to have some monitoring tools perform health checks on
 haproxy. Sometimes it will be a layer 3 load-balancer such as LVS or any
 commercial load-balancer, and sometimes it will simply be a more complete
 monitoring system such as Nagios. When the tests are very frequent, users often
-ask how to disable logging for those checks. There are three possibilities :
+ask how to disable logging for those checks. There are three possibilities:
 
-  - if connections come from everywhere and are just TCP probes, it is often
+\begin{itemize}
+\item[-]
+    if connections come from everywhere and are just TCP probes, it is often
     desired to simply disable logging of connections without data exchange, by
-    setting "option dontlognull" in the frontend. It also disables logging of
+    setting option \kwl{dontlognull} in the frontend. It also disables logging of
     port scans, which may or may not be desired.
-
-  - if the connection come from a known source network, use "monitor-net" to
+\item[-]
+    if the connection come from a known source network, use \kwl{monitor-net} to
     declare this network as monitoring only. Any host in this network will then
     only be able to perform health checks, and their requests will not be
     logged. This is generally appropriate to designate a list of equipments
     such as other load-balancers.
-
-  - if the tests are performed on a known URI, use "monitor-uri" to declare
+\item[-]
+    if the tests are performed on a known URI, use \kwl{monitor-uri} to declare
     this URI as dedicated to monitoring. Any host sending this request will
     only get the result of a health-check, and the request will not be logged.
-\end{verbatim}
+\end{itemize}
 
 \subsection{Logging before waiting for the session to terminate}
+\label{subsec:logging_before_waiting_session_terminate}
 
 The problem with logging at end of connection is that you have no clue about
 what is happening during very long sessions, such as remote terminal sessions
 or large file downloads. This problem can be worked around by specifying
-"option logasap" in the frontend. Haproxy will then log as soon as possible,
+option \kwl{logasap} in the frontend. Haproxy will then log as soon as possible,
 just before data transfer begins. This means that in case of TCP, it will still
 log the connection status to the server, and in case of HTTP, it will log just
 after processing the server headers. In this case, the number of bytes reported
 is the number of header bytes sent to the client. In order to avoid confusion
 with normal logs, the total time field and the number of bytes are prefixed
-with a '+' sign which means that real numbers are certainly larger.
-
+with a \chr{+} sign which means that real numbers are certainly larger.
 
 \subsection{Raising log level upon errors}
+\label{subsec:raising_log_level_upon_error}
 
 Sometimes it is more convenient to separate normal traffic from errors logs,
 for instance in order to ease error monitoring from log files. When the option
-"log-separate-errors" is used, connections which experience errors, timeouts,
+\kwl{log-separate-errors} is used, connections which experience errors, timeouts,
 retries, redispatches or HTTP status codes 5xx will see their syslog level
 raised from "info" to "err". This will help a syslog daemon store the log in
 a separate file. It is very important to keep the errors in the normal traffic
@@ -763,11 +807,12 @@ you already have configured your syslog daemon to store all logs higher than
 "notice" in an "admin" file, because the "err" level is higher than "notice".
 
 \subsection{Disabling logging of successful connections}
+\label{subsec:disabling_logging_successful_connections}
 
 Although this may sound strange at first, some large sites have to deal with
 multiple thousands of logs per second and are experiencing difficulties keeping
 them intact for a long time or detecting errors within them. If the option
-"dontlog-normal" is set on the frontend, all normal connections will not be
+\kwl{dontlog-normal} is set on the frontend, all normal connections will not be
 logged. In this regard, a normal connection is defined as one without any
 error, timeout, retry nor redispatch. In HTTP, the status code is checked too,
 and a response with a status 5xx is not considered normal and will be logged
@@ -777,32 +822,33 @@ alternative.
 
 \section{Timing events}
 
-\begin{verbatim}
 Timers provide a great help in troubleshooting network problems. All values are
 reported in milliseconds (ms). These timers should be used in conjunction with
-the session termination flags. In TCP mode with "option tcplog" set on the
+the session termination flags. In TCP mode with option \kwl{tcplog} set on the
 frontend, 3 control points are reported under the form "Tw/Tc/Tt", and in HTTP
-mode, 5 control points are reported under the form "Tq/Tw/Tc/Tr/Tt" :
+mode, 5 control points are reported under the form "Tq/Tw/Tc/Tr/Tt":
 
-  - Tq: total time to get the client request (HTTP mode only). It's the time
+\begin{itemize}
+\item[-]
+    Tq: total time to get the client request (HTTP mode only). It's the time
     elapsed between the moment the client connection was accepted and the
     moment the proxy received the last HTTP header. The value "-1" indicates
     that the end of headers (empty line) has never been seen. This happens when
     the client closes prematurely or times out.
-
-  - Tw: total time spent in the queues waiting for a connection slot. It
+\item[-]
+    Tw: total time spent in the queues waiting for a connection slot. It
     accounts for backend queue as well as the server queues, and depends on the
     queue size, and the time needed for the server to complete previous
     requests. The value "-1" means that the request was killed before reaching
     the queue, which is generally what happens with invalid or denied requests.
-
-  - Tc: total time to establish the TCP connection to the server. It's the time
+\item[-]
+    Tc: total time to establish the TCP connection to the server. It's the time
     elapsed between the moment the proxy sent the connection request, and the
     moment it was acknowledged by the server, or between the TCP SYN packet and
     the matching SYN/ACK packet in return. The value "-1" means that the
     connection never established.
-
-  - Tr: server response time (HTTP mode only). It's the time elapsed between
+\item[-]
+    Tr: server response time (HTTP mode only). It's the time elapsed between
     the moment the TCP connection was established to the server and the moment
     the server sent its complete response headers. It purely shows its request
     processing time, without the network overhead due to the data transmission.
@@ -813,18 +859,19 @@ mode, 5 control points are reported under the form "Tq/Tw/Tc/Tr/Tt" :
     untrusted network. A value of "-1" here means that the last the response
     header (empty line) was never seen, most likely because the server timeout
     stroke before the server managed to process the request.
-
-  - Tt: total session duration time, between the moment the proxy accepted it
+\item[-]
+    Tt: total session duration time, between the moment the proxy accepted it
     and the moment both ends were closed. The exception is when the "logasap"
     option is specified. In this case, it only equals (Tq+Tw+Tc+Tr), and is
     prefixed with a '+' sign. From this field, we can deduce "Td", the data
-    transmission time, by substracting other timers when valid :
+    transmission time, by substracting other timers when valid:
 
-        Td = Tt - (Tq + Tw + Tc + Tr)
+       \[ Td = Tt - (Tq + Tw + Tc + Tr) \]
 
     Timers with "-1" values have to be excluded from this equation. In TCP
     mode, "Tq" and "Tr" have to be excluded too. Note that "Tt" can never be
     negative.
+\end{itemize}
 
 These timers provide precious indications on trouble causes. Since the TCP
 protocol defines retransmit delays of 3, 6, 12... seconds, we know for sure
@@ -833,9 +880,11 @@ due to network problems (wires, negotiation, congestion). Moreover, if "Tt" is
 close to a timeout value specified in the configuration, it often means that a
 session has been aborted on timeout.
 
-Most common cases :
+Most common cases:
 
-  - If "Tq" is close to 3000, a packet has probably been lost between the
+\begin{itemize}
+\item[-]
+    If "Tq" is close to 3000, a packet has probably been lost between the
     client and the proxy. This is very rare on local networks but might happen
     when clients are on far remote networks and send large requests. It may
     happen that values larger than usual appear here without any network cause.
@@ -847,17 +896,17 @@ Most common cases :
     connections have been accepted at once. Setting "option http-server-close"
     may display larger request times since "Tq" also measures the time spent
     waiting for additional requests.
-
-  - If "Tc" is close to 3000, a packet has probably been lost between the
+\item[-]
+    If "Tc" is close to 3000, a packet has probably been lost between the
     server and the proxy during the server connection phase. This value should
     always be very low, such as 1 ms on local networks and less than a few tens
     of ms on remote networks.
-
-  - If "Tr" is nearly always lower than 3000 except some rare values which seem
+\item[-]
+    If "Tr" is nearly always lower than 3000 except some rare values which seem
     to be the average majored by 3000, there are probably some packets lost
     between the proxy and the server.
-
-  - If "Tt" is large even for small byte counts, it generally is because
+\item[-]
+    If "Tt" is large even for small byte counts, it generally is because
     neither the client nor the server decides to close the connection, for
     instance because both have agreed on a keep-alive connection mode. In order
     to solve this issue, it will be needed to specify "option httpclose" on
@@ -867,176 +916,202 @@ Most common cases :
     smallest possible 'Tt' is important when connection regulation is used with
     the "maxconn" option on the servers, since no new connection will be sent
     to the server until another one is released.
+\end{itemize}
 
-Other noticeable HTTP log cases ('xx' means any value to be ignored) :
+Other noticeable HTTP log cases ('xx' means any value to be ignored):
 
-  Tq/Tw/Tc/Tr/+Tt  The "option logasap" is present on the frontend and the log
+\begin{description}
+\item[$Tq/Tw/Tc/Tr/+Tt$]
+                   The option \kwl{logasap} is present on the frontend and the log
                    was emitted before the data phase. All the timers are valid
                    except "Tt" which is shorter than reality.
 
-  -1/xx/xx/xx/Tt   The client was not able to send a complete request in time
+\item[$-1/xx/xx/xx/Tt$]
+                   The client was not able to send a complete request in time
                    or it aborted too early. Check the session termination flags
-                   then "timeout http-request" and "timeout client" settings.
+                   then \kwl{timeout http-request} and \kwl{timeout client} settings.
 
-  Tq/-1/xx/xx/Tt   It was not possible to process the request, maybe because
+\item[$Tq/-1/xx/xx/Tt$]
+                   It was not possible to process the request, maybe because
                    servers were out of order, because the request was invalid
                    or forbidden by ACL rules. Check the session termination
                    flags.
 
-  Tq/Tw/-1/xx/Tt   The connection could not establish on the server. Either it
-                   actively refused it or it timed out after Tt-(Tq+Tw) ms.
+\item[$Tq/Tw/-1/xx/Tt$]
+                   The connection could not establish on the server. Either it
+                   actively refused it or it timed out after $Tt-(Tq+Tw)$ ms.
                    Check the session termination flags, then check the
-                   "timeout connect" setting. Note that the tarpit action might
+                   \kwl{timeout connect} setting. Note that the tarpit action might
                    return similar-looking patterns, with "Tw" equal to the time
                    the client connection was maintained open.
 
-  Tq/Tw/Tc/-1/Tt   The server has accepted the connection but did not return
+\item[$Tq/Tw/Tc/-1/Tt$]
+                   The server has accepted the connection but did not return
                    a complete response in time, or it closed its connexion
-                   unexpectedly after Tt-(Tq+Tw+Tc) ms. Check the session
-                   termination flags, then check the "timeout server" setting.
-\end{verbatim}
+                   unexpectedly after $Tt-(Tq+Tw+Tc)$ ms. Check the session
+                   termination flags, then check the \kwl{timeout server} setting.
+\end{description}
 
 \section{Session state at disconnection}
+\label{sec:session_state_at_disconnection}
 
-\begin{verbatim}
 TCP and HTTP logs provide a session termination indicator in the
-"termination_state" field, just before the number of active connections. It is
+"termination\_state" field, just before the number of active connections. It is
 2-characters long in TCP mode, and is extended to 4 characters in HTTP mode,
-each of which has a special meaning :
+each of which has a special meaning:
 
-  - On the first character, a code reporting the first event which caused the
-    session to terminate :
-
-        C : the TCP session was unexpectedly aborted by the client.
-
-        S : the TCP session was unexpectedly aborted by the server, or the
+\begin{itemize}
+\item
+    On the first character, a code reporting the first event which caused the
+    session to terminate:
+    
+    \begin{description}
+    \item[C:]
+            the TCP session was unexpectedly aborted by the client.
+    \item[S:]
+            the TCP session was unexpectedly aborted by the server, or the
             server explicitly refused it.
-
-        P : the session was prematurely aborted by the proxy, because of a
+    \item[P:]
+            the session was prematurely aborted by the proxy, because of a
             connection limit enforcement, because a DENY filter was matched,
             because of a security check which detected and blocked a dangerous
             error in server response which might have caused information leak
             (eg: cacheable cookie), or because the response was processed by
             the proxy (redirect, stats, etc...).
-
-        R : a resource on the proxy has been exhausted (memory, sockets, source
+    \item[R:]
+            a resource on the proxy has been exhausted (memory, sockets, source
             ports, ...). Usually, this appears during the connection phase, and
             system logs should contain a copy of the precise error. If this
             happens, it must be considered as a very serious anomaly which
             should be fixed as soon as possible by any means.
-
-        I : an internal error was identified by the proxy during a self-check.
+    \item[I:]
+            an internal error was identified by the proxy during a self-check.
             This should NEVER happen, and you are encouraged to report any log
             containing this, because this would almost certainly be a bug. It
             would be wise to preventively restart the process after such an
             event too, in case it would be caused by memory corruption.
-
-        D : the session was killed by haproxy because the server was detected
+    \item[D:]
+            the session was killed by haproxy because the server was detected
             as down and was configured to kill all connections when going down.
-
-        U : the session was killed by haproxy on this backup server because an
+    \item[U:]
+            the session was killed by haproxy on this backup server because an
             active server was detected as up and was configured to kill all
             backup connections when going up.
+    \item[K:]
+            the session was actively killed by an admin operating on haproxy.
 
-        K : the session was actively killed by an admin operating on haproxy.
-
-        c : the client-side timeout expired while waiting for the client to
+    \item[c:]
+            the client-side timeout expired while waiting for the client to
             send or receive data.
-
-        s : the server-side timeout expired while waiting for the server to
+    \item[s:]
+            the server-side timeout expired while waiting for the server to
             send or receive data.
-
-        - : normal session completion, both the client and the server closed
+    \item[-:]
+            normal session completion, both the client and the server closed
             with nothing left in the buffers.
-
-  - on the second character, the TCP or HTTP session state when it was closed :
-
-        R : the proxy was waiting for a complete, valid REQUEST from the client
+    \end{description}
+    
+\item
+     on the second character, the TCP or HTTP session state when it was closed:
+     
+        \begin{description}
+        \item[R:]
+            the proxy was waiting for a complete, valid REQUEST from the client
             (HTTP mode only). Nothing was sent to any server.
-
-        Q : the proxy was waiting in the QUEUE for a connection slot. This can
+        \item[Q:]
+            the proxy was waiting in the QUEUE for a connection slot. This can
             only happen when servers have a 'maxconn' parameter set. It can
             also happen in the global queue after a redispatch consecutive to
             a failed attempt to connect to a dying server. If no redispatch is
             reported, then no connection attempt was made to any server.
-
-        C : the proxy was waiting for the CONNECTION to establish on the
+        \item[C:]
+            the proxy was waiting for the CONNECTION to establish on the
             server. The server might at most have noticed a connection attempt.
-
-        H : the proxy was waiting for complete, valid response HEADERS from the
+        \item[H:]
+            the proxy was waiting for complete, valid response HEADERS from the
             server (HTTP only).
-
-        D : the session was in the DATA phase.
-
-        L : the proxy was still transmitting LAST data to the client while the
+        \item[D:]
+            the session was in the DATA phase.
+        \item[L:]
+            the proxy was still transmitting LAST data to the client while the
             server had already finished. This one is very rare as it can only
             happen when the client dies while receiving the last packets.
-
-        T : the request was tarpitted. It has been held open with the client
+        \item[T:]
+            the request was tarpitted. It has been held open with the client
             during the whole "timeout tarpit" duration or until the client
             closed, both of which will be reported in the "Tw" timer.
+        \item[-:]
+            normal session completion after end of data transfer.
+        \end{description}
 
-        - : normal session completion after end of data transfer.
+\item
+    the third character tells whether the persistence cookie was provided by
+    the client (only in HTTP mode):
 
-  - the third character tells whether the persistence cookie was provided by
-    the client (only in HTTP mode) :
-
-        N : the client provided NO cookie. This is usually the case for new
+        \begin{description}
+        \item[N:]
+            the client provided NO cookie. This is usually the case for new
             visitors, so counting the number of occurrences of this flag in the
             logs generally indicate a valid trend for the site frequentation.
-
-        I : the client provided an INVALID cookie matching no known server.
+        \item[I:]
+            the client provided an INVALID cookie matching no known server.
             This might be caused by a recent configuration change, mixed
             cookies between HTTP/HTTPS sites, persistence conditionally
             ignored, or an attack.
-
-        D : the client provided a cookie designating a server which was DOWN,
+        \item[D:]
+            the client provided a cookie designating a server which was DOWN,
             so either "option persist" was used and the client was sent to
             this server, or it was not set and the client was redispatched to
             another server.
-
-        V : the client provided a VALID cookie, and was sent to the associated
+        \item[V:]
+            the client provided a VALID cookie, and was sent to the associated
             server.
-
-        E : the client provided a valid cookie, but with a last date which was
+        \item[E:]
+            the client provided a valid cookie, but with a last date which was
             older than what is allowed by the "maxidle" cookie parameter, so
             the cookie is consider EXPIRED and is ignored. The request will be
             redispatched just as if there was no cookie.
-
-        O : the client provided a valid cookie, but with a first date which was
+        \item[O:]
+            the client provided a valid cookie, but with a first date which was
             older than what is allowed by the "maxlife" cookie parameter, so
             the cookie is consider too OLD and is ignored. The request will be
             redispatched just as if there was no cookie.
-
-        U : a cookie was present but was not used to select the server because
+        \item[U:]
+            a cookie was present but was not used to select the server because
             some other server selection mechanism was used instead (typically a
             "use-server" rule).
+        \item[-:]
+            does not apply (no cookie set in configuration).
+        \end{description}
 
-        - : does not apply (no cookie set in configuration).
-
-  - the last character reports what operations were performed on the persistence
+\item[-]
+    the last character reports what operations were performed on the persistence
     cookie returned by the server (only in HTTP mode) :
 
-        N : NO cookie was provided by the server, and none was inserted either.
-
-        I : no cookie was provided by the server, and the proxy INSERTED one.
+        \begin{description}
+        \item[N:]
+            NO cookie was provided by the server, and none was inserted either.
+        \item[I:]
+            no cookie was provided by the server, and the proxy INSERTED one.
             Note that in "cookie insert" mode, if the server provides a cookie,
             it will still be overwritten and reported as "I" here.
-
-        U : the proxy UPDATED the last date in the cookie that was presented by
+        \item[U:]
+            the proxy UPDATED the last date in the cookie that was presented by
             the client. This can only happen in insert mode with "maxidle". It
             happens everytime there is activity at a different date than the
             date indicated in the cookie. If any other change happens, such as
             a redispatch, then the cookie will be marked as inserted instead.
-
-        P : a cookie was PROVIDED by the server and transmitted as-is.
-
-        R : the cookie provided by the server was REWRITTEN by the proxy, which
+        \item[P:]
+            a cookie was PROVIDED by the server and transmitted as-is.
+        \item[R:]
+            the cookie provided by the server was REWRITTEN by the proxy, which
             happens in "cookie rewrite" or "cookie prefix" modes.
-
-        D : the cookie provided by the server was DELETED by the proxy.
-
-        - : does not apply (no cookie set in configuration).
+        \item[D:]
+            the cookie provided by the server was DELETED by the proxy.
+        \item[-:]
+            does not apply (no cookie set in configuration).
+        \end{description}
+\end{itemize}
 
 The combination of the two first flags gives a lot of information about what
 was happening when the session terminated, and why it did terminate. It can be
@@ -1047,119 +1122,120 @@ The most common termination flags combinations are indicated below. They are
 alphabetically sorted, with the lowercase set just after the upper case for
 easier finding and understanding.
 
-  Flags   Reason
-
-     --   Normal termination.
-
-     CC   The client aborted before the connection could be established to the
+\begin{description}
+     \item[{-}{-}]
+          Normal termination.
+     \item[CC]   
+          The client aborted before the connection could be established to the
           server. This can happen when haproxy tries to connect to a recently
           dead (or unchecked) server, and the client aborts while haproxy is
           waiting for the server to respond or for "timeout connect" to expire.
-
-     CD   The client unexpectedly aborted during data transfer. This can be
+     \item[CD]
+          The client unexpectedly aborted during data transfer. This can be
           caused by a browser crash, by an intermediate equipment between the
           client and haproxy which decided to actively break the connection,
           by network routing issues between the client and haproxy, or by a
           keep-alive session between the server and the client terminated first
           by the client.
-
-     cD   The client did not send nor acknowledge any data for as long as the
+     \item[cD]
+          The client did not send nor acknowledge any data for as long as the
           "timeout client" delay. This is often caused by network failures on
           the client side, or the client simply leaving the net uncleanly.
-
-     CH   The client aborted while waiting for the server to start responding.
+     \item[CH]
+          The client aborted while waiting for the server to start responding.
           It might be the server taking too long to respond or the client
           clicking the 'Stop' button too fast.
-
-     cH   The "timeout client" stroke while waiting for client data during a
+     \item[cH]
+          The "timeout client" stroke while waiting for client data during a
           POST request. This is sometimes caused by too large TCP MSS values
           for PPPoE networks which cannot transport full-sized packets. It can
           also happen when client timeout is smaller than server timeout and
           the server takes too long to respond.
-
-     CQ   The client aborted while its session was queued, waiting for a server
+     \item[CQ]
+          The client aborted while its session was queued, waiting for a server
           with enough empty slots to accept it. It might be that either all the
           servers were saturated or that the assigned server was taking too
           long a time to respond.
-
-     CR   The client aborted before sending a full HTTP request. Most likely
+     \item[CR]
+          The client aborted before sending a full HTTP request. Most likely
           the request was typed by hand using a telnet client, and aborted
           too early. The HTTP status code is likely a 400 here. Sometimes this
           might also be caused by an IDS killing the connection between haproxy
           and the client.
-
-     cR   The "timeout http-request" stroke before the client sent a full HTTP
+     \item[cR]
+          The "timeout http-request" stroke before the client sent a full HTTP
           request. This is sometimes caused by too large TCP MSS values on the
           client side for PPPoE networks which cannot transport full-sized
           packets, or by clients sending requests by hand and not typing fast
           enough, or forgetting to enter the empty line at the end of the
           request. The HTTP status code is likely a 408 here.
 
-     CT   The client aborted while its session was tarpitted. It is important to
+     \item[CT]
+          The client aborted while its session was tarpitted. It is important to
           check if this happens on valid requests, in order to be sure that no
           wrong tarpit rules have been written. If a lot of them happen, it
           might make sense to lower the "timeout tarpit" value to something
           closer to the average reported "Tw" timer, in order not to consume
           resources for just a few attackers.
-
-     SC   The server or an equipment between it and haproxy explicitly refused
+     \item[SC]
+          The server or an equipment between it and haproxy explicitly refused
           the TCP connection (the proxy received a TCP RST or an ICMP message
           in return). Under some circumstances, it can also be the network
           stack telling the proxy that the server is unreachable (eg: no route,
           or no ARP response on local network). When this happens in HTTP mode,
           the status code is likely a 502 or 503 here.
-
-     sC   The "timeout connect" stroke before a connection to the server could
+     \item[sC]
+          The "timeout connect" stroke before a connection to the server could
           complete. When this happens in HTTP mode, the status code is likely a
           503 or 504 here.
-
-     SD   The connection to the server died with an error during the data
+     \item[SD]
+          The connection to the server died with an error during the data
           transfer. This usually means that haproxy has received an RST from
           the server or an ICMP message from an intermediate equipment while
           exchanging data with the server. This can be caused by a server crash
           or by a network issue on an intermediate equipment.
-
-     sD   The server did not send nor acknowledge any data for as long as the
+     \item[sD]
+          The server did not send nor acknowledge any data for as long as the
           "timeout server" setting during the data phase. This is often caused
           by too short timeouts on L4 equipments before the server (firewalls,
           load-balancers, ...), as well as keep-alive sessions maintained
           between the client and the server expiring first on haproxy.
-
-     SH   The server aborted before sending its full HTTP response headers, or
+     \item[SH]
+          The server aborted before sending its full HTTP response headers, or
           it crashed while processing the request. Since a server aborting at
           this moment is very rare, it would be wise to inspect its logs to
           control whether it crashed and why. The logged request may indicate a
           small set of faulty requests, demonstrating bugs in the application.
           Sometimes this might also be caused by an IDS killing the connection
           between haproxy and the server.
-
-     sH   The "timeout server" stroke before the server could return its
+     \item[sH]
+          The "timeout server" stroke before the server could return its
           response headers. This is the most common anomaly, indicating too
           long transactions, probably caused by server or database saturation.
           The immediate workaround consists in increasing the "timeout server"
           setting, but it is important to keep in mind that the user experience
           will suffer from these long response times. The only long term
           solution is to fix the application.
-
-     sQ   The session spent too much time in queue and has been expired. See
+     \item[sQ]
+          The session spent too much time in queue and has been expired. See
           the "timeout queue" and "timeout connect" settings to find out how to
           fix this if it happens too often. If it often happens massively in
           short periods, it may indicate general problems on the affected
           servers due to I/O or database congestion, or saturation caused by
           external attacks.
-
-     PC   The proxy refused to establish a connection to the server because the
+     \item[PC]
+          The proxy refused to establish a connection to the server because the
           process' socket limit has been reached while attempting to connect.
           The global "maxconn" parameter may be increased in the configuration
           so that it does not happen anymore. This status is very rare and
           might happen when the global "ulimit-n" parameter is forced by hand.
-
-     PD   The proxy blocked an incorrectly formatted chunked encoded message in
+     \item[PD]
+          The proxy blocked an incorrectly formatted chunked encoded message in
           a request or a response, after the server has emitted its headers. In
           most cases, this will indicate an invalid message from the server to
           the client.
-
-     PH   The proxy blocked the server's response, because it was invalid,
+     \item[PH]
+          The proxy blocked the server's response, because it was invalid,
           incomplete, dangerous (cache control), or matched a security filter.
           In any case, an HTTP 502 error is sent to the client. One possible
           cause for this error is an invalid syntax in an HTTP header name
@@ -1168,115 +1244,117 @@ easier finding and understanding.
           client due to an invalid syntax, before the server responded. In this
           case, an HTTP 400 error is sent to the client and reported in the
           logs.
-
-     PR   The proxy blocked the client's HTTP request, either because of an
+     \item[PR]
+          The proxy blocked the client's HTTP request, either because of an
           invalid HTTP syntax, in which case it returned an HTTP 400 error to
           the client, or because a deny filter matched, in which case it
           returned an HTTP 403 error.
-
-     PT   The proxy blocked the client's request and has tarpitted its
+     \item[PT]
+          The proxy blocked the client's request and has tarpitted its
           connection before returning it a 500 server error. Nothing was sent
           to the server. The connection was maintained open for as long as
           reported by the "Tw" timer field.
-
-     RC   A local resource has been exhausted (memory, sockets, source ports)
+     \item[RC]
+          A local resource has been exhausted (memory, sockets, source ports)
           preventing the connection to the server from establishing. The error
           logs will tell precisely what was missing. This is very rare and can
           only be solved by proper system tuning.
+\end{description}
 
 The combination of the two last flags gives a lot of information about how
 persistence was handled by the client, the server and by haproxy. This is very
 important to troubleshoot disconnections, when users complain they have to
-re-authenticate. The commonly encountered flags are :
+re-authenticate. The commonly encountered flags are:
 
-     --   Persistence cookie is not enabled.
-
-     NN   No cookie was provided by the client, none was inserted in the
+\begin{description}
+     \item[{-}{-}]
+          Persistence cookie is not enabled.
+     \item[NN]
+          No cookie was provided by the client, none was inserted in the
           response. For instance, this can be in insert mode with "postonly"
           set on a GET request.
-
-     II   A cookie designating an invalid server was provided by the client,
+     \item[II]
+          A cookie designating an invalid server was provided by the client,
           a valid one was inserted in the response. This typically happens when
           a "server" entry is removed from the configuraton, since its cookie
           value can be presented by a client when no other server knows it.
-
-     NI   No cookie was provided by the client, one was inserted in the
+     \item[NI]
+          No cookie was provided by the client, one was inserted in the
           response. This typically happens for first requests from every user
           in "insert" mode, which makes it an easy way to count real users.
-
-     VN   A cookie was provided by the client, none was inserted in the
+     \item[VN]
+          A cookie was provided by the client, none was inserted in the
           response. This happens for most responses for which the client has
           already got a cookie.
-
-     VU   A cookie was provided by the client, with a last visit date which is
+     \item[VU]
+          A cookie was provided by the client, with a last visit date which is
           not completely up-to-date, so an updated cookie was provided in
           response. This can also happen if there was no date at all, or if
           there was a date but the "maxidle" parameter was not set, so that the
           cookie can be switched to unlimited time.
-
-     EI   A cookie was provided by the client, with a last visit date which is
+     \item[EI]
+          A cookie was provided by the client, with a last visit date which is
           too old for the "maxidle" parameter, so the cookie was ignored and a
           new cookie was inserted in the response.
-
-     OI   A cookie was provided by the client, with a first visit date which is
+     \item[OI]
+          A cookie was provided by the client, with a first visit date which is
           too old for the "maxlife" parameter, so the cookie was ignored and a
           new cookie was inserted in the response.
-
-     DI   The server designated by the cookie was down, a new server was
+     \item[DI]
+          The server designated by the cookie was down, a new server was
           selected and a new cookie was emitted in the response.
-
-     VI   The server designated by the cookie was not marked dead but could not
+     \item[VI]
+          The server designated by the cookie was not marked dead but could not
           be reached. A redispatch happened and selected another one, which was
           then advertised in the response.
-\end{verbatim}
+\end{description}
 
 \section{Non-printable characters}
+\label{sec:non_printable_characters}
 
-\begin{verbatim}
 In order not to cause trouble to log analysis tools or terminals during log
 consulting, non-printable characters are not sent as-is into log files, but are
 converted to the two-digits hexadecimal representation of their ASCII code,
-prefixed by the character '#'. The only characters that can be logged without
+prefixed by the character \chr{\#}. The only characters that can be logged without
 being escaped are comprised between 32 and 126 (inclusive). Obviously, the
-escape character '#' itself is also encoded to avoid any ambiguity ("#23"). It
-is the same for the character '"' which becomes "#22", as well as '{', '|' and
-'}' when logging headers.
+escape character \chr{\#} itself is also encoded to avoid any ambiguity \chr{\#23}. It
+is the same for the character \chr{"} which becomes \chr{\#22}, as well as \chr{\{}, \chr{|} and
+\chr{\}} when logging headers.
 
-Note that the space character (' ') is not encoded in headers, which can cause
+Note that the space character ' ' is not encoded in headers, which can cause
 issues for tools relying on space count to locate fields. A typical header
 containing spaces is "User-Agent".
 
 Last, it has been observed that some syslog daemons such as syslog-ng escape
-the quote ('"') with a backslash ('\'). The reverse operation can safely be
+the quote \chr{"} with a backslash \chr{\bslash}. The reverse operation can safely be
 performed since no quote may appear anywhere else in the logs.
-\end{verbatim}
 
 \section{Capturing HTTP cookies}
+\label{sec:capturing_http_cookies}
 
-\begin{verbatim}
 Cookie capture simplifies the tracking a complete user session. This can be
 achieved using the "capture cookie" statement in the frontend. Please refer to
 section~\ref{sec:keywords_reference} for more details. Only one cookie can be captured, and the same
 cookie will simultaneously be checked in the request ("Cookie:" header) and in
 the response ("Set-Cookie:" header). The respective values will be reported in
-the HTTP logs at the "captured_request_cookie" and "captured_response_cookie"
+the HTTP logs at the "captured\_request\_cookie" and "captured\_response\_cookie"
 locations (see section~\ref{subsec:http_log_format} about HTTP log format). When either cookie is
-not seen, a dash ('-') replaces the value. This way, it's easy to detect when a
+not seen, a dash \chr{-} replaces the value. This way, it's easy to detect when a
 user switches to a new session for example, because the server will reassign it
 a new cookie. It is also possible to detect if a server unexpectedly sets a
 wrong cookie to a client, leading to session crossing.
 
-  Examples :
+  \begin{example}{Examples:}
         # capture the first cookie whose name starts with "ASPSESSION"
         capture cookie ASPSESSION len 32
 
         # capture the first cookie whose name is exactly "vgnvisitor"
         capture cookie vgnvisitor= len 32
-\end{verbatim}
+  \end{example}
 
 \section{Capturing HTTP headers}
+\label{sec:capturing_http_headers}
 
-\begin{verbatim}
 Header captures are useful to track unique request identifiers set by an upper
 proxy, virtual host names, user-agents, POST content-length, referrers, etc. In
 the response, one can search for information about the response length, how the
@@ -1289,13 +1367,13 @@ section~\ref{sec:keywords_reference} for more details.
 It is possible to include both request headers and response headers at the same
 time. Non-existent headers are logged as empty strings, and if one header
 appears more than once, only its last occurrence will be logged. Request headers
-are grouped within braces '{' and '}' in the same order as they were declared,
-and delimited with a vertical bar '|' without any space. Response headers
+are grouped within braces \chr{\{} and \chr{\}} in the same order as they were declared,
+and delimited with a vertical bar \chr{|} without any space. Response headers
 follow the same representation, but are displayed after a space following the
 request headers block. These blocks are displayed just before the HTTP request
 in the logs.
 
-  Example :
+  \begin{example}{Example:}
         # This instance chains to the outgoing proxy
         listen proxy-out
             mode http
@@ -1346,15 +1424,16 @@ in the logs.
           {www.sytadin.equipement.gouv.fr||http://trafic.1wt.eu/} \
           {Apache|230|||http://www.sytadin.} \
           "GET http://www.sytadin.equipement.gouv.fr/ HTTP/1.1"
-\end{verbatim}
+\end{example}
 
 \section{Examples of logs}
+\label{sec:examples_of_logs}
 
-\begin{verbatim}
 These are real-world examples of logs accompanied with an explanation. Some of
 them have been made up by hand. The syslog part has been removed for better
 reading. Their sole purpose is to explain how to decipher them.
 
+\begin{example}{Example logs:}
     >>> haproxy[674]: 127.0.0.1:33318 [15/Oct/2003:08:31:57.130] px-http \
           px-http/srv1 6559/0/7/147/6723 200 243 - - ---- 5/3/3/1/0 0/0 \
           "HEAD / HTTP/1.0"
@@ -1421,4 +1500,4 @@ reading. Their sole purpose is to explain how to decipher them.
        connections on this server, 202 connections on this proxy, and 205 on
        the global process. It is possible that the server refused the
        connection because of too many already established.
-       \end{verbatim}
+\end{example}
