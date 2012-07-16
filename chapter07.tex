@@ -76,8 +76,9 @@ Supported types of values are:
 \end{itemize}
 
 \section{Matching integers}
-
+\label{sec:matching_integers}
 \index{Matching integers}
+
 Matching integers is special in that ranges and operators are permitted. Note
 that integer matching only applies to positive values. A range is a value
 expressed with a lower and an upper bound separated with a colon, both of which
@@ -120,8 +121,9 @@ This one matches SSL versions between 3.0 and 3.1 (inclusive):
 \end{verbatim}
 
 \section{Matching strings}
-
+\label{sec:matching_string}
 \index{Matching strings}
+
 String matching applies to verbatim strings as they are passed, with the
 exception of the backslash ('\verb|\|') which makes it possible to escape some
 characters such as the space. If the "-i" flag is passed before the first
@@ -130,8 +132,9 @@ to match the string "-i", either set it second, or pass the "\verb|--|" flag
 before the first string. Same applies of course to match the string "\verb|--|".
 
 \section{Matching regular expressions (regexes)}
-
+\label{sec:matching_regular_expressions}
 \index{Matching regular expressions}
+
 Just like with string matching, regex matching applies to verbatim strings as
 they are passed, with the exception of the backslash ('\verb|\|') which makes it
 possible to escape some characters such as the space. If the "-i" flag is
@@ -141,8 +144,9 @@ the "\verb|--|" flag before the first string. Same principle applies of course t
 match the string "\verb|--|".
 
 \section{Matching IPv4 and IPv6 addresses}
-
+\label{sec:matching_ip_address}
 \index{Matching IPv4 and IPv6 addresses}
+
 IPv4 addresses values can be specified either as plain addresses or with a
 netmask appended, in which case the IPv4 address matches whenever it is
 within the network. Plain addresses may also be replaced with a resolvable
@@ -173,10 +177,12 @@ following situations:
 \end{itemize}
 
 \section{Available matching criteria}
+\label{sec:aviable_matching_criteria}
 
 \subsection{Matching at Layer 4 and below}
-
+\label{subsec:matching_layer4_below}
 \index{Matching at Layer 4 and below}
+
 A first set of criteria applies to information which does not require any
 analysis of the request or response contents. Those generally include TCP/IP
 addresses and ports, as well as internal values independent on the stream.
@@ -776,6 +782,7 @@ table\_avl for other entry counting methods.
 
 \subsection{Matching contents at Layer 4 (also called Layer 6)}
 \label{sec:matching_layer4}
+\index{Matching at Layer4}
 
 A second set of criteria depends on data found in buffers, but which can change
 during analysis. This requires that some data has been buffered, for instance
@@ -902,6 +909,7 @@ keyword for more detailed information on the subject.
 
 \subsection{Matching at Layer 7}
 \label{subsec:matching_level7}
+\index{Matching at Layer7}
 
 A third set of criteria applies to information which can be found at the
 application layer (layer 7). Those require that a full HTTP request has been
@@ -1365,6 +1373,7 @@ See also: \kwl{path\_reg} and all
 
 \section{Pre-defined ACLs}
 \label{sec:pre_definded_acl}
+\index{Pre-defined ACL}
 
 Some predefined ACLs are hard-coded so that they do not have to be declared in
 every frontend which needs them. They all have their names in upper case in
@@ -1486,6 +1495,7 @@ See section~\ref{sec:keywords_reference} for detailed help on the "block" and "u
 
 \section{Pattern extraction}
 \label{sec:pattern_extraction}
+\index{Pattern extraction}
 
 The stickiness features relies on pattern extraction in the request and
 response. Sometimes the data needs to be converted first before being stored,

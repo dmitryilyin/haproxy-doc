@@ -4,6 +4,7 @@ such as logging, chrooting, limits and time-outs are not described here.
 
 
 \section{Simple HTTP load-balancing with cookie insertion}
+\label{sec:simple_http_load_balancing_with_cookie_insertion}
 
 A web application often saturates the front-end server with high CPU loads,
 due to the scripting language involved. It also relies on a back-end database
@@ -244,6 +245,7 @@ precedence over load balancing:
 \end{verbatim}
 
 \section{HTTP load-balancing with cookie prefixing and high availability}
+\label{sec:http_load_balancing_with_cookie_prefixing_and_high_aviability}
 
 Now you don't want to add more cookies, but rather use existing ones. The
 application already generates a "JSESSIONID" cookie which is enough to track
@@ -742,6 +744,7 @@ SSL Hello messages. Setting it up is very easy:
 
 
 \section{Simple HTTP/HTTPS load-balancing with cookie insertion}
+\label{sec:simple_http_https_load_balancing_with_cookie_insertion}
 
 This is the same context as in example 1 above, but the web
 server uses HTTPS.
@@ -1045,7 +1048,8 @@ haproxy that connections from local host already have a valid header.
    address (stunnel).
 \end{itemize}
 
-\section{4 Soft-stop for application maintenance}
+\section{Soft-stop for application maintenance}
+\label{sec:soft_stop_for_application_maintenance}
 
 When an application is spread across several servers, the time to update all
 instances increases, so the application seems jerky for a longer period.
@@ -1340,6 +1344,7 @@ Be careful with this as in multi-process mode, some pids might already
 have been reallocated to completely different processes.
 
 \section{Multi-site load-balancing with local preference}
+\label{sec:multi_site_load_balancing_with_local_preference}
 
 \subsection{Description of the problem}
 
@@ -1835,7 +1840,7 @@ first one to match the cookie.
 The load-balancers will spread the load across 4 local web servers, and
 use the JSESSIONID provided by the application to provide server persistence
 using the new 'prefix' method. Soft-stop will also be implemented as described
-in chapter~\ref{chap:proxies} above. Moreover, these proxies will provide their own maintenance
+in chapter~\ref{sec:soft_stop_for_application_maintenance} above. Moreover, these proxies will provide their own maintenance
 soft-stop. Port 80 will be used for application traffic, while port 81 will
 only be used for health-checks and locally rerouted to port 80. A grace time
 will be specified to service on port 80, but not on port 81. This way, a soft
@@ -1940,6 +1945,7 @@ which will by default direct the traffic to the local load-balancers, S2L1 and
 S2L2. So only initial users will load the inter-site link, not the new ones.
 
 \section{Source balancing}
+\label{sec:source_balancing}
 
 Sometimes it may reveal useful to access servers from a pool of IP addresses
 instead of only one or two. Some equipments (NAT firewalls, load-balancers)
@@ -1964,6 +1970,7 @@ different source. Example:
 \end{verbatim}
 
 \section{Managing high loads on application servers}
+\label{sec:managing_high_loads_on_application_servers}
 
 One of the roles often expected from a load balancer is to mitigate the load on
 the servers during traffic peaks. More and more often, we see heavy frameworks
@@ -2057,7 +2064,8 @@ very fast response times.
 
   \node[below] at (lb1.south) {haproxy};  
   \node[below, align=center] at (web-b.south)
-  {3 application servers \\   with heavy frameworks};
+  {3 application servers \\
+   with heavy frameworks};
   \node[above] at (c.north)
   {192.168.1.11 - 192.168.1.13};
   \node[above] at (e.north) {192.168.1.2};
