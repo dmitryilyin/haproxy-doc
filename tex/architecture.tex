@@ -269,7 +269,6 @@ proxy to bind to the shared IP on Linux 2.4, you must enable it in /proc:
   \begin{tikzpicture} [
     thick,
     node distance=1.5cm,
-    every text node part/.style={align=left},
   ]
 
   \node[point](a){};
@@ -305,14 +304,10 @@ proxy to bind to the shared IP on Linux 2.4, you must enable it in /proc:
   \draw (web-d) -- (f);
   \draw (db)    -- (g);
 
-  \node[below] at (lb1.south) {
-  haproxy \\
-  keepalived
-  };
-  \node[below] at (lb2.south) {
-  haproxy \\
-  keepalived
-  };  
+  \node[below,text width=2cm] at (lb1.south)
+  {haproxy keepalived};
+  \node[below,text width=2cm] at (lb2.south)
+  {haproxy keepalived};  
   \node[below right] at (web-a.south east)
   {4 cheap web servers};
   \node[above right] at (c.north east)
@@ -492,7 +487,6 @@ which will also check that the services run fine on both proxies:
   \begin{tikzpicture} [
     thick,
     node distance=1.5cm,
-    every text node part/.style={align=left},
   ]
 	                   
   \node[point](a){};
@@ -787,7 +781,7 @@ Since haproxy does not handle SSL, this part will have to be extracted from the
 servers (freeing even more ressources) and installed on the load-balancer
 itself. Install haproxy and apache+mod\_ssl on the old box which will spread the
 load between the new boxes. Apache will work in SSL reverse-proxy-cache. If the
-application is correctly developped, it might even lower its load. However,
+application is correctly developed, it might even lower its load. However,
 since there now is a cache between the clients and haproxy, some security
 measures must be taken to ensure that inserted cookies will not be cached.
 
@@ -797,7 +791,6 @@ measures must be taken to ensure that inserted cookies will not be cached.
   \begin{tikzpicture} [
     thick,
     node distance=1.5cm,
-    every text node part/.style={align=left},
   ]
 	                   
   \node[point](a){};
@@ -829,11 +822,8 @@ measures must be taken to ensure that inserted cookies will not be cached.
   \draw (web-d) -- (e);
   \draw (db)    -- (f);
 
-  \node[below] at (lb1.south) {
-  apache\\
-  mod\_ssl\\
-  haproxy
-  };  
+  \node[below,text width=2cm] at (lb1.south)
+  {apache mod\_ssl haproxy};  
   \node[below right] at (web-a.south east) {4 cheap web servers};
   \node[above right] at (b.north east)
   {192.168.1.11 - 192.168.1.14};
@@ -960,7 +950,6 @@ haproxy that connections from local host already have a valid header.
   \begin{tikzpicture} [
     thick,
     node distance=1.5cm,
-    every text node part/.style={align=left},
   ]
 	                   
   \node[point](a){};
@@ -992,10 +981,8 @@ haproxy that connections from local host already have a valid header.
   \draw (web-d) -- (e);
   \draw (db)    -- (f);
 
-  \node[below] at (lb1.south) {
-  apache\\
-  stunnel
-  };  
+  \node[below,text width=2cm] at (lb1.south)
+  {apache stunnel};  
   \node[below right] at (web-a.south east) {4 cheap web servers};
   \node[above right] at (b.north east)
   {192.168.1.11 - 192.168.1.14};
@@ -2064,9 +2051,8 @@ very fast response times.
   \draw (db)    -- (e);
 
   \node[below] at (lb1.south) {haproxy};  
-  \node[below, align=center] at (web-b.south)
-  {3 application servers \\
-   with heavy frameworks};
+  \node[below,text width=4.5cm] at (web-b.south)
+  {3 application servers with heavy frameworks};
   \node[above] at (c.north)
   {192.168.1.11 - 192.168.1.13};
   \node[above] at (e.north) {192.168.1.2};
