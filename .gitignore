@@ -3,7 +3,8 @@
 *.lof
 *.log
 *.out
-*.pdf
+/*.pdf
+/tex/*.pdf
 *.ps
 *.dvi
 *.toc

@@ -1418,7 +1418,7 @@ node distance=0.5cm,
 \node[point](n1){};
 \node[point,right of=n1,xshift=5cm](n2){};
 \node[point,right of=n2](n3){};
-\node[cld,minimum size=2cm,right of=n3,xshift=3cm](nr1){X};
+\node[cld,inner sep=0pt,right of=n3,xshift=3cm](nr1){ \includegraphics{../pic/router} };
 \node[point,right of=nr1,xshift=2cm](n4){};
 \node[point,right of=n4,xshift=2cm](n5){};
 
@@ -1432,7 +1432,7 @@ node distance=0.5cm,
 \draw (n5) -- ++(0.5,0);
 
 %office 1
-\node[cld,above of=n1,minimum size=1.5cm,yshift=2cm](or1){X};
+\node[cld,above of=n1,inner sep=0pt,yshift=2cm](or1){ \includegraphics{../pic/router} };
 
 \node[point,above of=or1,yshift=1.5cm] (o1-1){};
 \node[point,right of=o1-1,xshift=1.5cm] (o1-2){};
@@ -1465,7 +1465,7 @@ node distance=0.5cm,
 \node[above right] at (op1.north east) {.1};
 
 %office 2
-\node[cld,minimum size=1.5cm,above of=n3,yshift=2cm](or2){X};
+\node[cld,inner sep=0pt,above of=n3,yshift=2cm](or2){ \includegraphics{../pic/router} };
 
 \node[point,above of=or2,yshift=1.5cm] (o2-1){};
 \node[point,right of=o2-1,xshift=1.5cm] (o2-2){};
@@ -1498,7 +1498,7 @@ node distance=0.5cm,
 \node[above right] at (op2.north east) {.1};
 
 %office 3
-\node[cld,above of=n4,minimum size=1.5cm,yshift=2cm](or3){X};
+\node[cld,above of=n4,inner sep=0pt,yshift=2cm](or3){ \includegraphics{../pic/router} };
 
 \node[point,above of=or3,yshift=1.5cm] (o3-1){};
 \node[point,right of=o3-1,xshift=1.5cm] (o3-2){};
@@ -1531,7 +1531,7 @@ node distance=0.5cm,
 \node[right,xshift=0.3cm] at (op3.east) {\ldots};
 
 %site1
-\node[cld,minimum size=1.5cm,below of=n2,yshift=-2cm](sr1){X};
+\node[cld,inner sep=0pt,below of=n2,yshift=-2cm](sr1){ \includegraphics{../pic/router} };
 \draw (sr1) -- (n2);
 
 \node[point,below of=sr1,yshift=-2cm] (s1-8){};
@@ -1618,7 +1618,7 @@ node distance=0.5cm,
 \node[above right] at (s1-10.north east) {10.1.2.0/24};
 
 %site2
-\node[cld,minimum size=1.5cm,below of=n5,yshift=-2cm](sr2){X};
+\node[cld,inner sep=0pt,below of=n5,yshift=-2cm](sr2){ \includegraphics{../pic/router} };
 \draw (sr2) -- (n5);
 
 \node[point,below of=sr2,yshift=-2cm] (s2-8){};
@@ -1671,6 +1671,7 @@ node distance=0.5cm,
 
 \draw (s2l1) -- (s2-7);
 \draw (s2l2) -- (s2-9);
+\draw (s2-9) -- ++(0.5cm,0);
 
 \node[point,below of=s2l1,yshift=-1cm](s2-12){};
 \node[point,below of=s2l2,yshift=-1cm](s2-13){};
@@ -1705,7 +1706,7 @@ node distance=0.5cm,
 \node[above right] at (s2-10.north east) {10.2.2.0/24};
 
 %site link
-\node[cld,right of=s1-9,xshift=1.5cm,minimum size=1.5cm](sl){X};
+\node[cld,right of=s1-9,inner sep=0pt,xshift=1.5cm](sl){ \includegraphics{../pic/router} };
 \draw (s1-9) -- (sl);
 \draw (s2-1) -- (sl);
 
