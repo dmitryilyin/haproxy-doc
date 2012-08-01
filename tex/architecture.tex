@@ -428,19 +428,19 @@ xscale=1.5,
 %7
 \flow{r}{7}{0}{5}{GET /URI2 HTTP/1.0}{};
 %8
-\node[marker] at (5,-8) {No cookie, haproxy forwards in lb mode, \\ possibly to another server.};
+\node[marker] at (5,-8) {No cookie, haproxy forwards in lb mode, possibly to another server.};
 %9
 \flow{r}{9}{5}{10}{GET /URI2 HTTP/1.0}{X-Forwarded-For: 10.1.2.3};
 %10
 \flow{l}{10}{10}{5}{HTTP/1.0 200 OK}{Set-Cookie: JSESSIONID=123};
 %11
-\node[marker] at (5,-11) {The cookie is identified, \\ it will be prefixed with the server name};
+\node[marker] at (5,-11) {The cookie is identified, it will be prefixed with the server name};
 %12
 \flow{l}{12}{5}{0}{HTTP/1.0 200 OK}{Set-Cookie: JSESSIONID=A\~{}123};
 %13
 \flow{r}{13}{0}{5}{GET /URI3 HTTP/1.0}{Cookie: JSESSIONID=A\~{}123};
 %14
-\node[marker] at (5,-14) {The proxy sees the cookie, removes the server name and forwards \\ to server A which sees the same cookie as it previously sent.};
+\node[marker,text width=14cm] at (5,-14) {The proxy sees the cookie, removes the server name and forwards to server A which sees the same cookie as it previously sent.};
 %15
 \flow{r}{15}{5}{10}{GET /URI3 HTTP/1.0}{Cookie: JSESSIONID=123};
 \node[below] at (b15.south) {\texttt{X-Forwarded-For: 10.1.2.3}};
